@@ -24,4 +24,4 @@
 - https://unityatscale.com/unity-version-control-guide/how-to-setup-unity-project-on-github/
 - https://docs.unity3d.com/Manual/SmartMerge.html
 3. VISUAL STUDIO + GIT
-https://www.youtube.com/watch?v=8zSVvTQXSIc
+- https://www.youtube.com/watch?v=8zSVvTQXSIc
