@@ -4,13 +4,6 @@
 
 1. Не забыть дописать данные в .git/config для UnityYamlMerge:
 ````
-[merge "unityyamlmerge"]
-	name = Unity SmartMerge (UnityYamlMerge)
-	driver = \"{путь до Unity}/Editor/Data/Tools/UnityYAMLMerge.exe\" merge -h -p --force --fallback none %O %B %A %A
-	recursive = binary
-````
-или:
-````
 [merge]
 	tool = unityyamlmerge
 [mergetool "unityyamlmerge"]
