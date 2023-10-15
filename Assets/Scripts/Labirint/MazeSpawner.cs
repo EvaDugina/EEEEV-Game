@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class MazeSpawner : MonoBehaviour
 {
-    public GameObject CellPrefab;
+    [SerializeField] private GameObject CellPrefab;
 
-    public float KDoubleWallSquare = 1f;
-    public float KWallHeight = 0.75f;
+    [SerializeField] private float KDoubleWallSquare = 1f;
+    [SerializeField] private float KWallHeight = 0.75f;
 
     private void Awake()
     {

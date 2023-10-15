@@ -13,10 +13,11 @@ public class MazeCell
     public bool BottomWall = true;
 
     public bool Visited = false;
+    public int DistanceFromStart;
 
 }
 
-public class MazeGenerator : MonoBehaviour
+public class MazeGenerator
 {
 
     public int Width = 23;
@@ -48,14 +49,18 @@ public class MazeGenerator : MonoBehaviour
 
         RemoveWalls(maze);
 
+        PlaceMaxeExit(maze);
+
         return maze;
     }
+
 
     public void RemoveWalls(MazeCell[,] maze)
     {
 
         MazeCell current = maze[0, 0];
         current.Visited = true;
+        current.DistanceFromStart = 0;
 
         Stack<MazeCell> stack = new Stack<MazeCell>();
 
@@ -78,9 +83,12 @@ public class MazeGenerator : MonoBehaviour
             if (unvisitedNeighbours.Count > 0) {
                 MazeCell choosen = unvisitedNeighbours[Random.Range(0, unvisitedNeighbours.Count)];
                 RemoveWall(current, choosen);
-                choosen.Visited = true;
-                current = choosen;
                 stack.Push(choosen);
+
+                choosen.Visited = true;
+                choosen.DistanceFromStart = stack.Count;
+
+                current = choosen;
             } else
                 current = stack.Pop();
 
@@ -113,6 +121,27 @@ public class MazeGenerator : MonoBehaviour
             if (a.X > b.X) a.LeftWall = false;
             else b.LeftWall = false;
         }
+    }
+
+
+    private void PlaceMaxeExit(MazeCell[,] maze)
+    {
+        MazeCell finish = maze[0,0];
+
+        for (int x = 0; x < maze.GetLength(0); x++) {
+            if (maze[x, Height - 2].DistanceFromStart > finish.DistanceFromStart) finish = maze[x, Height - 2];
+            if (maze[x, 0].DistanceFromStart > finish.DistanceFromStart) finish = maze[x, 0];
+        }
+        
+        for (int z = 0; z < maze.GetLength(1); z++) {
+            if (maze[Width-2, z].DistanceFromStart > finish.DistanceFromStart) finish = maze[Width - 2, z];
+            if (maze[0, z].DistanceFromStart > finish.DistanceFromStart) finish = maze[0, z];
+        }
+
+        if (finish.X == 0) finish.LeftWall = false;
+        else if (finish.Z == 0) finish.BottomWall = false;
+        else if (finish.X == Width - 2) maze[finish.X + 1, finish.Z].LeftWall = false;
+        else if (finish.Z == Height - 2) maze[finish.X, finish.Z+1].BottomWall = false;
     }
 
 }
