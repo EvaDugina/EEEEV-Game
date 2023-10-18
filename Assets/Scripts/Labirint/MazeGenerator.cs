@@ -1,27 +1,18 @@
 ﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-
-public class MazeCell
-{
-
-    public int X;
-    //public int Y = 0;
-    public int Z;
-
-    public bool LeftWall = true;
-    public bool BottomWall = true;
-
-    public bool Visited = false;
-    public int DistanceFromStart;
-
-}
 
 public class MazeGenerator
 {
 
-    public int Width = 23;
-    public int Height = 15;
+    private int Width = 23;
+    private int Height = 15;
+
+    public MazeGenerator(int width, int height) {
+        Width = width;
+        Height = height;
+    }
 
 
     /* 
@@ -33,23 +24,25 @@ public class MazeGenerator
     /// <summary>
     // Генерируем лабиринт
     /// </summary>
-    public MazeCell[,] GenerateMaze()
+    public Maze GenerateMaze()
     {
 
-        MazeCell[,] maze = new MazeCell[Width, Height];
+        MazeCell[,] cells = new MazeCell[Width, Height];
 
         for (int x = 0; x < Width; x++)
         {
             for (int z = 0; z < Height; z++)
             {
 
-                maze[x, z] = new MazeCell { X = x, Z = z };
+                cells[x, z] = new MazeCell { X = x, Z = z };
             }
         }
 
-        RemoveWalls(maze);
+        RemoveWalls(cells);
 
-        PlaceMaxeExit(maze);
+        Maze maze = new Maze();
+        maze.Cells = cells;
+        maze.FinishPosition = PlaceMaxeExit(cells);
 
         return maze;
     }
@@ -99,6 +92,7 @@ public class MazeGenerator
         int zMax = Height - 1;
         for (int x = 0; x < Width; x++) {
             maze[x, zMax].LeftWall = false;
+            maze[x, zMax].Floor = false;
         }
 
         /// Убираем лишние стены справа
@@ -106,6 +100,7 @@ public class MazeGenerator
         for (int z = 0; z < Height; z++)
         {
             maze[xMax, z].BottomWall = false;
+            maze[xMax, z].Floor = false;
         }
 
     }
@@ -124,7 +119,7 @@ public class MazeGenerator
     }
 
 
-    private void PlaceMaxeExit(MazeCell[,] maze)
+    private Vector2Int PlaceMaxeExit(MazeCell[,] maze)
     {
         MazeCell finish = maze[0,0];
 
@@ -142,6 +137,8 @@ public class MazeGenerator
         else if (finish.Z == 0) finish.BottomWall = false;
         else if (finish.X == Width - 2) maze[finish.X + 1, finish.Z].LeftWall = false;
         else if (finish.Z == Height - 2) maze[finish.X, finish.Z+1].BottomWall = false;
+
+        return new Vector2Int(finish.X, finish.Z);
     }
 
 }
