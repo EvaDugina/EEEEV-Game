@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -16,12 +15,11 @@ public class Cell : MonoBehaviour
     public GameObject BottomWall;
     public GameObject Floor;
     public GameObject Column;
+    public GameObject TextDistance;
 
     [NonSerialized] public Visibility ColumnVisibility = Visibility.Disable;
 
     public Material EnableColumnMaterial;
     public Material DisableColumnMaterial;
 
-    [NonSerialized] public float XReal;
-    [NonSerialized] public float ZReal;
 }

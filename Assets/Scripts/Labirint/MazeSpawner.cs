@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public class MazeSpawner : MonoBehaviour
@@ -12,6 +13,8 @@ public class MazeSpawner : MonoBehaviour
     [SerializeField] private int Width = 23;
     [SerializeField] private int Height = 15;
 
+    [SerializeField] private RouteLineRenderer RouteLineRenderer;
+
     //[SerializeField] private float KDoubleWallSquare = 1f;
     //[SerializeField] private float KWallHeight = 0.75f;
 
@@ -24,7 +27,7 @@ public class MazeSpawner : MonoBehaviour
     {
 
         MazeGenerator mazeGenerator = new MazeGenerator(Width, Height);
-        Maze = mazeGenerator.GenerateMaze();
+        Maze = mazeGenerator.GenerateMaze(CellSize);
 
         Transform parentCellsTransform = GameObject.Find("/Labirint/Cells").transform;
 
@@ -57,12 +60,12 @@ public class MazeSpawner : MonoBehaviour
                 else
                     cell.Column.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = cell.DisableColumnMaterial;
 
-                cell.XReal = Maze.Cells[x, z].X * CellSize.x;
-                cell.ZReal = Maze.Cells[x, z].Z * CellSize.y;
-
+                cell.TextDistance.GetComponent<TextMeshPro>().text = Maze.Cells[x, z].DistanceFromStart.ToString();
 
             }
         }
+
+        RouteLineRenderer.DrawRoute();
     }
 
     private void setCellSize()

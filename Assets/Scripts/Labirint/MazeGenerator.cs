@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using Unity.VisualScripting;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-
+using Random = UnityEngine.Random;
 
 public class MazeGenerator
 {
@@ -24,7 +24,7 @@ public class MazeGenerator
     /// <summary>
     // Генерируем лабиринт
     /// </summary>
-    public Maze GenerateMaze()
+    public Maze GenerateMaze(Vector3 cellSize)
     {
 
         MazeCell[,] cells = new MazeCell[Width, Height];
@@ -34,7 +34,7 @@ public class MazeGenerator
             for (int z = 0; z < Height; z++)
             {
 
-                cells[x, z] = new MazeCell { X = x, Z = z };
+                cells[x, z] = new MazeCell { X = x, Z = z, XReal = x * cellSize.x , ZReal = z * cellSize.z };
             }
         }
 
@@ -42,6 +42,12 @@ public class MazeGenerator
 
         Maze maze = new Maze();
         maze.Cells = cells;
+
+        maze.Width = Width;
+        maze.Height = Height;
+        maze.CellWidth = cellSize.x;
+        maze.CellHeight = cellSize.z;
+
         maze.FinishPosition = PlaceMaxeExit(cells);
 
         return maze;
@@ -76,10 +82,11 @@ public class MazeGenerator
             if (unvisitedNeighbours.Count > 0) {
                 MazeCell choosen = unvisitedNeighbours[Random.Range(0, unvisitedNeighbours.Count)];
                 RemoveWall(current, choosen);
-                stack.Push(choosen);
 
                 choosen.Visited = true;
-                choosen.DistanceFromStart = stack.Count;
+                stack.Push(choosen);
+
+                choosen.DistanceFromStart = current.DistanceFromStart + 1;
 
                 current = choosen;
             } else

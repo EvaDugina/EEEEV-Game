@@ -1,1 +1,15 @@
-1. Простой лабиринт
+ЛАБИРИНТ:
++ 1. Простой лабиринт
++ 2. Простой лабиринт с поиском пути
+3. Лабиринт на торе
+4. Лабиринт на ленте мёбиуса
+5. CRACK-лабиринт
+
+ДИЗАЙН:
+1. Материал на стены
+
+ПРОТИВНИКИ:
+1. Боевой вертолёт К52 АЛЛИГАТОР
+https://assetstore.unity.com/packages/3d/vehicles/air/low-poly-russian-air-force-fighter-planes-mega-pack-251402
+https://assetstore.unity.com/packages/3d/vehicles/air/helicopter-ka52-alligator-gameready-low-poly-3d-model-253843
+
