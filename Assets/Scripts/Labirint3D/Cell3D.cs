@@ -8,7 +8,7 @@ public enum Visibility
     Disable
 }
 
-public class Cell : MonoBehaviour
+public class Cell3D : MonoBehaviour
 {
 
     public GameObject LeftWall;

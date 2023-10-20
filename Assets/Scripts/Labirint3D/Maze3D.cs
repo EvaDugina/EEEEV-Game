@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 
 
-public class MazeCell
+public class MazeCell3D
 {
 
     public int X;
@@ -22,8 +22,8 @@ public class MazeCell
 
 }
 
-public class Maze {
-    public MazeCell[,] Cells;
+public class Maze3D {
+    public MazeCell3D[,] Cells;
 
     public int Width = 23;
     public int Height = 15;

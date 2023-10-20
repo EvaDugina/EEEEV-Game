@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class MazeGenerator
+public class MazeGenerator3D
 {
 
     private int Width = 23;
     private int Height = 15;
 
-    public MazeGenerator(int width, int height) {
+    public MazeGenerator3D(int width, int height) {
         Width = width;
         Height = height;
     }
@@ -24,23 +24,23 @@ public class MazeGenerator
     /// <summary>
     // Генерируем лабиринт
     /// </summary>
-    public Maze GenerateMaze(Vector3 cellSize)
+    public Maze3D GenerateMaze(Vector3 cellSize)
     {
 
-        MazeCell[,] cells = new MazeCell[Width, Height];
+        MazeCell3D[,] cells = new MazeCell3D[Width, Height];
 
         for (int x = 0; x < Width; x++)
         {
             for (int z = 0; z < Height; z++)
             {
 
-                cells[x, z] = new MazeCell { X = x, Z = z, XReal = x * cellSize.x , ZReal = z * cellSize.z };
+                cells[x, z] = new MazeCell3D { X = x, Z = z, XReal = x * cellSize.x , ZReal = z * cellSize.z };
             }
         }
 
         RemoveWalls(cells);
 
-        Maze maze = new Maze();
+        Maze3D maze = new Maze3D();
         maze.Cells = cells;
 
         maze.Width = Width;
@@ -54,21 +54,21 @@ public class MazeGenerator
     }
 
 
-    public void RemoveWalls(MazeCell[,] maze)
+    public void RemoveWalls(MazeCell3D[,] maze)
     {
 
-        MazeCell current = maze[0, 0];
+        MazeCell3D current = maze[0, 0];
         current.Visited = true;
         current.DistanceFromStart = 0;
 
-        Stack<MazeCell> stack = new Stack<MazeCell>();
+        Stack<MazeCell3D> stack = new Stack<MazeCell3D>();
 
         do
         {
             int x = current.X;
             int z = current.Z;
 
-            List<MazeCell> unvisitedNeighbours = new List<MazeCell>();
+            List<MazeCell3D> unvisitedNeighbours = new List<MazeCell3D>();
             
             if (x > 0 && !maze[x - 1, z].Visited)
                 unvisitedNeighbours.Add(maze[x - 1, z]);
@@ -80,7 +80,7 @@ public class MazeGenerator
                 unvisitedNeighbours.Add(maze[x, z + 1]);
 
             if (unvisitedNeighbours.Count > 0) {
-                MazeCell choosen = unvisitedNeighbours[Random.Range(0, unvisitedNeighbours.Count)];
+                MazeCell3D choosen = unvisitedNeighbours[Random.Range(0, unvisitedNeighbours.Count)];
                 RemoveWall(current, choosen);
 
                 choosen.Visited = true;
@@ -112,7 +112,7 @@ public class MazeGenerator
 
     }
 
-    private void RemoveWall(MazeCell a, MazeCell b) {
+    private void RemoveWall(MazeCell3D a, MazeCell3D b) {
         if (a.X == b.X)
         {
             if (a.Z > b.Z) a.BottomWall = false;
@@ -126,9 +126,9 @@ public class MazeGenerator
     }
 
 
-    private Vector2Int PlaceMaxeExit(MazeCell[,] maze)
+    private Vector2Int PlaceMaxeExit(MazeCell3D[,] maze)
     {
-        MazeCell finish = maze[0,0];
+        MazeCell3D finish = maze[0,0];
 
         for (int x = 0; x < maze.GetLength(0); x++) {
             if (maze[x, Height - 2].DistanceFromStart > finish.DistanceFromStart) finish = maze[x, Height - 2];

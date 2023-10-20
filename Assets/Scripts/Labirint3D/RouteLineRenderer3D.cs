@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-public class RouteLineRenderer : MonoBehaviour
+public class RouteLineRenderer3D : MonoBehaviour
 {
 
-    public MazeSpawner MazeSpawner;
+    public MazeSpawner3D MazeSpawner;
 
     private LineRenderer LineRenderer;
 
@@ -23,9 +23,9 @@ public class RouteLineRenderer : MonoBehaviour
         List<Vector3> routePositions = new List<Vector3>();
         Vector2Int currentPosition = finishPosition;
 
-        if (finishPosition.x == MazeSpawner.Maze.Width - 1)
+        if (finishPosition.x == MazeSpawner.Maze.Width - 2)
             routePositions.Add(convertToRealVector3(currentPosition + Vector2Int.right));
-        else if (finishPosition.y == MazeSpawner.Maze.Height - 1)
+        else if (finishPosition.y == MazeSpawner.Maze.Height - 2)
             routePositions.Add(convertToRealVector3(currentPosition + Vector2Int.up));
         else if (finishPosition.x == 0)
             routePositions.Add(convertToRealVector3(currentPosition + Vector2Int.left));
@@ -38,7 +38,7 @@ public class RouteLineRenderer : MonoBehaviour
         while (currentPosition != Vector2Int.zero)
         {
 
-            MazeCell currentCell = MazeSpawner.Maze.Cells[currentPosition.x, currentPosition.y];
+            MazeCell3D currentCell = MazeSpawner.Maze.Cells[currentPosition.x, currentPosition.y];
             currentDistance = currentCell.DistanceFromStart;
 
             if (currentDistance <= 0)

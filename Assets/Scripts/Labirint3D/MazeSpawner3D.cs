@@ -2,18 +2,18 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class MazeSpawner : MonoBehaviour
+public class MazeSpawner3D : MonoBehaviour
 {
 
-    [NonSerialized] public Maze Maze;
+    [NonSerialized] public Maze3D Maze;
 
     [SerializeField] private GameObject CellPrefab;
     [SerializeField] private Vector3 CellSize = new Vector3(1, 1, 1);
 
-    [SerializeField] private int Width = 23;
-    [SerializeField] private int Height = 15;
+    [SerializeField] private int Width = 100;
+    [SerializeField] private int Height = 100;
 
-    [SerializeField] private RouteLineRenderer RouteLineRenderer;
+    [SerializeField] private RouteLineRenderer3D RouteLineRenderer;
 
     //[SerializeField] private float KDoubleWallSquare = 1f;
     //[SerializeField] private float KWallHeight = 0.75f;
@@ -26,7 +26,7 @@ public class MazeSpawner : MonoBehaviour
     private void Start()
     {
 
-        MazeGenerator mazeGenerator = new MazeGenerator(Width, Height);
+        MazeGenerator3D mazeGenerator = new MazeGenerator3D(Width, Height);
         Maze = mazeGenerator.GenerateMaze(CellSize);
 
         Transform parentCellsTransform = GameObject.Find("/Labirint/Cells").transform;
@@ -38,9 +38,9 @@ public class MazeSpawner : MonoBehaviour
         {
             for (int z = 0; z < Maze.Cells.GetLength(1); z++)
             {
-                Cell cell = Instantiate(CellPrefab,
+                Cell3D cell = Instantiate(CellPrefab,
                     new Vector3(Maze.Cells[x, z].X * cellWidth, 0, Maze.Cells[x, z].Z * cellHeight),
-                    Quaternion.identity, parentCellsTransform).GetComponent<Cell>();
+                    Quaternion.identity, parentCellsTransform).GetComponent<Cell3D>();
 
                 cell.LeftWall.SetActive(Maze.Cells[x, z].LeftWall);
                 cell.BottomWall.SetActive(Maze.Cells[x, z].BottomWall);
