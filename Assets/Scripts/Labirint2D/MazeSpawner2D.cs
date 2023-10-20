@@ -9,8 +9,10 @@ public class MazeSpawner2D : MonoBehaviour
     [SerializeField] private GameObject LabirintPrefab;
     [SerializeField] private GameObject CellPrefab;
 
+    [Header("Размеры клетки")]
     [SerializeField] private Vector2 CellSize = new Vector2(1, 1);
 
+    [Header("Размеры лабиринта - чётные целые числа")]
     [SerializeField] private int Width = 100;
     [SerializeField] private int Height = 100;
 
