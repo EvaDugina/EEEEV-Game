@@ -68,16 +68,26 @@ public class MazeSpawner2D : MonoBehaviour
 
                 cell.LeftWall.SetActive(mazeCells[x][y].LeftWall);
                 cell.BottomWall.SetActive(mazeCells[x][y].BottomWall);
-                //cell.Floor.SetActive(mazeCells[x][y].Floor);
+
+                if (mazeCells[x][y].Type == CellType.Field)
+                {
+                    mazeCells[x][y].Floor.transform.GetChild(0).gameObject
+                    cell.Floor.SetActive(mazeCells[x][y].Floor);
+                }
+                else if (mazeCells[x][y].Type == CellType.Room)
+                {
+
+                    cell.Floor.SetActive(mazeCells[x][y].Floor);
+                }
 
                 //Отключение/включение колонны, когда рядом нет соседей
-                Type columnType = mazeCells[x][y].BottomLeftColumnType;
-                if (columnType == Type.Nothing)
+                ColumnType columnType = mazeCells[x][y].BottomLeftColumnType;
+                if (columnType == ColumnType.Nothing)
                     cell.Column.transform.GetChild(0).gameObject.SetActive(false);
                 else
                 {
                     /// Добавляем колонне другой материал, когда колонна - перекрёсток
-                    if (columnType == Type.Crossroad)
+                    if (columnType == ColumnType.Crossroad)
                         cell.Column.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = cell.EnableColumnMaterial;
                     else
                         cell.Column.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = cell.DisableColumnMaterial;
@@ -129,7 +139,8 @@ public class MazeSpawner2D : MonoBehaviour
         else if (side == "Bottom")
             labirintGameObject = Instantiate(LabirintPrefab, MainLabirint.BottomPoint,
                                 Quaternion.identity, GameObject.Find("Level/Labirints").transform);
-        else {
+        else
+        {
             if (side == "TopLeft")
                 labirintGameObject = Instantiate(LabirintPrefab, MainLabirint.LeftPoint + MainLabirint.TopPoint,
                                     Quaternion.identity, GameObject.Find("Level/Labirints").transform);

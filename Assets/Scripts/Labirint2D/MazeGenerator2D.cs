@@ -134,7 +134,66 @@ public class MazeGenerator2D
 
         } while (stackVisited.Count > 0);
 
+        GenerateFields(maze);
+        //GenerateRooms(maze);
 
+        RemoveBoundaryWalls(maze);
+
+        // Добавляем проходы для расположения лабиринта на торе
+        CreateBoundaryPasseges(maze);
+
+    }
+
+    private void GenerateFields(MazeCell2D[][] mazeCells)
+    {
+        int fieldWidth = Width / 5;
+        int fieldHeight = Height / 5;
+
+        int startCellX = Random.Range(fieldWidth + 1, Width - fieldWidth - 2);
+        int startCellY = Random.Range(fieldHeight + 1, Height - fieldHeight - 2);
+
+        for (int x = startCellX; x < startCellX + fieldWidth; x++)
+        {
+            for (int y = startCellY; y < startCellY + fieldHeight; y++)
+            {
+                mazeCells[x][y].RemoveAllWalls();
+                mazeCells[x][y].Type = CellType.Field;
+            }
+        }
+
+
+        // Добавляем вертикальные границы лабиринту
+        int randomEnter = Random.Range(0, fieldWidth - 1);
+        for (int x = startCellX; x < startCellX + fieldWidth; x++)
+        {
+            if (x != startCellX + randomEnter) { 
+                mazeCells[x][startCellY].BottomWall = true;
+                mazeCells[x][startCellY-1].LeftWall = false;
+            }
+            if (x != startCellX + randomEnter) { 
+                mazeCells[x][startCellY + fieldHeight].BottomWall = true;
+                mazeCells[x][startCellY + fieldHeight].LeftWall = false;
+            }
+        }
+
+        // Добавляем горизонтальные границы лабиринту
+        randomEnter = Random.Range(0, fieldHeight-1);
+        for (int y = startCellY; y < startCellY + fieldHeight; y++)
+        {
+            if (y != startCellY + randomEnter) { 
+                mazeCells[startCellX][y].LeftWall = true;
+                mazeCells[startCellX-1][y].BottomWall = false;
+            }
+            if (y != startCellY + randomEnter) { 
+                mazeCells[startCellX + fieldWidth][y].LeftWall = true;
+                mazeCells[startCellX + fieldWidth][y].BottomWall = false;
+            }
+        }
+
+    }
+
+    private void RemoveBoundaryWalls(MazeCell2D[][] maze)
+    {
         /// Убираем лишние стены сверху
         int yMax = Height - 1;
         for (int x = 0; x < Width; x++)
@@ -150,10 +209,6 @@ public class MazeGenerator2D
             //maze[xMax][y].BottomWall = false;
             maze[xMax][y].Floor = false;
         }
-
-        // Добавляем проходы для расположения лабиринта на торе
-        CreateBoundaryPasseges(maze);
-
     }
 
     private void RemoveWall(MazeCell2D a, MazeCell2D b)
@@ -265,13 +320,13 @@ public class MazeGenerator2D
                     (x > 0 && cells[x - 1][y].BottomWall && cells[x][y].LeftWall) ||
                     (y > 0 && cells[x][y - 1].LeftWall && cells[x][y].BottomWall) ||
                     (y > 0 && x > 0 && cells[x - 1][y].BottomWall && cells[x][y - 1].LeftWall))
-                    cells[x][y].BottomLeftColumnType = Type.Crossroad;
+                    cells[x][y].BottomLeftColumnType = ColumnType.Crossroad;
                 else if ((cells[x][y].LeftWall || cells[x][y].BottomWall) ||
                     (x > 0 && cells[x - 1][y].BottomWall) ||
                     (y > 0 && cells[x][y - 1].LeftWall))
-                    cells[x][y].BottomLeftColumnType = Type.Solid;
+                    cells[x][y].BottomLeftColumnType = ColumnType.Solid;
                 else
-                    cells[x][y].BottomLeftColumnType = Type.Nothing;
+                    cells[x][y].BottomLeftColumnType = ColumnType.Nothing;
             }
         }
 

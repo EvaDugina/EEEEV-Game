@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5922093212826287095}
   - component: {fileID: 5830760723866547335}
   - component: {fileID: 8854044820090381045}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Floor2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,7 +138,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 254689465064756298}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LeftWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 5590013611671524618}
   - component: {fileID: 1318637807567356852}
   - component: {fileID: 3138532536773275912}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LeftWall Child
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -331,7 +331,7 @@ GameObject:
   - component: {fileID: 6953319440390684657}
   - component: {fileID: 2325676657274120937}
   - component: {fileID: 1360661140646518211}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LeftWall2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -457,7 +457,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8457231682609794936}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TopWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -490,13 +490,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8195885851329372835}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8195885851329372835
 Transform:
   m_ObjectHideFlags: 0
@@ -506,8 +506,8 @@ Transform:
   m_GameObject: {fileID: 4002636093433614996}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.075, y: -0.075, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.075, y: 0.075, z: 0}
+  m_LocalScale: {x: 0.85, y: 0.85, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7450734375529587007}
@@ -525,7 +525,7 @@ GameObject:
   - component: {fileID: 5515884248326333693}
   - component: {fileID: 7637930046946129167}
   - component: {fileID: 3312469697385121517}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LeftWall2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -824,7 +824,7 @@ GameObject:
   - component: {fileID: 1205311652970191637}
   - component: {fileID: 7046838140173157277}
   - component: {fileID: 3084390533189929381}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Column Child
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -905,7 +905,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5343055119488022990}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TopRightColumn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -940,7 +940,7 @@ GameObject:
   - component: {fileID: 718318119080005415}
   - component: {fileID: 965701341804403183}
   - component: {fileID: 5461581056020895201}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BottomWall2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1108,7 +1108,7 @@ GameObject:
   - component: {fileID: 3098824588522725503}
   - component: {fileID: 5542104428959090832}
   - component: {fileID: 4516181453672729066}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LeftWall2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1234,7 +1234,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3737378877786393934}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BottomWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1270,7 +1270,7 @@ GameObject:
   - component: {fileID: 8302433843879588867}
   - component: {fileID: 1136082288764921981}
   - component: {fileID: 4297786817570495116}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LeftWall Child
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1375,7 +1375,7 @@ GameObject:
   - component: {fileID: 5231453000966750691}
   - component: {fileID: 135266098689358835}
   - component: {fileID: 6107440718539618011}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BottomWall Child
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1477,7 +1477,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5714062190928010820}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RightWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1512,7 +1512,7 @@ GameObject:
   - component: {fileID: 5852374935154751518}
   - component: {fileID: 2709923775171067589}
   - component: {fileID: 4346988918364866687}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Column Child
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1593,7 +1593,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8840282610562405873}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BottomLeftColumn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1628,7 +1628,7 @@ GameObject:
   - component: {fileID: 4902826221786899177}
   - component: {fileID: 5099093145601433475}
   - component: {fileID: 3611030295195650859}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LeftWall Child
   m_TagString: Untagged
   m_Icon: {fileID: 0}

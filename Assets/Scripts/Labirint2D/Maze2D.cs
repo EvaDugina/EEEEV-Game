@@ -5,11 +5,18 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 
 
-public enum Type
+public enum ColumnType
 {
+    Nothing,
     Crossroad,
     Solid,
-    Nothing
+}
+
+public enum CellType
+{ 
+    Nothing,
+    Field, 
+    Room
 }
 
 public class MazeCell2D
@@ -31,8 +38,21 @@ public class MazeCell2D
     public bool Visited = false;
 
     public int DistanceFromStart;
-    public Type BottomLeftColumnType = Type.Nothing;
-    public Type TopRightColumnType = Type.Nothing;
+    public ColumnType BottomLeftColumnType = ColumnType.Nothing;
+    public ColumnType TopRightColumnType = ColumnType.Nothing;
+
+    public CellType Type = CellType.Nothing;
+
+
+    public void RemoveAllWalls() {
+        ToptWall = false;
+        RightWall = false;
+        LeftWall = false;
+        BottomWall = false;
+
+        BottomLeftColumnType = ColumnType.Nothing;
+        TopRightColumnType = ColumnType.Nothing;
+    }
 
 }
 
