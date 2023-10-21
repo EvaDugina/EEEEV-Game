@@ -7,8 +7,8 @@ using Random = UnityEngine.Random;
 public class MazeGenerator2D
 {
 
-    private int Width = 100;
-    private int Height = 100;
+    private int Width;
+    private int Height;
 
     public MazeGenerator2D(int width, int height)
     {
@@ -88,11 +88,11 @@ public class MazeGenerator2D
 
             if (x > 0 && !maze[x - 1][y].Visited)
                 unvisitedNeighbours.Add(maze[x - 1][y]);
-            if (x < Width - 2 && !maze[x + 1][y].Visited)
+            if (x < Width - 1 && !maze[x + 1][y].Visited)
                 unvisitedNeighbours.Add(maze[x + 1][y]);
             if (y > 0 && !maze[x][y - 1].Visited)
                 unvisitedNeighbours.Add(maze[x][y - 1]);
-            if (y < Height - 2 && !maze[x][y + 1].Visited)
+            if (y < Height - 1 && !maze[x][y + 1].Visited)
                 unvisitedNeighbours.Add(maze[x][y + 1]);
 
             if (unvisitedNeighbours.Count > 0)
@@ -139,16 +139,16 @@ public class MazeGenerator2D
         int yMax = Height - 1;
         for (int x = 0; x < Width; x++)
         {
-            maze[x][yMax].LeftWall = false;
-            //maze[x, zMax].Floor = false;
+            //maze[x][yMax].LeftWall = false;
+            maze[x][yMax].Floor = false;
         }
 
         /// Убираем лишние стены справа
         int xMax = Width - 1;
         for (int y = 0; y < Height; y++)
         {
-            maze[xMax][y].BottomWall = false;
-            //maze[xMax, z].Floor = false;
+            //maze[xMax][y].BottomWall = false;
+            maze[xMax][y].Floor = false;
         }
 
         // Добавляем проходы для расположения лабиринта на торе
@@ -265,13 +265,13 @@ public class MazeGenerator2D
                     (x > 0 && cells[x - 1][y].BottomWall && cells[x][y].LeftWall) ||
                     (y > 0 && cells[x][y - 1].LeftWall && cells[x][y].BottomWall) ||
                     (y > 0 && x > 0 && cells[x - 1][y].BottomWall && cells[x][y - 1].LeftWall))
-                    cells[x][y].ColumnType = Type.Crossroad;
+                    cells[x][y].BottomLeftColumnType = Type.Crossroad;
                 else if ((cells[x][y].LeftWall || cells[x][y].BottomWall) ||
                     (x > 0 && cells[x - 1][y].BottomWall) ||
                     (y > 0 && cells[x][y - 1].LeftWall))
-                    cells[x][y].ColumnType = Type.Solid;
+                    cells[x][y].BottomLeftColumnType = Type.Solid;
                 else
-                    cells[x][y].ColumnType = Type.Nothing;
+                    cells[x][y].BottomLeftColumnType = Type.Nothing;
             }
         }
 

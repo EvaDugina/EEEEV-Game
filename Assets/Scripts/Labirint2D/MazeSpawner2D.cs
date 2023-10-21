@@ -68,10 +68,10 @@ public class MazeSpawner2D : MonoBehaviour
 
                 cell.LeftWall.SetActive(mazeCells[x][y].LeftWall);
                 cell.BottomWall.SetActive(mazeCells[x][y].BottomWall);
-                //cell.Floor.SetActive(maze.Cells[x, y].Floor);
+                //cell.Floor.SetActive(mazeCells[x][y].Floor);
 
                 //Отключение/включение колонны, когда рядом нет соседей
-                Type columnType = mazeCells[x][y].ColumnType;
+                Type columnType = mazeCells[x][y].BottomLeftColumnType;
                 if (columnType == Type.Nothing)
                     cell.Column.transform.GetChild(0).gameObject.SetActive(false);
                 else

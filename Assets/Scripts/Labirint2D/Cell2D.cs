@@ -7,7 +7,7 @@ public class Cell2D : MonoBehaviour
 
     public GameObject LeftWall;
     public GameObject BottomWall;
-    //public GameObject Floor;
+    public GameObject Floor;
     public GameObject Column;
     public GameObject TextDistance;
 

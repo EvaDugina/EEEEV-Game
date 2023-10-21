@@ -22,14 +22,17 @@ public class MazeCell2D
     public float XReal;
     public float YReal;
 
+    public bool ToptWall = false;
+    public bool RightWall = false;
     public bool LeftWall = true;
     public bool BottomWall = true;
-    //public bool Floor = true;
+    public bool Floor = true;
 
     public bool Visited = false;
 
     public int DistanceFromStart;
-    public Type ColumnType = Type.Nothing;
+    public Type BottomLeftColumnType = Type.Nothing;
+    public Type TopRightColumnType = Type.Nothing;
 
 }
 
