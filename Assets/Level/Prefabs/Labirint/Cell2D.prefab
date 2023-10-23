@@ -214,6 +214,8 @@ MonoBehaviour:
   TextDistance: {fileID: 4411372295688458373}
   EnableColumnMaterial: {fileID: 2100000, guid: c045af5b8eabf1a438546a48a101af54, type: 2}
   DisableColumnMaterial: {fileID: 2100000, guid: d2189609cd9c5c5459d2d1b505191f7c, type: 2}
+  Field: {fileID: 2100000, guid: 771ab1a71ecbb98459b156d2461ee407, type: 2}
+  Room: {fileID: 2100000, guid: 0dcb3a18aa35fa74591c768f3a9c7ec5, type: 2}
 --- !u!1 &3115847296896151540
 GameObject:
   m_ObjectHideFlags: 0

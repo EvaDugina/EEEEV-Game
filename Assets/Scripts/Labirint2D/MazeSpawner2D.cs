@@ -71,7 +71,7 @@ public class MazeSpawner2D : MonoBehaviour
 
                 if (mazeCells[x][y].Type == CellType.Field)
                 {
-                    mazeCells[x][y].Floor.transform.GetChild(0).gameObject
+                    cell.Floor.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = cell.Field;
                     cell.Floor.SetActive(mazeCells[x][y].Floor);
                 }
                 else if (mazeCells[x][y].Type == CellType.Room)

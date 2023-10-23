@@ -14,7 +14,7 @@ public class Cell2D : MonoBehaviour
     public Material EnableColumnMaterial;
     public Material DisableColumnMaterial;
 
-    public Sprite Field;
-    public Sprite Room;
+    public Material Field;
+    public Material Room;
 
 }
