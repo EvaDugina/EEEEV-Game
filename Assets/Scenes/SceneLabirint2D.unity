@@ -645,7 +645,7 @@ GameObject:
   - component: {fileID: 758963377}
   - component: {fileID: 758963378}
   m_Layer: 0
-  m_Name: MazeSpawner
+  m_Name: LabirintsSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -680,9 +680,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LabirintPrefab: {fileID: 5328678157922544853, guid: 19f9f28844f1d3944bd58eddad44edb5, type: 3}
   CellPrefab: {fileID: 1842833647202691168, guid: 2f97916b129bee849a3b98165d3a6067, type: 3}
-  CellSize: {x: 1, y: 1}
-  Width: 30
-  Height: 20
   RouteLineRenderer: {fileID: 1590611794}
 --- !u!1 &974588508
 GameObject:
@@ -831,6 +828,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 1773131082}
+  LabirintsSpawner2D: {fileID: 758963378}
   Width: 30
   Height: 20
 --- !u!1 &1280697452

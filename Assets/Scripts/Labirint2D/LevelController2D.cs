@@ -1,14 +1,17 @@
-using UnityEditor;
+using System;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+public class LevelController2D : MonoBehaviour
 {
 
     [SerializeField] public GameObject Player;
+    [SerializeField] public LabirintsSpawner2D LabirintsSpawner2D;
 
     [Header("Размеры лабиринта - чётные целые числа")]
     [SerializeField] public int Width;
     [SerializeField] public int Height;
+
+    [NonSerialized] public Level Level;
 
     private bool flagX = false;
     private bool flagY = false;
@@ -16,6 +19,14 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+
+        // Генерируем уровень
+        LevelGenerator2D levelGenerator = new(Width, Height);
+        Level = levelGenerator.GenerateLevel();
+
+        // Ставим на сцену
+        LabirintsSpawner2D.SpawnLabirints(Level);
+
         Width /= 2;
         Height /= 2;
     }

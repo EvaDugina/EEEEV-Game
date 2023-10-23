@@ -1,6 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
+
+
+public struct LabirintSiblingConnectionPoints
+{
+    public Vector3 LeftPoint;
+    public Vector3 RightPoint;
+    public Vector3 TopPoint;
+    public Vector3 BottomPoint;
+};
+
 
 public class Labirint2D : MonoBehaviour
 {
@@ -8,10 +17,16 @@ public class Labirint2D : MonoBehaviour
     public GameObject QuadFloor;
     public GameObject CellsFolder;
 
-    public Vector3 LeftPoint = Vector3.zero;
-    public Vector3 RightPoint = Vector3.zero;
-    public Vector3 TopPoint = Vector3.zero;
-    public Vector3 BottomPoint = Vector3.zero;
+    public LabirintSiblingConnectionPoints ConnectionPoints;
+
+
+    private void Awake()
+    {
+        ConnectionPoints.LeftPoint = Vector3.zero;
+        ConnectionPoints.RightPoint = Vector3.zero;
+        ConnectionPoints.TopPoint = Vector3.zero;
+        ConnectionPoints.BottomPoint = Vector3.zero;
+    }
 
 
     public void SetParams(int Width, int Height)
@@ -38,20 +53,20 @@ public class Labirint2D : MonoBehaviour
         LabirintForm.transform.position = transform.TransformPoint(position);
 
 
-        LeftPoint.x = -Width / 2;
-        LeftPoint.y = Height / 2;
-        LeftPoint = LabirintForm.transform.TransformPoint(LeftPoint);
+        ConnectionPoints.LeftPoint.x = -Width / 2;
+        ConnectionPoints.LeftPoint.y = Height / 2;
+        ConnectionPoints.LeftPoint = LabirintForm.transform.TransformPoint(ConnectionPoints.LeftPoint);
 
-        RightPoint.x = Width + Width / 2;
-        RightPoint.y = Height / 2;
-        RightPoint = LabirintForm.transform.TransformPoint(RightPoint);
+        ConnectionPoints.RightPoint.x = Width + Width / 2;
+        ConnectionPoints.RightPoint.y = Height / 2;
+        ConnectionPoints.RightPoint = LabirintForm.transform.TransformPoint(ConnectionPoints.RightPoint);
 
-        TopPoint.x = Width / 2;
-        TopPoint.y = Height + Height / 2;
-        TopPoint = LabirintForm.transform.TransformPoint(TopPoint);
+        ConnectionPoints.TopPoint.x = Width / 2;
+        ConnectionPoints.TopPoint.y = Height + Height / 2;
+        ConnectionPoints.TopPoint = LabirintForm.transform.TransformPoint(ConnectionPoints.TopPoint);
 
-        BottomPoint.x = Width / 2;
-        BottomPoint.y = -Height / 2;
-        BottomPoint = LabirintForm.transform.TransformPoint(BottomPoint);
+        ConnectionPoints.BottomPoint.x = Width / 2;
+        ConnectionPoints.BottomPoint.y = -Height / 2;
+        ConnectionPoints.BottomPoint = LabirintForm.transform.TransformPoint(ConnectionPoints.BottomPoint);
     }
 }
