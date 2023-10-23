@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 
@@ -23,9 +25,23 @@ public struct MazeInfo
     //public MazeFillType FillType;
     //public MazeWallType WallType;
 };
+public struct PortalIn
+{
+    public int FromMazeId;
+    public Vector2Int Position;
+};
+
+public struct PortalOut
+{
+    public int ToMazeId;
+    public Vector2Int Position;
+};
+
 
 public class Maze
 {
+    public int Id;
+
     public MazeCell[][] Cells;
 
     public int Width;
@@ -39,10 +55,15 @@ public class Maze
 
     public MazeInfo Info;
 
+    public Vector2Int StartPosition;
     public Vector2Int FinishPosition;
 
+    public List<PortalIn> PortalsIn;
+    public List<PortalOut> PortalsOut;
 
-    public Maze(int width, int height, int x, int y, MazeAreaType type=MazeAreaType.Main) {
+
+    public Maze(int id, int width, int height, int x, int y, MazeAreaType type=MazeAreaType.Main) {
+        Id = id;
         Width = width;
         Height = height;
         X = x;
@@ -70,6 +91,20 @@ public class Maze
             default:
                 return "Main";
         }
+    }
+
+    public void SetPortalsIn(List<PortalIn> portals) {
+        PortalsIn = portals;
+    }
+
+    public void SetPortalsOut(List<PortalOut> portals)
+    {
+        foreach (PortalOut portal in portals)
+        {
+            Cells[portal.Position.x][portal.Position.y].Type = CellType.Portal;
+            Cells[portal.Position.x][portal.Position.y].DestinationMazeId = portal.ToMazeId;
+        }
+        PortalsOut = portals;
     }
 
 };

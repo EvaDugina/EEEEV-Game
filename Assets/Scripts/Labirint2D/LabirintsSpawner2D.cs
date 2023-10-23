@@ -30,7 +30,7 @@ public class LabirintsSpawner2D : MonoBehaviour
         setCellSize(maze.CellSize);
 
         // Создаём структуру с лабиринтом
-        GameObject labirintGameObject = Instantiate(LabirintPrefab, new Vector3(0, 0, 0),
+        GameObject labirintGameObject = Instantiate(LabirintPrefab, new Vector3(maze.X, maze.Y, 0),
                     Quaternion.identity, GameObject.Find("Level/Labirints").transform);
         labirintGameObject.name = maze.GetMazeStructureTypeAsText() + "Labirint";
 

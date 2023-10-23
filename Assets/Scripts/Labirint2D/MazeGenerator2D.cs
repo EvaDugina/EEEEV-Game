@@ -5,20 +5,32 @@ using Random = UnityEngine.Random;
 
 public class MazeGenerator2D
 {
+    private int Id;
+
     private MazeAreaType Type;
+
+    private int X;
+    private int Y;
 
     private int Width;
     private int Height;
+    
 
     private Vector2Int CellSize;
 
     private MazeCell[][] Cells;
 
-    public MazeGenerator2D(MazeAreaType type, int width, int height)
+    public MazeGenerator2D(int id, MazeAreaType type, int width, int height, Vector2Int position)
     {
+        Id = id;
         Type = type;
+
+        X = position.x;
+        Y = position.y;
+
         Width = width;
         Height = height;
+
         CellSize = new Vector2Int(1, 1);
 
         Cells = new MazeCell[Width][];
@@ -29,7 +41,7 @@ public class MazeGenerator2D
             for (int y = 0; y < Height; y++)
             {
 
-                Cells[x][y] = new MazeCell { X = x, Y = y/*, XReal = x * CellSize.x, YReal = y * CellSize.y*/ };
+                Cells[x][y] = new MazeCell(x, y);
             }
         }
     }
@@ -60,8 +72,7 @@ public class MazeGenerator2D
         // Показываем / отключаем колонны
         SetColumnTypes();
 
-        Vector2Int coordinares = GetMazeCoordinates(Type);
-        Maze maze = new(Width, Height, coordinares.x, coordinares.y, Type)
+        Maze maze = new(Id, Width, Height, X, Y, Type)
         {
             Cells = Cells,
             CellSize = CellSize,
@@ -75,29 +86,6 @@ public class MazeGenerator2D
 
         return maze;
     }
-
-
-    private Vector2Int GetMazeCoordinates(MazeAreaType type)
-    {
-        Vector2Int coordinates;
-        if (Type == MazeAreaType.Field)
-        {
-            coordinates = Vector2Int.zero;
-        }
-        else if (Type == MazeAreaType.Room)
-        {
-            coordinates = Vector2Int.zero;
-        }
-        else if (Type == MazeAreaType.Corridor)
-        {
-            coordinates = Vector2Int.zero;
-        }
-        else
-            coordinates = Vector2Int.zero;
-
-        return coordinates;
-    }
-
 
 
     /// <summary>

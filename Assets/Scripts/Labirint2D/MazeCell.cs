@@ -46,12 +46,29 @@ public class MazeCell
     public bool Visited = false;
 
     public int DistanceFromStart;
-    public ColumnType BottomLeftColumnType = ColumnType.Default;
-    public ColumnType TopRightColumnType = ColumnType.Default;
+    public ColumnType BottomLeftColumnType;
+    public ColumnType TopRightColumnType;
 
-    public CellType Type = CellType.Default;
-    public CellFloorType FloorType = CellFloorType.Empty;
-    public CellWallType WallType = CellWallType.Default;
+    public CellType Type;
+    public int DestinationMazeId;
+
+    public CellFloorType FloorType;
+    public CellWallType WallType;
+
+
+    public MazeCell(int x, int y) {
+        X = x;
+        Y = y;
+
+        BottomLeftColumnType = ColumnType.Default;
+        TopRightColumnType = ColumnType.Default;
+
+        Type = CellType.Default;
+        DestinationMazeId = -1;
+
+        FloorType = CellFloorType.Empty;
+        WallType = CellWallType.Default;
+}
 
 
     public void RemoveAllWalls()
