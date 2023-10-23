@@ -344,10 +344,6 @@ MonoBehaviour:
   LabirintForm: {fileID: 2512594272504812060}
   QuadFloor: {fileID: 6860269942391255453}
   CellsFolder: {fileID: 4276884926061642150}
-  LeftPoint: {fileID: 3188830114673712845}
-  RightPoint: {fileID: 5725270646754157915}
-  TopPoint: {fileID: 3027652096142305140}
-  BottomPoint: {fileID: 1587862728723128794}
 --- !u!1 &5725270646754157915
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,7 +474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8757937894095389729
 Transform:
   m_ObjectHideFlags: 0

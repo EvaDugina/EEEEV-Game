@@ -1,4 +1,23 @@
 ﻿
+public enum CellType
+{
+    Default,
+    Portal
+}
+
+public enum CellFloorType
+{
+    Empty,
+    Wheat
+}
+
+public enum CellWallType
+{
+    Default,
+    Invisible,
+    Red,
+    White
+}
 
 public enum ColumnType
 {
@@ -6,6 +25,7 @@ public enum ColumnType
     Crossroad,
     Solid,
 }
+
 
 public class MazeCell
 {
@@ -29,7 +49,9 @@ public class MazeCell
     public ColumnType BottomLeftColumnType = ColumnType.Default;
     public ColumnType TopRightColumnType = ColumnType.Default;
 
-    public MazeStructureType Type = MazeStructureType.Main;
+    public CellType Type = CellType.Default;
+    public CellFloorType FloorType = CellFloorType.Empty;
+    public CellWallType WallType = CellWallType.Default;
 
 
     public void RemoveAllWalls()

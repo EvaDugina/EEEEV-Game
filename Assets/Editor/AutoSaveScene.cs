@@ -14,7 +14,7 @@ public class AutoSaveScene
     private static DateTime lastSaveTime = DateTime.Now;
     private static TimeSpan updateInterval;
     
-    private static int minuteInterval = 10;
+    private static int minuteInterval = 15;
 
     static AutoSaveScene()
     {

@@ -25,23 +25,35 @@ public class LevelGenerator2D
     /// </summary>
     public Level GenerateLevel()
     {
-        Level level2D = new Level(CreateMaze(MazeStructureType.Main));
-        //level2D.SecondaryMazes.Append(GenerateMaze(MazeType.Field));
+        Level level2D = new Level(CreateMaze(MazeAreaType.Main));
+        level2D.SecondaryMazes.Add(CreateMaze(MazeAreaType.Field));
+        level2D.SecondaryMazes.Add(CreateMaze(MazeAreaType.Room));
+        level2D.SecondaryMazes.Add(CreateMaze(MazeAreaType.Corridor));
 
         return level2D;
 
     }
 
-    public Maze CreateMaze(MazeStructureType type)
+    public Maze CreateMaze(MazeAreaType type)
     {
 
         int width;
         int height;
 
-        if (type == MazeStructureType.Field)
+        if (type == MazeAreaType.Field)
+        {
+            width = MainMazeWidth / 4;
+            height = MainMazeHeight / 4;
+        }
+        else if (type == MazeAreaType.Room)
         {
             width = MainMazeWidth / 5;
             height = MainMazeHeight / 5;
+        }
+        else if (type == MazeAreaType.Corridor)
+        {
+            width = MainMazeWidth/2;
+            height = 2;
         }
         else {
             width = MainMazeWidth;

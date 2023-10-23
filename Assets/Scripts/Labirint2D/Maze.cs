@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-public enum MazeStructureType
+public enum MazeAreaType
 {
     Main,
     Field,
@@ -9,25 +9,19 @@ public enum MazeStructureType
     Corridor
 }
 
-public enum MazeFillType
-{
+public enum MazeDecorationType { 
     Empty,
-    Wheat,
-    BirchGrove
-}
-
-public enum MazeWallType {
-    Default,
-    Invisible,
-    Red,
-    White
+    WheatField,
+    BirchGrove,
+    Room
 }
 
 public struct MazeInfo
 {
-    public MazeStructureType StructureType;
-    public MazeFillType FillType;
-    public MazeWallType WallType;
+    public MazeAreaType StructureType;
+    public MazeDecorationType DecorationType;
+    //public MazeFillType FillType;
+    //public MazeWallType WallType;
 };
 
 public class Maze
@@ -48,29 +42,30 @@ public class Maze
     public Vector2Int FinishPosition;
 
 
-    public Maze(int width, int height, int x, int y, MazeStructureType type=MazeStructureType.Main) {
+    public Maze(int width, int height, int x, int y, MazeAreaType type=MazeAreaType.Main) {
         Width = width;
         Height = height;
         X = x;
         Y = y;
 
         Info.StructureType = type;
-        Info.FillType = MazeFillType.Empty;
-        Info.WallType = MazeWallType.Default;
+        Info.DecorationType = MazeDecorationType.Empty;
+        //Info.FillType = CellFillType.Empty;
+        //Info.WallType = CellWallType.Default;
 
-        if (Info.StructureType == MazeStructureType.Main) ZIndex = 0;
-        else ZIndex = 1;
+        if (Info.StructureType == MazeAreaType.Main) ZIndex = 0;
+        else ZIndex = -1;
     }
 
 
     public string GetMazeStructureTypeAsText() { 
         switch (Info.StructureType)
         {
-            case MazeStructureType.Field:
+            case MazeAreaType.Field:
                 return "Field";
-            case MazeStructureType.Room:
+            case MazeAreaType.Room:
                 return "Room";
-            case MazeStructureType.Corridor:
+            case MazeAreaType.Corridor:
                 return "Corridor";
             default:
                 return "Main";

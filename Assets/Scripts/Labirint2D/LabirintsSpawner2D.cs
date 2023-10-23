@@ -37,12 +37,12 @@ public class LabirintsSpawner2D : MonoBehaviour
         Labirint2D labirint = labirintGameObject.GetComponent<Labirint2D>();
         labirint.SetParams(maze.Width, maze.Height);
 
-        SpawnMaze(labirint.LabirintForm.transform, labirint.CellsFolder.transform, maze.Cells, maze.Info);
-        if (maze.Info.StructureType == MazeStructureType.Main)
+        SpawnMaze(labirint.LabirintForm.transform, labirint.CellsFolder.transform, maze.Cells, maze.Info, maze.ZIndex);
+        if (maze.Info.StructureType == MazeAreaType.Main)
             SpawnBoundaryLabirints(labirint.ConnectionPoints, maze);
     }
 
-    private void SpawnMaze(Transform labirintFormTransform, Transform cellsFolderTransform, MazeCell[][] mazeCells, MazeInfo info)
+    private void SpawnMaze(Transform labirintFormTransform, Transform cellsFolderTransform, MazeCell[][] mazeCells, MazeInfo info, int zIndex)
     {
 
         float cellWidth = CellPrefab.transform.localScale.x;
@@ -53,20 +53,15 @@ public class LabirintsSpawner2D : MonoBehaviour
             for (int y = 0; y < mazeCells[x].Length; y++)
             {
                 Cell2D cell = Instantiate(CellPrefab,
-                    labirintFormTransform.TransformPoint(new Vector3(mazeCells[x][y].X * cellWidth, mazeCells[x][y].Y * cellHeight, 0)),
+                    labirintFormTransform.TransformPoint(new Vector3(mazeCells[x][y].X * cellWidth, mazeCells[x][y].Y * cellHeight, zIndex)),
                     Quaternion.identity, cellsFolderTransform).GetComponent<Cell2D>();
 
                 cell.LeftWall.SetActive(mazeCells[x][y].LeftWall);
                 cell.BottomWall.SetActive(mazeCells[x][y].BottomWall);
 
-                if (mazeCells[x][y].Type == MazeStructureType.Field)
+                if (mazeCells[x][y].FloorType == CellFloorType.Wheat)
                 {
                     cell.Floor.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = cell.Field;
-                    cell.Floor.SetActive(mazeCells[x][y].Floor);
-                }
-                else if (mazeCells[x][y].Type == MazeStructureType.Room)
-                {
-
                     cell.Floor.SetActive(mazeCells[x][y].Floor);
                 }
 
@@ -93,7 +88,7 @@ public class LabirintsSpawner2D : MonoBehaviour
 
     private void setCellSize(Vector2Int cellSize)
     {
-        Vector2 cellScale = CellPrefab.transform.localScale;
+        Vector3 cellScale = CellPrefab.transform.localScale;
         cellScale.x = cellSize.x;
         cellScale.y = cellSize.y;
         //cellScale.z = CellSize.z;
@@ -164,6 +159,6 @@ public class LabirintsSpawner2D : MonoBehaviour
         Labirint2D labirint = labirintGameObject.GetComponent<Labirint2D>();
         labirint.SetParams(maze.Width, maze.Height);
 
-        SpawnMaze(labirint.LabirintForm.transform, labirint.CellsFolder.transform, MazeUtilities.GetMazePartBySide(maze.Cells, side), maze.Info);
+        SpawnMaze(labirint.LabirintForm.transform, labirint.CellsFolder.transform, MazeUtilities.GetMazePartBySide(maze.Cells, side), maze.Info, maze.ZIndex);
     }
 }
