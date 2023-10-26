@@ -7,8 +7,8 @@ using Random = UnityEngine.Random;
 
 public class LevelGenerator2D
 {
-    private int MainMazeWidth = 32;
-    private int MainMazeHeight = 32;
+    private int MainMazeWidth = 33;
+    private int MainMazeHeight = 33;
 
 
     private struct MazeGenerateInfo
@@ -44,11 +44,11 @@ public class LevelGenerator2D
 
         int id = 0;
         Level level2D = new Level(CreateMaze(ref id, MazeAreaType.Main));
-        level2D.SecondaryMazes.Add(CreateMaze(ref id, MazeAreaType.Field));
-        level2D.SecondaryMazes.Add(CreateMaze(ref id, MazeAreaType.Room));
-        level2D.SecondaryMazes.Add(CreateMaze(ref id, MazeAreaType.Corridor));
+        //level2D.SecondaryMazes.Add(CreateMaze(ref id, MazeAreaType.Field));
+        //level2D.SecondaryMazes.Add(CreateMaze(ref id, MazeAreaType.Room));
+        //level2D.SecondaryMazes.Add(CreateMaze(ref id, MazeAreaType.Corridor));
+        //SetPortals(level2D);
 
-        SetPortals(level2D);
         MazesInfo = new List<MazeGenerateInfo>();
 
         return level2D;

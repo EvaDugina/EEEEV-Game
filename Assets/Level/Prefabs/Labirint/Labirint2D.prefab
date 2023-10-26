@@ -306,6 +306,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2738615858467203341}
   - component: {fileID: 9076556914438794863}
+  - component: {fileID: 7819166994133291220}
   m_Layer: 0
   m_Name: Labirint2D
   m_TagString: Untagged
@@ -344,6 +345,25 @@ MonoBehaviour:
   LabirintForm: {fileID: 2512594272504812060}
   QuadFloor: {fileID: 6860269942391255453}
   CellsFolder: {fileID: 4276884926061642150}
+--- !u!114 &7819166994133291220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5328678157922544853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ba6e1e089c71da4fb1c780cdc2b0cb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Default: {fileID: 2100000, guid: 14f4dc55eda5b004db12bbee852ff43e, type: 2}
+  Field: {fileID: 2100000, guid: 771ab1a71ecbb98459b156d2461ee407, type: 2}
+  Room: {fileID: 2100000, guid: 0dcb3a18aa35fa74591c768f3a9c7ec5, type: 2}
+  Corridor: {fileID: 2100000, guid: 14f4dc55eda5b004db12bbee852ff43e, type: 2}
+  Portal: {fileID: 2100000, guid: ba346ddbfdd18854294a83a6223f2723, type: 2}
+  Start: {fileID: 2100000, guid: 58e4cd58bcbec1a44b6554cc0eca9d0b, type: 2}
+  Finish: {fileID: 2100000, guid: 6b592177e65e8f74e9b3eea6a6c1f356, type: 2}
 --- !u!1 &5725270646754157915
 GameObject:
   m_ObjectHideFlags: 0

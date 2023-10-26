@@ -1,4 +1,4 @@
-
+using System;
 using UnityEngine;
 
 
@@ -10,7 +10,7 @@ public struct LabirintSiblingConnectionPoints
     public Vector3 BottomPoint;
 };
 
-
+[RequireComponent(typeof(LabirintView))]
 public class Labirint2D : MonoBehaviour
 {
     public GameObject LabirintForm;
@@ -19,9 +19,14 @@ public class Labirint2D : MonoBehaviour
 
     public LabirintSiblingConnectionPoints ConnectionPoints;
 
+    [NonSerialized] public LabirintView LabirintView;
+    //public LabirintCellTypeMaterials CellTypeMaterials;
+
 
     private void Awake()
     {
+        LabirintView = GetComponent<LabirintView>();
+
         ConnectionPoints.LeftPoint = Vector3.zero;
         ConnectionPoints.RightPoint = Vector3.zero;
         ConnectionPoints.TopPoint = Vector3.zero;

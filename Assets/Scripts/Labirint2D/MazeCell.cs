@@ -2,7 +2,9 @@
 public enum CellType
 {
     Default,
-    Portal
+    Portal,
+    Start,
+    Finish
 }
 
 public enum CellFloorType

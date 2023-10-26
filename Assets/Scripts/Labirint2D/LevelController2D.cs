@@ -7,7 +7,7 @@ public class LevelController2D : MonoBehaviour
     [SerializeField] public GameObject Player;
     [SerializeField] public LabirintsSpawner2D LabirintsSpawner2D;
 
-    [Header("Размеры лабиринта - чётные целые числа")]
+    [Header("Размеры лабиринта - нечётные целые числа")]
     [SerializeField] public int Width;
     [SerializeField] public int Height;
 
@@ -26,6 +26,9 @@ public class LevelController2D : MonoBehaviour
 
         // Ставим на сцену
         LabirintsSpawner2D.SpawnLabirints(Level);
+
+        //Vector2Int startPosition = Level.MainMaze.StartPosition;
+        //Player.transform.position = new Vector3(0, 0, 0);
 
         Width /= 2;
         Height /= 2;

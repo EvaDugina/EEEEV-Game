@@ -14,7 +14,4 @@ public class Cell2D : MonoBehaviour
     public Material EnableColumnMaterial;
     public Material DisableColumnMaterial;
 
-    public Material Field;
-    public Material Room;
-
 }
