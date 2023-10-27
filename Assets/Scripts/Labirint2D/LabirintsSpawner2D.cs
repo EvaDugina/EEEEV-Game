@@ -37,7 +37,7 @@ public class LabirintsSpawner2D : MonoBehaviour
 
         Labirint2D labirint = labirintGameObject.GetComponent<Labirint2D>();
 
-        SpawnMaze(labirint.LabirintForm.transform, labirint.CellsFolder.transform, labirint.LabirintView, maze.Cells, maze.Info, maze.ZIndex);
+        SpawnMaze(labirint.LabirintForm.transform, labirint.CellsFolder.transform, labirint.LabirintView, maze);
     }
 
     private void SpawnBoundaryLabirints(Maze maze)
@@ -50,29 +50,30 @@ public class LabirintsSpawner2D : MonoBehaviour
     }
 
 
-    private void SpawnMaze(Transform labirintFormTransform, Transform cellsFolderTransform, LabirintView labirintView, MazeCell[][] mazeCells, MazeInfo info, int zIndex)
+    private void SpawnMaze(Transform labirintFormTransform, Transform cellsFolderTransform, LabirintView labirintView, Maze maze)
     {
 
         float cellWidth = CellPrefab.transform.localScale.x;
         float cellHeight = CellPrefab.transform.localScale.y;
 
-        for (int x = 0; x < mazeCells.Length; x++)
+        for (int x = 0; x < maze.Cells.Length; x++)
         {
-            for (int y = 0; y < mazeCells[x].Length; y++)
+            for (int y = 0; y < maze.Cells[x].Length; y++)
             {
                 Cell2D cell = Instantiate(CellPrefab,
-                    labirintFormTransform.TransformPoint(new Vector3(mazeCells[x][y].X * cellWidth, mazeCells[x][y].Y * cellHeight, zIndex)),
+                    labirintFormTransform.TransformPoint(new Vector3(maze.Cells[x][y].X * cellWidth, maze.Cells[x][y].Y * cellHeight, maze.ZIndex)),
                     Quaternion.identity, cellsFolderTransform).GetComponent<Cell2D>();
 
-                cell.LeftWall.SetActive(mazeCells[x][y].LeftWall);
-                cell.BottomWall.SetActive(mazeCells[x][y].BottomWall);
+                cell.LeftWall.SetActive(maze.Cells[x][y].LeftWall);
+                cell.BottomWall.SetActive(maze.Cells[x][y].BottomWall);
 
-                Material floorMaterial = GetFloorMaterial(mazeCells[x][y], labirintView);
+                // Выбираем материал пола
+                Material floorMaterial = GetFloorMaterial(maze.Cells[x][y], labirintView);
                 cell.Floor.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = floorMaterial;
-                cell.Floor.SetActive(mazeCells[x][y].Floor);
+                cell.Floor.SetActive(maze.Cells[x][y].Floor);
 
                 //Отключение/включение колонны, когда рядом нет соседей
-                ColumnType columnType = mazeCells[x][y].BottomLeftColumnType;
+                ColumnType columnType = maze.Cells[x][y].BottomLeftColumnType;
                 if (columnType == ColumnType.Default)
                     cell.Column.transform.GetChild(0).gameObject.SetActive(false);
                 else
@@ -86,7 +87,7 @@ public class LabirintsSpawner2D : MonoBehaviour
 
 
 
-                cell.TextDistance.GetComponent<TextMeshPro>().text = mazeCells[x][y].DistanceFromStart.ToString();
+                cell.TextDistance.GetComponent<TextMeshPro>().text = maze.Cells[x][y].DistanceFromStart.ToString();
 
             }
         }

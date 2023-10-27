@@ -1,53 +1,69 @@
 ﻿using System;
+using UnityEngine;
 
 public class MazeUtilities
 {
+
     public static MazeCell[][] GetMazePartBySide(MazeCell[][] cells, string side)
     {
         int koefCuttingSiblingMazes = 2;
 
+        int cloneWidth = cells.Length;
+        int cloneHeight = cells[0].Length;
+
+        MazeCell[][] clone = new MazeCell[cloneWidth][];
+        for (int x = 0; x < cloneWidth; x++)
+        {
+            clone[x] = new MazeCell[cloneHeight];
+            for (int y = 0; y < cloneHeight; y++)
+            {
+                clone[x][y] = (MazeCell)cells[x][y].Clone();
+            }
+        }
+
+
         if (side == "Left")
         {
-            int width = cells.Length / koefCuttingSiblingMazes;
+            int width = clone.Length / koefCuttingSiblingMazes;
             MazeCell[][] slicedMaze = new MazeCell[width][];
-            Array.Copy(cells, width, slicedMaze, 0, width);
+            Array.Copy(clone, width, slicedMaze, 0, width);
             return slicedMaze;
         }
         else if (side == "Right")
         {
-            int width = cells.Length / koefCuttingSiblingMazes;
+            int width = clone.Length / koefCuttingSiblingMazes;
             MazeCell[][] slicedMaze = new MazeCell[width][];
-            Array.Copy(cells, 0, slicedMaze, 0, width);
+            Array.Copy(clone, 0, slicedMaze, 0, width);
             return slicedMaze;
         }
         else if (side == "Top")
         {
-            int width = cells.Length;
+            int width = clone.Length;
             MazeCell[][] slicedMaze = new MazeCell[width][];
             for (int x = 0; x < width; x++)
             {
-                int height = cells[x].Length / koefCuttingSiblingMazes;
+                int height = clone[x].Length / koefCuttingSiblingMazes;
                 slicedMaze[x] = new MazeCell[height];
-                Array.Copy(cells[x], 0, slicedMaze[x], 0, height);
+                Array.Copy(clone[x], 0, slicedMaze[x], 0, height);
             }
             return slicedMaze;
         }
         else if (side == "Bottom")
         {
-            int width = cells.Length;
+            int width = clone.Length;
             MazeCell[][] slicedMaze = new MazeCell[width][];
             for (int x = 0; x < width; x++)
             {
-                int height = cells[x].Length / koefCuttingSiblingMazes;
+                int height = clone[x].Length / koefCuttingSiblingMazes;
                 slicedMaze[x] = new MazeCell[height];
-                Array.Copy(cells[x], height, slicedMaze[x], 0, height);
+                Array.Copy(clone[x], height, slicedMaze[x], 0, height);
             }
             return slicedMaze;
         }
 
         else
         {
-            return GetMazeTrianglesBySide(cells, side);
+            return GetMazeTrianglesBySide(clone, side);
         }
     }
 

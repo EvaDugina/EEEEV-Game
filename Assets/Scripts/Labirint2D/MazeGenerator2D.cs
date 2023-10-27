@@ -89,10 +89,13 @@ public class MazeGenerator2D
         Maze = new(Id.ToString(), Width, Height, X, Y, MazeType.Default, AreaType)
         {
             Cells = Cells,
-            CellSize = CellSize,
-            StartPosition = startPosition,
-            FinishPosition = finishPosition
+            CellSize = CellSize
         };
+
+        Maze.SetStartPosition(startPosition);
+        Maze.SetFinishPosition(finishPosition);
+
+
 
         GenerateBoundaryMazes();
 
@@ -140,10 +143,8 @@ public class MazeGenerator2D
         MazeCell[][] cells = MazeUtilities.GetMazePartBySide(Cells, side);
 
         // Убираем точки начала и конца с доковых лабиринтов
-        if (cells.Length > startPosition.x + 1 && cells[startPosition.x].Length > startPosition.y + 1)
-            cells[startPosition.x][startPosition.y].Type = CellType.Default;
-        if (cells.Length > finishPosition.x + 1 && cells[finishPosition.x].Length > finishPosition.y + 1)
-            cells[finishPosition.x][finishPosition.y].Type = CellType.Default;
+        cells[startPosition.x % cells.Length][startPosition.y % cells[0].Length].Type = CellType.Default;
+        cells[finishPosition.x % cells.Length][finishPosition.y % cells[0].Length].Type = CellType.Default;
 
         Vector2 mazePosition = GetBoundaryMazePosition(side, cells.Length, cells[0].Length);
         Maze boundaryMaze = new(id, cells.Length, cells[0].Length, mazePosition.x, mazePosition.y, MazeType.Boundary, AreaType)
@@ -248,8 +249,8 @@ public class MazeGenerator2D
 
         } while (stackVisited.Count > 0);
 
-        // Убираем лишние крайние стены
-        RemoveBoundaryWalls();
+        //// Убираем лишние крайние стены
+        //RemoveBoundaryWalls();
 
         // Добавляем проходы для расположения лабиринта на торе
         CreateBoundaryPasseges();
@@ -334,24 +335,24 @@ public class MazeGenerator2D
 
     }
 
-    private void RemoveBoundaryWalls()
-    {
-        /// Убираем лишние стены сверху
-        int yMax = Height - 1;
-        for (int x = 0; x < Width; x++)
-        {
-            //Cells[x][yMax].LeftWall = false;
-            Cells[x][yMax].Floor = false;
-        }
+    //private void RemoveBoundaryWalls()
+    //{
+    //    /// Убираем лишние стены сверху
+    //    int yMax = Height - 1;
+    //    for (int x = 0; x < Width; x++)
+    //    {
+    //        //Cells[x][yMax].LeftWall = false;
+    //        Cells[x][yMax].Floor = false;
+    //    }
 
-        /// Убираем лишние стены справа
-        int xMax = Width - 1;
-        for (int y = 0; y < Height; y++)
-        {
-            //Cells[xMax][y].BottomWall = false;
-            Cells[xMax][y].Floor = false;
-        }
-    }
+    //    /// Убираем лишние стены справа
+    //    int xMax = Width - 1;
+    //    for (int y = 0; y < Height; y++)
+    //    {
+    //        //Cells[xMax][y].BottomWall = false;
+    //        Cells[xMax][y].Floor = false;
+    //    }
+    //}
 
     private void RemoveWall(MazeCell a, MazeCell b)
     {
@@ -432,8 +433,6 @@ public class MazeGenerator2D
         if (AreaType != MazeAreaType.Corridor) startPosition = new Vector2Int(Width / 2, Height / 2);
         else startPosition = Vector2Int.zero;
 
-        Cells[startPosition.x][startPosition.y].Type = CellType.Start;
-
         return startPosition;
     }
     private Vector2Int PlaceMazeExit()
@@ -442,13 +441,13 @@ public class MazeGenerator2D
 
         for (int x = 0; x < Width; x++)
         {
-            if (Cells[x][Height - 2].DistanceFromStart > finish.DistanceFromStart) finish = Cells[x][Height - 2];
+            if (Cells[x][Height - 1].DistanceFromStart > finish.DistanceFromStart) finish = Cells[x][Height - 1];
             if (Cells[x][0].DistanceFromStart > finish.DistanceFromStart) finish = Cells[x][0];
         }
 
         for (int y = 0; y < Height; y++)
         {
-            if (Cells[Width - 2][y].DistanceFromStart > finish.DistanceFromStart) finish = Cells[Width - 2][y];
+            if (Cells[Width - 1][y].DistanceFromStart > finish.DistanceFromStart) finish = Cells[Width - 1][y];
             if (Cells[0][y].DistanceFromStart > finish.DistanceFromStart) finish = Cells[0][y];
         }
 
@@ -456,8 +455,6 @@ public class MazeGenerator2D
         else if (finish.Y == 0) finish.BottomWall = false;
         else if (finish.X == Width - 2) Cells[finish.X + 1][finish.Y].LeftWall = false;
         else if (finish.Y == Height - 2) Cells[finish.X][finish.Y + 1].BottomWall = false;
-
-        Cells[finish.X][finish.Y].Type = CellType.Finish;
 
         return new Vector2Int(finish.X, finish.Y);
     }

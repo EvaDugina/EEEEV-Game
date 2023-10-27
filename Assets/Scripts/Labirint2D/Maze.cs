@@ -59,8 +59,8 @@ public class Maze
 
     public MazeInfo Info;
 
-    public Vector2Int StartPosition;
-    public Vector2Int FinishPosition;
+    public Vector2Int StartPosition { get; set; }
+    public Vector2Int FinishPosition { get; set; }
 
     public List<PortalIn> PortalsIn;
     public List<PortalOut> PortalsOut;
@@ -101,6 +101,17 @@ public class Maze
             default:
                 return "Main";
         }
+    }
+
+    public void SetStartPosition(Vector2Int start) {
+        FinishPosition = start;
+        Cells[start.x][start.y].Type = CellType.Start;
+    }
+
+    public void SetFinishPosition(Vector2Int finish)
+    {
+        FinishPosition = finish;
+        Cells[finish.x][finish.y].Type = CellType.Finish;
     }
 
     public void SetPortalsIn(List<PortalIn> portals) {

@@ -53,6 +53,8 @@ public class AutoSaveScene
     /// 
     private static void SaveScene()
     {
+        if (!EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isPlaying) return;
+
         Debug.Log("Auto saving scene: " + EditorSceneManager.GetActiveScene().name);
  
         EnsureAutoSavePathExists();

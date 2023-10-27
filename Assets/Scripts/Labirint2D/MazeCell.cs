@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 public enum CellType
 {
     Default,
@@ -28,8 +30,7 @@ public enum ColumnType
     Solid,
 }
 
-
-public class MazeCell
+public class MazeCell : ICloneable
 {
 
     public int X;
@@ -58,7 +59,8 @@ public class MazeCell
     public CellWallType WallType;
 
 
-    public MazeCell(int x, int y) {
+    public MazeCell(int x, int y)
+    {
         X = x;
         Y = y;
 
@@ -70,7 +72,9 @@ public class MazeCell
 
         FloorType = CellFloorType.Empty;
         WallType = CellWallType.Default;
-}
+    }
+
+    public object Clone() => MemberwiseClone();
 
 
     public void RemoveAllWalls()
