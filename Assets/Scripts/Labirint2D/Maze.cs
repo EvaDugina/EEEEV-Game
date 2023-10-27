@@ -1,8 +1,11 @@
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 
+public enum MazeType { 
+    Default,
+    Boundary
+}
 public enum MazeAreaType
 {
     Main,
@@ -20,7 +23,7 @@ public enum MazeDecorationType {
 
 public struct MazeInfo
 {
-    public MazeAreaType StructureType;
+    public MazeAreaType AreaType;
     public MazeDecorationType DecorationType;
     //public MazeFillType FillType;
     //public MazeWallType WallType;
@@ -40,15 +43,16 @@ public struct PortalOut
 
 public class Maze
 {
-    public int Id;
+    public string Id;
+    public MazeType Type;
 
     public MazeCell[][] Cells;
 
     public int Width;
     public int Height;
 
-    public int X;
-    public int Y;
+    public float X;
+    public float Y;
     public int ZIndex;
 
     public Vector2Int CellSize = Vector2Int.one;
@@ -61,26 +65,32 @@ public class Maze
     public List<PortalIn> PortalsIn;
     public List<PortalOut> PortalsOut;
 
+    public List<Maze> BoundaryMazes;
 
-    public Maze(int id, int width, int height, int x, int y, MazeAreaType type=MazeAreaType.Main) {
+
+    public Maze(string id, int width, int height, float x, float y, MazeType type=MazeType.Default, MazeAreaType areaType=MazeAreaType.Main) {
         Id = id;
         Width = width;
         Height = height;
         X = x;
         Y = y;
 
-        Info.StructureType = type;
+        Type = type;
+
+        Info.AreaType = areaType;
         Info.DecorationType = MazeDecorationType.Empty;
         //Info.FillType = CellFillType.Empty;
         //Info.WallType = CellWallType.Default;
 
-        if (Info.StructureType == MazeAreaType.Main) ZIndex = 0;
+        if (Info.AreaType == MazeAreaType.Main) ZIndex = 0;
         else ZIndex = -1;
+
+        BoundaryMazes = new List<Maze>();
     }
 
 
     public string GetMazeStructureTypeAsText() { 
-        switch (Info.StructureType)
+        switch (Info.AreaType)
         {
             case MazeAreaType.Field:
                 return "Field";

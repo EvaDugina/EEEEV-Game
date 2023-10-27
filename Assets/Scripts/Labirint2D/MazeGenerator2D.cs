@@ -1,35 +1,43 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
 
 public class MazeGenerator2D
 {
     private int Id;
 
-    private MazeAreaType Type;
+    private MazeAreaType AreaType;
 
     private int X;
     private int Y;
 
     private int Width;
     private int Height;
-    
+
+    private Vector2Int startPosition;
+    private Vector2Int finishPosition;
+
+
 
     private Vector2Int CellSize;
 
     private MazeCell[][] Cells;
 
+    Maze Maze;
+
     public MazeGenerator2D(int id, MazeAreaType type, int width, int height, Vector2Int position)
     {
         Id = id;
-        Type = type;
+        AreaType = type;
 
         X = position.x;
         Y = position.y;
 
-        Width = width;
-        Height = height;
+        Width = width+1;
+        Height = height+1;
 
         CellSize = new Vector2Int(1, 1);
 
@@ -60,23 +68,25 @@ public class MazeGenerator2D
     public Maze Generate()
     {
 
-        Vector2Int startPosition = PlaceMazeStart();
+        startPosition = PlaceMazeStart();
 
-        if (Type == MazeAreaType.Field)
+        if (AreaType == MazeAreaType.Field)
             RemoveWallsInFieldMaze();
-        else if (Type == MazeAreaType.Room)
+        else if (AreaType == MazeAreaType.Room)
             RemoveWallsInRoomMaze(startPosition);
-        else if (Type == MazeAreaType.Corridor)
+        else if (AreaType == MazeAreaType.Corridor)
             RemoveWallsInCorridorMaze(startPosition);
         else
             RemoveWallsInMainMaze(startPosition);
 
-        Vector2Int finishPosition = PlaceMazeExit();
+        RemoveBoundaryCells();
+
+        finishPosition = PlaceMazeExit();
 
         // Показываем / отключаем колонны
         SetColumnTypes();
 
-        Maze maze = new(Id, Width, Height, X, Y, Type)
+        Maze = new(Id.ToString(), Width, Height, X, Y, MazeType.Default, AreaType)
         {
             Cells = Cells,
             CellSize = CellSize,
@@ -84,12 +94,90 @@ public class MazeGenerator2D
             FinishPosition = finishPosition
         };
 
+        GenerateBoundaryMazes();
+
         //Назначаем клеткам дистанции до старта
         //SetDistances(maze);
 
         Cells = null;
 
-        return maze;
+        return Maze;
+    }
+
+    private void RemoveBoundaryCells()
+    {
+        int newWidth = Width - 1;
+        int newHeight = Height - 1;
+        MazeCell[][] newMaze = new MazeCell[newWidth][];
+        Array.Copy(Cells, newMaze, newWidth);
+        for (int x = 0; x < newWidth; x++)
+        {
+            newMaze[x] = new MazeCell[newHeight];
+            Array.Copy(Cells[x], newMaze[x], newHeight);
+        }
+        Cells = newMaze;
+        Width -= 1;
+        Height -= 1;
+    }
+
+    private void GenerateBoundaryMazes()
+    {
+        GenerateBoundaryMaze("Left");
+        GenerateBoundaryMaze("Right");
+        GenerateBoundaryMaze("Top");
+        GenerateBoundaryMaze("Bottom");
+
+        GenerateBoundaryMaze("TopLeft");
+        GenerateBoundaryMaze("TopRight");
+        GenerateBoundaryMaze("BottomLeft");
+        GenerateBoundaryMaze("BottomRight");
+
+    }
+
+    private void GenerateBoundaryMaze(string side)
+    {
+        string id = Id.ToString() + "_" + side;
+        MazeCell[][] cells = MazeUtilities.GetMazePartBySide(Cells, side);
+
+        // Убираем точки начала и конца с доковых лабиринтов
+        if (cells.Length > startPosition.x + 1 && cells[startPosition.x].Length > startPosition.y + 1)
+            cells[startPosition.x][startPosition.y].Type = CellType.Default;
+        if (cells.Length > finishPosition.x + 1 && cells[finishPosition.x].Length > finishPosition.y + 1)
+            cells[finishPosition.x][finishPosition.y].Type = CellType.Default;
+
+        Vector2 mazePosition = GetBoundaryMazePosition(side, cells.Length, cells[0].Length);
+        Maze boundaryMaze = new(id, cells.Length, cells[0].Length, mazePosition.x, mazePosition.y, MazeType.Boundary, AreaType)
+        {
+            Cells = cells,
+            CellSize = CellSize
+        };
+
+        Maze.BoundaryMazes.Add(boundaryMaze);
+    }
+
+
+    private Vector2 GetBoundaryMazePosition(string side, int width, int height)
+    {
+        if (side == "Left")
+            return new Vector2(-Width, 0);
+        else if (side == "Right")
+            return new Vector2(Width, 0);
+        else if (side == "Top")
+            return new Vector2(0, Height);
+        else if (side == "Bottom")
+            return new Vector2(0, -Height);
+        else
+        {
+            if (side == "TopLeft")
+                return GetBoundaryMazePosition("Top", width, height) + GetBoundaryMazePosition("Left", width, height);
+            else if (side == "TopRight")
+                return GetBoundaryMazePosition("Top", width, height) + GetBoundaryMazePosition("Right", width, height);
+            else if (side == "BottomLeft")
+                return GetBoundaryMazePosition("Bottom", width, height) + GetBoundaryMazePosition("Left", width, height);
+            else
+                return GetBoundaryMazePosition("Bottom", width, height) + GetBoundaryMazePosition("Right", width, height);
+        }
+
     }
 
 
@@ -338,9 +426,10 @@ public class MazeGenerator2D
         }
     }
 
-    private Vector2Int PlaceMazeStart() {
+    private Vector2Int PlaceMazeStart()
+    {
         Vector2Int startPosition;
-        if (Type != MazeAreaType.Corridor) startPosition = new Vector2Int(Width / 2, Height / 2);
+        if (AreaType != MazeAreaType.Corridor) startPosition = new Vector2Int(Width / 2, Height / 2);
         else startPosition = Vector2Int.zero;
 
         Cells[startPosition.x][startPosition.y].Type = CellType.Start;

@@ -17,6 +17,7 @@ public class LabirintsSpawner2D : MonoBehaviour
     public void SpawnLabirints(Level level)
     {
         SpawnLabirint(level.MainMaze);
+        SpawnBoundaryLabirints(level.MainMaze);
 
         foreach (Maze maze in level.SecondaryMazes)
         {
@@ -32,15 +33,22 @@ public class LabirintsSpawner2D : MonoBehaviour
         // Создаём структуру с лабиринтом
         GameObject labirintGameObject = Instantiate(LabirintPrefab, new Vector3(maze.X, maze.Y, 0),
                     Quaternion.identity, GameObject.Find("Level/Labirints").transform);
-        labirintGameObject.name = maze.GetMazeStructureTypeAsText() + "Labirint";
+        labirintGameObject.name = maze.Id + "_" + maze.GetMazeStructureTypeAsText() + "Labirint";
 
         Labirint2D labirint = labirintGameObject.GetComponent<Labirint2D>();
-        labirint.SetParams(maze.Width, maze.Height);
 
         SpawnMaze(labirint.LabirintForm.transform, labirint.CellsFolder.transform, labirint.LabirintView, maze.Cells, maze.Info, maze.ZIndex);
-        if (maze.Info.StructureType == MazeAreaType.Main)
-            SpawnBoundaryLabirints(labirint.ConnectionPoints, maze);
     }
+
+    private void SpawnBoundaryLabirints(Maze maze)
+    {
+        foreach (Maze boundaryMaze in maze.BoundaryMazes)
+        {
+            SpawnLabirint(boundaryMaze);
+        }
+
+    }
+
 
     private void SpawnMaze(Transform labirintFormTransform, Transform cellsFolderTransform, LabirintView labirintView, MazeCell[][] mazeCells, MazeInfo info, int zIndex)
     {
@@ -109,70 +117,4 @@ public class LabirintsSpawner2D : MonoBehaviour
         }
     }
 
-    //private void SpawnMainLabirint() {
-    //    // Создаём структуру с лабиринтом
-    //    GameObject labirintGameObject = Instantiate(LabirintPrefab, new Vector3(0, 0, 0),
-    //                Quaternion.identity, GameObject.Find("Level/Labirints").transform);
-    //    labirintGameObject.name = "MainLabirint";
-
-    //    Labirint2D mainLabirint = labirintGameObject.GetComponent<Labirint2D>();
-    //    mainLabirint.SetParams(Width, Height);
-
-    //    SpawnMaze(mainLabirint.LabirintForm.transform, mainLabirint.CellsFolder.transform, Level.MainMaze.Cells, Level.MainMaze.Info);
-    //    SpawnBoundaryLabirints(mainLabirint.ConnectionPoints);
-    //}
-
-
-    private void SpawnBoundaryLabirints(LabirintSiblingConnectionPoints connectionPoints, Maze maze)
-    {
-        SpawnBoundaryLabirint(connectionPoints, maze, "Left");
-        SpawnBoundaryLabirint(connectionPoints, maze, "Right");
-        SpawnBoundaryLabirint(connectionPoints, maze, "Top");
-        SpawnBoundaryLabirint(connectionPoints, maze, "Bottom");
-
-        SpawnBoundaryLabirint(connectionPoints, maze, "TopLeft");
-        SpawnBoundaryLabirint(connectionPoints, maze, "TopRight");
-        SpawnBoundaryLabirint(connectionPoints, maze, "BottomLeft");
-        SpawnBoundaryLabirint(connectionPoints, maze, "BottomRight");
-
-    }
-
-    private void SpawnBoundaryLabirint(LabirintSiblingConnectionPoints connectionPoints, Maze maze, string side)
-    {
-        GameObject labirintGameObject;
-        if (side == "Left")
-            labirintGameObject = Instantiate(LabirintPrefab, connectionPoints.LeftPoint,
-                                Quaternion.identity, GameObject.Find("Level/Labirints").transform);
-        else if (side == "Right")
-            labirintGameObject = Instantiate(LabirintPrefab, connectionPoints.RightPoint,
-                                Quaternion.identity, GameObject.Find("Level/Labirints").transform);
-        else if (side == "Top")
-            labirintGameObject = Instantiate(LabirintPrefab, connectionPoints.TopPoint,
-                                Quaternion.identity, GameObject.Find("Level/Labirints").transform);
-        else if (side == "Bottom")
-            labirintGameObject = Instantiate(LabirintPrefab, connectionPoints.BottomPoint,
-                                Quaternion.identity, GameObject.Find("Level/Labirints").transform);
-        else
-        {
-            if (side == "TopLeft")
-                labirintGameObject = Instantiate(LabirintPrefab, connectionPoints.LeftPoint + connectionPoints.TopPoint,
-                                    Quaternion.identity, GameObject.Find("Level/Labirints").transform);
-            else if (side == "TopRight")
-                labirintGameObject = Instantiate(LabirintPrefab, connectionPoints.RightPoint + connectionPoints.TopPoint,
-                                    Quaternion.identity, GameObject.Find("Level/Labirints").transform);
-            else if (side == "BottomLeft")
-                labirintGameObject = Instantiate(LabirintPrefab, connectionPoints.LeftPoint + connectionPoints.BottomPoint,
-                                    Quaternion.identity, GameObject.Find("Level/Labirints").transform);
-            else
-                labirintGameObject = Instantiate(LabirintPrefab, connectionPoints.RightPoint + connectionPoints.BottomPoint,
-                                    Quaternion.identity, GameObject.Find("Level/Labirints").transform);
-        }
-
-        labirintGameObject.name = side + "MainLabirint";
-
-        Labirint2D labirint = labirintGameObject.GetComponent<Labirint2D>();
-        labirint.SetParams(maze.Width, maze.Height);
-
-        SpawnMaze(labirint.LabirintForm.transform, labirint.CellsFolder.transform, labirint.LabirintView, MazeUtilities.GetMazePartBySide(maze.Cells, side), maze.Info, maze.ZIndex);
-    }
 }

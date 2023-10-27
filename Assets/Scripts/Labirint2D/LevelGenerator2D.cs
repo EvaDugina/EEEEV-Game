@@ -7,8 +7,8 @@ using Random = UnityEngine.Random;
 
 public class LevelGenerator2D
 {
-    private int MainMazeWidth = 33;
-    private int MainMazeHeight = 33;
+    private int MainMazeWidth;
+    private int MainMazeHeight;
 
 
     private struct MazeGenerateInfo
