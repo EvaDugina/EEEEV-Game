@@ -3,7 +3,22 @@ using UnityEngine;
 
 public class MazeUtilities
 {
+    public static MazeCell[][] DefineMaze(int width, int height)
+    {
+        MazeCell[][] cells = new MazeCell[width][];
 
+        for (int x = 0; x < width; x++)
+        {
+            cells[x] = new MazeCell[height];
+            for (int y = 0; y < height; y++)
+            {
+
+                cells[x][y] = new MazeCell(x, y);
+            }
+        }
+
+        return cells;
+    }
     public static MazeCell[][] GetMazePartBySide(MazeCell[][] cells, string side)
     {
         int koefCuttingSiblingMazes = 2;

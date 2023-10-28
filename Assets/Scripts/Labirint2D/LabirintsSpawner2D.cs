@@ -33,7 +33,7 @@ public class LabirintsSpawner2D : MonoBehaviour
         // Создаём структуру с лабиринтом
         GameObject labirintGameObject = Instantiate(LabirintPrefab, new Vector3(maze.X, maze.Y, 0),
                     Quaternion.identity, GameObject.Find("Level/Labirints").transform);
-        labirintGameObject.name = maze.Id + "_" + maze.GetMazeStructureTypeAsText() + "Labirint";
+        labirintGameObject.name = maze.Name + "_" + maze.GetMazeStructureTypeAsText() + "Labirint";
 
         Labirint2D labirint = labirintGameObject.GetComponent<Labirint2D>();
 

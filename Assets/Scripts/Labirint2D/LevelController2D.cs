@@ -8,7 +8,11 @@ public class LevelController2D : MonoBehaviour
     [SerializeField] public LabirintsSpawner2D LabirintsSpawner2D;
 
     [Header("Размеры лабиринта - нечётные целые числа")]
+
+    [Range(2, 100)]
     [SerializeField] public int Width = 33;
+
+    [Range(2, 100)]
     [SerializeField] public int Height = 33;
 
     [NonSerialized] public Level Level;

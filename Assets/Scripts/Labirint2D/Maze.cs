@@ -30,20 +30,20 @@ public struct MazeInfo
 };
 public struct PortalIn
 {
-    public int FromMazeId;
+    public string FromMazeName;
     public Vector2Int Position;
 };
 
 public struct PortalOut
 {
-    public int ToMazeId;
+    public string ToMazeName;
     public Vector2Int Position;
 };
 
 
 public class Maze
 {
-    public string Id;
+    public string Name;
     public MazeType Type;
 
     public MazeCell[][] Cells;
@@ -68,8 +68,8 @@ public class Maze
     public List<Maze> BoundaryMazes;
 
 
-    public Maze(string id, int width, int height, float x, float y, MazeType type=MazeType.Default, MazeAreaType areaType=MazeAreaType.Main) {
-        Id = id;
+    public Maze(string name, int width, int height, float x, float y, MazeType type=MazeType.Default, MazeAreaType areaType=MazeAreaType.Main) {
+        Name = name;
         Width = width;
         Height = height;
         X = x;
@@ -84,6 +84,9 @@ public class Maze
 
         if (Info.AreaType == MazeAreaType.Main) ZIndex = 0;
         else ZIndex = -1;
+
+        StartPosition = -Vector2Int.one;
+        FinishPosition = -Vector2Int.one;
 
         BoundaryMazes = new List<Maze>();
     }
@@ -104,7 +107,8 @@ public class Maze
     }
 
     public void SetStartPosition(Vector2Int start) {
-        FinishPosition = start;
+        StartPosition = start;
+        //Debug.Log(GetMazeStructureTypeAsText() + " " + Width + ", " + Height + ": " + start);
         Cells[start.x][start.y].Type = CellType.Start;
     }
 
@@ -123,7 +127,7 @@ public class Maze
         foreach (PortalOut portal in portals)
         {
             Cells[portal.Position.x][portal.Position.y].Type = CellType.Portal;
-            Cells[portal.Position.x][portal.Position.y].DestinationMazeId = portal.ToMazeId;
+            Cells[portal.Position.x][portal.Position.y].DestinationMazeName = portal.ToMazeName;
         }
         PortalsOut = portals;
     }

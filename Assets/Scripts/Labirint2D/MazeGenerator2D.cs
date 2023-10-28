@@ -20,8 +20,6 @@ public class MazeGenerator2D
     private Vector2Int startPosition;
     private Vector2Int finishPosition;
 
-
-
     private Vector2Int CellSize;
 
     private MazeCell[][] Cells;
@@ -40,18 +38,15 @@ public class MazeGenerator2D
         Height = height+1;
 
         CellSize = new Vector2Int(1, 1);
+        Cells = MazeUtilities.DefineMaze(Width, Height);
 
-        Cells = new MazeCell[Width][];
+    }
 
-        for (int x = 0; x < Width; x++)
-        {
-            Cells[x] = new MazeCell[Height];
-            for (int y = 0; y < Height; y++)
-            {
-
-                Cells[x][y] = new MazeCell(x, y);
-            }
-        }
+    public static Vector2Int GenerateMazeRandomSize(int k)
+    {
+        int width = Random.Range(2 * (k % 50), 100);
+        int height = Random.Range(100 - 2 * (k % 50), 100);
+        return new Vector2Int(width, height);
     }
 
 
@@ -86,7 +81,7 @@ public class MazeGenerator2D
         // Показываем / отключаем колонны
         SetColumnTypes();
 
-        Maze = new(Id.ToString(), Width, Height, X, Y, MazeType.Default, AreaType)
+        Maze = new(Id.ToString(), Width, Height, X*CellSize.x, Y * CellSize.y, MazeType.Default, AreaType)
         {
             Cells = Cells,
             CellSize = CellSize
@@ -95,9 +90,8 @@ public class MazeGenerator2D
         Maze.SetStartPosition(startPosition);
         Maze.SetFinishPosition(finishPosition);
 
-
-
-        GenerateBoundaryMazes();
+        if (AreaType != MazeAreaType.Corridor && AreaType != MazeAreaType.Room)
+            GenerateBoundaryMazes();
 
         //Назначаем клеткам дистанции до старта
         //SetDistances(maze);
@@ -142,7 +136,7 @@ public class MazeGenerator2D
         string id = Id.ToString() + "_" + side;
         MazeCell[][] cells = MazeUtilities.GetMazePartBySide(Cells, side);
 
-        // Убираем точки начала и конца с доковых лабиринтов
+        // Убираем точки начала и конца с граничных лабиринтов
         cells[startPosition.x % cells.Length][startPosition.y % cells[0].Length].Type = CellType.Default;
         cells[finishPosition.x % cells.Length][finishPosition.y % cells[0].Length].Type = CellType.Default;
 
@@ -430,7 +424,7 @@ public class MazeGenerator2D
     private Vector2Int PlaceMazeStart()
     {
         Vector2Int startPosition;
-        if (AreaType != MazeAreaType.Corridor) startPosition = new Vector2Int(Width / 2, Height / 2);
+        if (AreaType != MazeAreaType.Corridor) startPosition = new Vector2Int((Width-1) / 2, (Height-1) / 2);
         else startPosition = Vector2Int.zero;
 
         return startPosition;

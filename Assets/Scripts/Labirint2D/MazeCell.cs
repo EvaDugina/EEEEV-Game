@@ -53,7 +53,7 @@ public class MazeCell : ICloneable
     public ColumnType TopRightColumnType;
 
     public CellType Type;
-    public int DestinationMazeId;
+    public string DestinationMazeName;
 
     public CellFloorType FloorType;
     public CellWallType WallType;
@@ -68,7 +68,7 @@ public class MazeCell : ICloneable
         TopRightColumnType = ColumnType.Default;
 
         Type = CellType.Default;
-        DestinationMazeId = -1;
+        DestinationMazeName = "";
 
         FloorType = CellFloorType.Empty;
         WallType = CellWallType.Default;

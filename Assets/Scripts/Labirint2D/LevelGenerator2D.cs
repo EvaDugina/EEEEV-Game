@@ -1,7 +1,5 @@
 ﻿
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -10,6 +8,7 @@ public class LevelGenerator2D
     private int MainMazeWidth;
     private int MainMazeHeight;
 
+    public bool GenerateSecondaryMazes = false; 
 
     private struct MazeGenerateInfo
     {
@@ -44,10 +43,14 @@ public class LevelGenerator2D
 
         int id = 0;
         Level level2D = new Level(CreateMaze(ref id, MazeAreaType.Main));
-        //level2D.SecondaryMazes.Add(CreateMaze(ref id, MazeAreaType.Field));
-        //level2D.SecondaryMazes.Add(CreateMaze(ref id, MazeAreaType.Room));
-        //level2D.SecondaryMazes.Add(CreateMaze(ref id, MazeAreaType.Corridor));
-        //SetPortals(level2D);
+
+        if (GenerateSecondaryMazes)
+        {
+            //level2D.SecondaryMazes.Add(CreateMaze(ref id, MazeAreaType.Field));
+            //level2D.SecondaryMazes.Add(CreateMaze(ref id, MazeAreaType.Room));
+            level2D.SecondaryMazes.Add(CreateMaze(ref id, MazeAreaType.Corridor));
+            SetPortals(level2D);
+        }
 
         MazesInfo = new List<MazeGenerateInfo>();
 
@@ -174,7 +177,7 @@ public class LevelGenerator2D
             {
                 PortalOut portal = new PortalOut()
                 {
-                    ToMazeId = id2,
+                    ToMazeName = id2.ToString(),
                     Position = new Vector2Int(position.x, position.y)
                 };
                 MazesInfo[id1].PortalsOut.Add(portal);
@@ -183,7 +186,7 @@ public class LevelGenerator2D
             {
                 PortalIn portal = new PortalIn()
                 {
-                    FromMazeId = id2,
+                    FromMazeName = id2.ToString(),
                     Position = new Vector2Int(position.x, position.y)
                 };
                 MazesInfo[id1].PortalsIn.Add(portal);
