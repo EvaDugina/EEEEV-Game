@@ -3,17 +3,16 @@ using UnityEngine;
 
 namespace Assets.Editor.LabirintTests
 {
-    internal class LevelGeneratorTests
+    public class LevelGeneratorTests
     {
-        public int CountChecks = 50;
 
         [Test]
         public void _0_Exist_MainLabirint()
         {
             bool flag = true;
-            for (int i = 0; i < CountChecks; i++)
+
+            foreach (Vector2Int size in MazeGeneratorTests.GetTestMazeSizeVariations(MazeAreaType.Main))
             {
-                Vector2Int size = MazeGenerator2D.GenerateMazeRandomSize(i);
 
                 LevelGenerator2D levelGenerator = new(size.x, size.y);
                 Level level = levelGenerator.GenerateLevel();
@@ -22,8 +21,8 @@ namespace Assets.Editor.LabirintTests
                     flag = false;
                     break;
                 }
-
             }
+
 
             Assert.IsTrue(flag);
         }
@@ -32,9 +31,8 @@ namespace Assets.Editor.LabirintTests
         public void _1_Exist_SecondaryLabirints()
         {
             bool flag = true;
-            for (int i = 1; i < CountChecks; i++)
+            foreach (Vector2Int size in MazeGeneratorTests.GetTestMazeSizeVariations(MazeAreaType.Main))
             {
-                Vector2Int size = MazeGenerator2D.GenerateMazeRandomSize(i);
 
                 LevelGenerator2D levelGenerator = new(size.x, size.y);
                 levelGenerator.GenerateSecondaryMazes = true;
@@ -55,9 +53,8 @@ namespace Assets.Editor.LabirintTests
         {
 
             bool flag = true;
-            for (int i = 0; i < CountChecks; i++)
+            foreach (Vector2Int size in MazeGeneratorTests.GetTestMazeSizeVariations(MazeAreaType.Main))
             {
-                Vector2Int size = MazeGenerator2D.GenerateMazeRandomSize(i);
 
                 LevelGenerator2D levelGenerator = new(size.x, size.y);
                 levelGenerator.GenerateSecondaryMazes = true;
@@ -98,11 +95,11 @@ namespace Assets.Editor.LabirintTests
         {
 
             bool flag = true;
-            for (int i = 0; i < CountChecks; i++)
+            foreach (Vector2Int size in MazeGeneratorTests.GetTestMazeSizeVariations(MazeAreaType.Main))
             {
-                Vector2Int size = MazeGenerator2D.GenerateMazeRandomSize(i);
 
                 LevelGenerator2D levelGenerator = new(size.x, size.y);
+
                 levelGenerator.GenerateSecondaryMazes = true;
 
                 Level level = levelGenerator.GenerateLevel();
@@ -131,7 +128,6 @@ namespace Assets.Editor.LabirintTests
                     if (!flag)
                         break;
                 }
-
             }
 
             Assert.IsTrue(flag);

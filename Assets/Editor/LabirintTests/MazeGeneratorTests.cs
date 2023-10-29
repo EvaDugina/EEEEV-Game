@@ -1,13 +1,49 @@
 
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.AccessControl;
 using UnityEngine;
 
 namespace Assets.Editor.LabirintTests
 {
     public class MazeGeneratorTests
     {
-        public static int CountChecks = 50;
+        private static int MinWidth = 2;
+        private static int MinHeight = 2;
+        private static int MaxWidth = 100;
+        private static int MaxHeight = 100;
+
+        private static int MinMainWidth = 21;
+        private static int MinMainHeight = 21;
+        private static int MaxMainWidth = 99;
+        private static int MaxMainHeight = 99;
+
+        public static List<Vector2Int> GetTestMazeSizeVariations(MazeAreaType areaType)
+        {
+            List<Vector2Int> sizes = new List<Vector2Int>();
+            if (areaType == MazeAreaType.Field)
+            {
+                sizes.Add(new Vector2Int());
+            }
+            else if (areaType == MazeAreaType.Room) { }
+
+
+            else if (areaType == MazeAreaType.Corridor) {
+                sizes.Add(new Vector2Int(MinWidth, MaxHeight));
+                sizes.Add(new Vector2Int(MaxWidth, MinHeight));
+            }
+            else
+            {
+                sizes.Add(new Vector2Int(MinMainWidth, MinMainHeight));
+                sizes.Add(new Vector2Int(MaxMainWidth, MaxMainHeight));
+                sizes.Add(new Vector2Int(MinMainWidth, MaxMainHeight));
+                sizes.Add(new Vector2Int(MaxMainWidth, MinMainHeight));
+            }
+
+            return sizes;
+        }
 
         public class StructureTests
         {
@@ -21,9 +57,8 @@ namespace Assets.Editor.LabirintTests
             public void _0_Check_Main_Enter_And_Finish_Point()
             {
                 bool flag = true;
-                for (int i = 0; i < CountChecks; i++)
+                foreach (Vector2Int size in GetTestMazeSizeVariations(MazeAreaType.Main))
                 {
-                    Vector2Int size = MazeGenerator2D.GenerateMazeRandomSize(i);
 
                     MazeGenerator2D mazeGenerator = new MazeGenerator2D(0, MazeAreaType.Main, size.x, size.y, Vector2Int.zero);
                     Maze maze = mazeGenerator.Generate();
@@ -40,7 +75,6 @@ namespace Assets.Editor.LabirintTests
                         break;
                     }
 
-
                 }
 
                 Assert.IsTrue(flag);
@@ -50,9 +84,8 @@ namespace Assets.Editor.LabirintTests
             public void _1_Check_Secondary_Enter_And_Finish_Point()
             {
                 bool flag = true;
-                for (int i = 0; i < CountChecks; i++)
+                foreach (Vector2Int size in GetTestMazeSizeVariations(MazeAreaType.Main))
                 {
-                    Vector2Int size = MazeGenerator2D.GenerateMazeRandomSize(i);
 
                     foreach (MazeAreaType type in (MazeAreaType[])Enum.GetValues(typeof(MazeAreaType)))
                     {
@@ -72,8 +105,6 @@ namespace Assets.Editor.LabirintTests
                             break;
                         }
                     }
-
-
                 }
 
                 Assert.IsTrue(flag);

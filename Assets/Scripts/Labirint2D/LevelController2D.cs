@@ -7,18 +7,23 @@ public class LevelController2D : MonoBehaviour
     [SerializeField] public GameObject Player;
     [SerializeField] public LabirintsSpawner2D LabirintsSpawner2D;
 
-    [Header("Размеры лабиринта - нечётные целые числа")]
-
-    [Range(2, 100)]
-    [SerializeField] public int Width = 33;
-
-    [Range(2, 100)]
-    [SerializeField] public int Height = 33;
+    [Header("Размеры лабиринта - целые, нечётные числа")]
+    [Range(21, 99)]
+    [SerializeField] public int Width;
+    [Range(21, 99)]
+    [SerializeField] public int Height;
 
     [NonSerialized] public Level Level;
 
     private bool flagX = false;
     private bool flagY = false;
+
+    private void Awake()
+    {
+        // Проеряем лабиринт на чётность и если чётный - делаем нечётным
+        GetComponent<LevelController2D>().Width -= Width % 2;
+        GetComponent<LevelController2D>().Height -= Height % 2;
+    }
 
 
     private void Start()

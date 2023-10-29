@@ -34,19 +34,16 @@ public class MazeGenerator2D
         X = position.x;
         Y = position.y;
 
-        Width = width+1;
-        Height = height+1;
+
+        // Проеряем лабиринт на чётность и если чётный - делаем нечётным
+        Width = width + width % 2 + 1;
+        Height = height + height % 2 + 1;
+
+
 
         CellSize = new Vector2Int(1, 1);
         Cells = MazeUtilities.DefineMaze(Width, Height);
 
-    }
-
-    public static Vector2Int GenerateMazeRandomSize(int k)
-    {
-        int width = Random.Range(2 * (k % 50), 100);
-        int height = Random.Range(100 - 2 * (k % 50), 100);
-        return new Vector2Int(width, height);
     }
 
 
@@ -386,6 +383,7 @@ public class MazeGenerator2D
             //    startIndex = -1;
             //}
 
+            Debug.Log(Width + "(" + Cells.Length + ")" + " " + Height + "(" + Cells[0].Length + ")" + ": (" + xMax + ", " + y + ")");
             if (Cells[0][y].LeftWall == Cells[xMax][y].LeftWall && y % 2 == 1)
             {
                 Cells[0][y].LeftWall = false;
