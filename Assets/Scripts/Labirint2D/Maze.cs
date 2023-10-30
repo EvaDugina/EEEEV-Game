@@ -29,17 +29,12 @@ public enum MazeType {
 //    //public MazeFillType FillType;
 //    //public MazeWallType WallType;
 //};
-//public struct PortalIn
-//{
-//    public string FromMazeName;
-//    public Vector2Int Position;
-//};
 
-//public struct PortalOut
-//{
-//    public string ToMazeName;
-//    public Vector2Int Position;
-//};
+public struct Portal
+{
+    public string ToMazeName;
+    public Vector2Int Position;
+};
 
 
 public class Maze
@@ -49,15 +44,14 @@ public class Maze
 
     public int Width;
     public int Height;
-
     public MazeType Type;
-
     public MazeStructure Structure;
-
-    public MazeCell[][] Cells;
 
     public Vector2Int StartPosition { get; set; }
     public Vector2Int FinishPosition { get; set; }
+
+    public MazeCell[][] Cells;
+    public List<Portal> Portals;
 
 
 
@@ -71,13 +65,10 @@ public class Maze
     //public MazeInfo Info;
 
 
-    //public List<PortalIn> PortalsIn;
-    //public List<PortalOut> PortalsOut;
-
     //public List<Maze> BoundaryMazes;
 
 
-    public Maze(string name, int width, int height, float x, float y, MazeType type=MazeType.Default, MazeAreaType areaType=MazeAreaType.Main) {
+    public Maze(int width, int height, MazeType type, MazeStructure structure) {
         //Name = name;
         Width = width;
         Height = height;
@@ -86,58 +77,71 @@ public class Maze
 
         Type = type;
 
+        Structure = structure;
+
+        StartPosition = -Vector2Int.one;
+        FinishPosition = -Vector2Int.one;
+
+        Portals = new List<Portal>();
+
         //Info.AreaType = areaType;
         //Info.DecorationType = MazeDecorationType.Empty;
 
         //if (Info.AreaType == MazeAreaType.Main) ZIndex = 0;
         //else ZIndex = -1;
 
-        StartPosition = -Vector2Int.one;
-        FinishPosition = -Vector2Int.one;
-
         //BoundaryMazes = new List<Maze>();
     }
 
 
-    public string GetMazeStructureTypeAsText() { 
-        switch (Info.AreaType)
-        {
-            case MazeAreaType.Field:
-                return "Field";
-            case MazeAreaType.Room:
-                return "Room";
-            case MazeAreaType.Corridor:
-                return "Corridor";
-            default:
-                return "Main";
-        }
-    }
+    //public string GetMazeStructureTypeAsText() { 
+    //    switch (Info.AreaType)
+    //    {
+    //        case MazeAreaType.Field:
+    //            return "Field";
+    //        case MazeAreaType.Room:
+    //            return "Room";
+    //        case MazeAreaType.Corridor:
+    //            return "Corridor";
+    //        default:
+    //            return "Main";
+    //    }
+    //}
 
     public void SetStartPosition(Vector2Int start) {
         StartPosition = start;
-        //Debug.Log(GetMazeStructureTypeAsText() + " " + Width + ", " + Height + ": " + start);
-        Cells[start.x][start.y].Type = CellType.Start;
+        Cells[start.x][start.y].Type = MazeCellType.Start;
     }
 
     public void SetFinishPosition(Vector2Int finish)
     {
         FinishPosition = finish;
-        Cells[finish.x][finish.y].Type = CellType.Finish;
+        Cells[finish.x][finish.y].Type = MazeCellType.Finish;
     }
 
-    public void SetPortalsIn(List<PortalIn> portals) {
-        PortalsIn = portals;
-    }
-
-    public void SetPortalsOut(List<PortalOut> portals)
+    public void SetPortals(List<Portal> portals)
     {
-        foreach (PortalOut portal in portals)
+        foreach (Portal portal in portals)
         {
-            Cells[portal.Position.x][portal.Position.y].Type = CellType.Portal;
-            Cells[portal.Position.x][portal.Position.y].DestinationMazeName = portal.ToMazeName;
+            Cells[portal.Position.x][portal.Position.y].Type = MazeCellType.Portal;
         }
-        PortalsOut = portals;
+        Portals = portals;
     }
+
+    //public void SetPortalsIn(List<PortalIn> portals)
+    //{
+    //    PortalsIn = portals;
+    //}
+
+    //public void SetPortalsOut(List<PortalOut> portals)
+    //{
+    //    foreach (PortalOut portal in portals)
+    //    {
+    //        Cells[portal.Position.x][portal.Position.y].Type = CellType.Portal;
+    //        Cells[portal.Position.x][portal.Position.y].DestinationMazeName = portal.ToMazeName;
+    //    }
+    //    PortalsOut = portals;
+    //}
 
 };
 
