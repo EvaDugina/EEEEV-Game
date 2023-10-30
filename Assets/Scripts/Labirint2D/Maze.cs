@@ -1,94 +1,101 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Rendering;
 
 public enum MazeType { 
-    Default,
+    Main,
     Boundary
 }
-public enum MazeAreaType
-{
-    Main,
-    Field,
-    Room,
-    Corridor
-}
 
-public enum MazeDecorationType { 
-    Empty,
-    WheatField,
-    BirchGrove,
-    Room
-}
+//public enum MazeAreaType
+//{
+//    Main,
+//    Field,
+//    Room,
+//    Corridor
+//}
 
-public struct MazeInfo
-{
-    public MazeAreaType AreaType;
-    public MazeDecorationType DecorationType;
-    //public MazeFillType FillType;
-    //public MazeWallType WallType;
-};
-public struct PortalIn
-{
-    public string FromMazeName;
-    public Vector2Int Position;
-};
+//public enum MazeDecorationType { 
+//    Empty,
+//    WheatField,
+//    BirchGrove,
+//    Room
+//}
 
-public struct PortalOut
-{
-    public string ToMazeName;
-    public Vector2Int Position;
-};
+//public struct MazeInfo
+//{
+//    public MazeAreaType AreaType;
+//    public MazeDecorationType DecorationType;
+//    //public MazeFillType FillType;
+//    //public MazeWallType WallType;
+//};
+//public struct PortalIn
+//{
+//    public string FromMazeName;
+//    public Vector2Int Position;
+//};
+
+//public struct PortalOut
+//{
+//    public string ToMazeName;
+//    public Vector2Int Position;
+//};
 
 
 public class Maze
 {
-    public string Name;
-    public MazeType Type;
+    //public string Name;
 
-    public MazeCell[][] Cells;
 
     public int Width;
     public int Height;
 
-    public float X;
-    public float Y;
-    public int ZIndex;
+    public MazeType Type;
 
-    public Vector2Int CellSize = Vector2Int.one;
+    public MazeStructure Structure;
 
-    public MazeInfo Info;
+    public MazeCell[][] Cells;
 
     public Vector2Int StartPosition { get; set; }
     public Vector2Int FinishPosition { get; set; }
 
-    public List<PortalIn> PortalsIn;
-    public List<PortalOut> PortalsOut;
 
-    public List<Maze> BoundaryMazes;
+
+
+    //public float X;
+    //public float Y;
+    //public int ZIndex;
+
+    //public Vector2Int CellSize = Vector2Int.one;
+
+    //public MazeInfo Info;
+
+
+    //public List<PortalIn> PortalsIn;
+    //public List<PortalOut> PortalsOut;
+
+    //public List<Maze> BoundaryMazes;
 
 
     public Maze(string name, int width, int height, float x, float y, MazeType type=MazeType.Default, MazeAreaType areaType=MazeAreaType.Main) {
-        Name = name;
+        //Name = name;
         Width = width;
         Height = height;
-        X = x;
-        Y = y;
+        //X = x;
+        //Y = y;
 
         Type = type;
 
-        Info.AreaType = areaType;
-        Info.DecorationType = MazeDecorationType.Empty;
-        //Info.FillType = CellFillType.Empty;
-        //Info.WallType = CellWallType.Default;
+        //Info.AreaType = areaType;
+        //Info.DecorationType = MazeDecorationType.Empty;
 
-        if (Info.AreaType == MazeAreaType.Main) ZIndex = 0;
-        else ZIndex = -1;
+        //if (Info.AreaType == MazeAreaType.Main) ZIndex = 0;
+        //else ZIndex = -1;
 
         StartPosition = -Vector2Int.one;
         FinishPosition = -Vector2Int.one;
 
-        BoundaryMazes = new List<Maze>();
+        //BoundaryMazes = new List<Maze>();
     }
 
 
