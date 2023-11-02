@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
@@ -10,6 +11,7 @@ public class RouteLineRenderer2D : MonoBehaviour
 
     private Maze MainMaze;
     private LineRenderer LineRenderer;
+    private Vector2Int CellSize;
 
     // Start is called before the first frame update
     private void Awake()
@@ -18,9 +20,10 @@ public class RouteLineRenderer2D : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void DrawRoute(Maze mainMaze)
+    public void DrawRoute(Maze mainMaze, Vector2Int cellSize)
     {
         MainMaze = mainMaze;
+        CellSize = cellSize;
 
         transform.position = new Vector3 (-MainMaze.Width/2, -MainMaze.Height / 2, -1);
 
@@ -51,28 +54,28 @@ public class RouteLineRenderer2D : MonoBehaviour
 
             if (currentPosition.x > 0
                 && MainMaze.Cells[currentPosition.x - 1][currentPosition.y].DistanceFromStart == currentDistance - 1
-                && !currentCell.LeftWall)
+                && !currentCell.WallsStatus.LeftWall)
             {
                 currentPosition.x -= 1;
             }
 
             else if (currentPosition.y > 0
                 && MainMaze.Cells[currentPosition.x][currentPosition.y - 1].DistanceFromStart == currentDistance - 1
-                && !currentCell.BottomWall)
+                && !currentCell.WallsStatus.BottomWall)
             {
                 currentPosition.y -= 1;
             }
 
             else if (currentPosition.x < MainMaze.Width - 1
                 && MainMaze.Cells[currentPosition.x + 1][currentPosition.y].DistanceFromStart == currentDistance - 1
-                && !MainMaze.Cells[currentPosition.x + 1][currentPosition.y].LeftWall)
+                && !MainMaze.Cells[currentPosition.x + 1][currentPosition.y].WallsStatus.LeftWall)
             {
                 currentPosition.x += 1;
             }
 
             else if (currentPosition.y < MainMaze.Height - 1
                 && MainMaze.Cells[currentPosition.x][currentPosition.y + 1].DistanceFromStart == currentDistance - 1
-                && !MainMaze.Cells[currentPosition.x][currentPosition.y + 1].BottomWall)
+                && !MainMaze.Cells[currentPosition.x][currentPosition.y + 1].WallsStatus.BottomWall)
             {
                 currentPosition.y += 1;
             }
@@ -93,8 +96,8 @@ public class RouteLineRenderer2D : MonoBehaviour
 
     private Vector3 convertToRealVector3(Vector2Int mazeCorrdinates)
     {
-        float xReal = MainMaze.CellSize.x * mazeCorrdinates.x + MainMaze.CellSize.x / 2;
-        float yReal = MainMaze.CellSize.y * mazeCorrdinates.y + MainMaze.CellSize.y / 2;
+        float xReal = CellSize.x * mazeCorrdinates.x + CellSize.x / 2;
+        float yReal = CellSize.y * mazeCorrdinates.y + CellSize.y / 2;
         return new Vector3(xReal, yReal, 0);
     }
 }

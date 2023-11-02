@@ -1,27 +1,28 @@
+п»їusing System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 
-public class LabirintsSpawner2D : MonoBehaviour
+public class LevelSpawner : MonoBehaviour
 {
+    public AreaSpawner AreaSpawner;
 
-    [Header("Prefabs")]
-    [SerializeField] private GameObject LabirintPrefab;
-    [SerializeField] private GameObject CellPrefab;
+    [SerializeField] private GameObject LevelPrefab;
+    //[SerializeField] private GameObject LabirintPrefab;
+
+    //[SerializeField] private GameObject CellPrefab;
 
     [Space]
     [SerializeField] private RouteLineRenderer2D RouteLineRenderer;
 
-    //[NonSerialized] public Maze2D Maze;
-
-    public void SpawnLabirints(Level level)
+    public void SpawnLevel(Level level, LevelConfiguration levelConfiguration)
     {
-        SpawnLabirint(level.MainArea);
-        SpawnBoundaryLabirints(level.MainArea);
+        AreaSpawner.SpawnArea(level.MainArea, 
+            levelConfiguration.GetAreaParamsByType(AreaType.Main).CellSize);
 
-        foreach (Maze maze in level.SecondaryAreas)
+        foreach (Area area in level.SecondaryAreas)
         {
-            SpawnLabirint(maze);
+            AreaSpawner.SpawnArea(area, levelConfiguration.GetAreaParamsByType(AreaType.Main).CellSize);
         }
     }
 
@@ -30,7 +31,7 @@ public class LabirintsSpawner2D : MonoBehaviour
     {
         setCellSize(maze.CellSize);
 
-        // Создаём структуру с лабиринтом
+        // РЎРѕР·РґР°С‘Рј СЃС‚СЂСѓРєС‚СѓСЂСѓ СЃ Р»Р°Р±РёСЂРёРЅС‚РѕРј
         GameObject labirintGameObject = Instantiate(LabirintPrefab, new Vector3(maze.X, maze.Y, 0),
                     Quaternion.identity, GameObject.Find("Level/Labirints").transform);
         labirintGameObject.name = maze.Name + "_" + maze.GetMazeStructureTypeAsText() + "Labirint";
@@ -67,18 +68,18 @@ public class LabirintsSpawner2D : MonoBehaviour
                 cell.LeftWall.SetActive(maze.Cells[x][y].LeftWall);
                 cell.BottomWall.SetActive(maze.Cells[x][y].BottomWall);
 
-                // Выбираем материал пола
+                // Р’С‹Р±РёСЂР°РµРј РјР°С‚РµСЂРёР°Р» РїРѕР»Р°
                 Material floorMaterial = GetFloorMaterial(maze.Cells[x][y], labirintView);
                 cell.Floor.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = floorMaterial;
                 cell.Floor.SetActive(maze.Cells[x][y].Floor);
 
-                //Отключение/включение колонны, когда рядом нет соседей
+                //РћС‚РєР»СЋС‡РµРЅРёРµ/РІРєР»СЋС‡РµРЅРёРµ РєРѕР»РѕРЅРЅС‹, РєРѕРіРґР° СЂСЏРґРѕРј РЅРµС‚ СЃРѕСЃРµРґРµР№
                 ColumnType columnType = maze.Cells[x][y].BottomLeftColumnType;
                 if (columnType == ColumnType.Default)
                     cell.Column.transform.GetChild(0).gameObject.SetActive(false);
                 else
                 {
-                    /// Добавляем колонне другой материал, когда колонна - перекрёсток
+                    /// Р”РѕР±Р°РІР»СЏРµРј РєРѕР»РѕРЅРЅРµ РґСЂСѓРіРѕР№ РјР°С‚РµСЂРёР°Р», РєРѕРіРґР° РєРѕР»РѕРЅРЅР° - РїРµСЂРµРєСЂС‘СЃС‚РѕРє
                     if (columnType == ColumnType.Crossroad)
                         cell.Column.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = cell.EnableColumnMaterial;
                     else
@@ -102,7 +103,8 @@ public class LabirintsSpawner2D : MonoBehaviour
         CellPrefab.transform.localScale = cellScale;
     }
 
-    private Material GetFloorMaterial(MazeCell mazeCell, LabirintView labirintView) {
+    private Material GetFloorMaterial(MazeCell mazeCell, LabirintView labirintView)
+    {
         if (mazeCell.Type == CellType.Start)
             return labirintView.Start;
         else if (mazeCell.Type == CellType.Finish)
@@ -113,7 +115,7 @@ public class LabirintsSpawner2D : MonoBehaviour
         {
             if (mazeCell.FloorType == CellFloorType.Wheat)
                 return labirintView.Field;
-            else 
+            else
                 return labirintView.Default;
         }
     }

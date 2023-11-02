@@ -1,10 +1,13 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public enum MazeType { 
     Main,
     Boundary
+}
+
+public enum MazeSide { 
+    Center, Left, Top, Right, Bottom,
+    TopLeft, TopRight, BottomRight, BottomLeft
 }
 
 //public enum MazeAreaType
@@ -30,30 +33,21 @@ public enum MazeType {
 //    //public MazeWallType WallType;
 //};
 
-public struct Portal
-{
-    public string ToMazeName;
-    public Vector2Int Position;
-};
-
 
 public class Maze
 {
-    //public string Name;
-
+    public string Name;
 
     public int Width;
     public int Height;
-    public MazeType Type;
-    public MazeStructure Structure;
+
+    public MazeSide Side { get; set; }
+    public MazeType Type { get; set; }
 
     public Vector2Int StartPosition { get; set; }
     public Vector2Int FinishPosition { get; set; }
 
     public MazeCell[][] Cells;
-    public List<Portal> Portals;
-
-
 
 
     //public float X;
@@ -68,21 +62,19 @@ public class Maze
     //public List<Maze> BoundaryMazes;
 
 
-    public Maze(int width, int height, MazeType type, MazeStructure structure) {
-        //Name = name;
+    public Maze(string name, int width, int height, MazeSide side) {
+
+        Name = name;
+
         Width = width;
         Height = height;
         //X = x;
         //Y = y;
 
-        Type = type;
-
-        Structure = structure;
+        SetSide(side);
 
         StartPosition = -Vector2Int.one;
         FinishPosition = -Vector2Int.one;
-
-        Portals = new List<Portal>();
 
         //Info.AreaType = areaType;
         //Info.DecorationType = MazeDecorationType.Empty;
@@ -93,22 +85,18 @@ public class Maze
         //BoundaryMazes = new List<Maze>();
     }
 
+    public void SetName(string name) {
+        Name = name;
+    }
 
-    //public string GetMazeStructureTypeAsText() { 
-    //    switch (Info.AreaType)
-    //    {
-    //        case MazeAreaType.Field:
-    //            return "Field";
-    //        case MazeAreaType.Room:
-    //            return "Room";
-    //        case MazeAreaType.Corridor:
-    //            return "Corridor";
-    //        default:
-    //            return "Main";
-    //    }
-    //}
+    public void SetSide(MazeSide orientation) {
+        Side = orientation;
+        if (Side == MazeSide.Center) Type = MazeType.Main;
+        else Type = MazeType.Boundary;
+    }
 
-    public void SetStartPosition(Vector2Int start) {
+    public void SetStartPosition(Vector2Int start)
+    {
         StartPosition = start;
         Cells[start.x][start.y].Type = MazeCellType.Start;
     }
@@ -119,13 +107,64 @@ public class Maze
         Cells[finish.x][finish.y].Type = MazeCellType.Finish;
     }
 
-    public void SetPortals(List<Portal> portals)
+    private Vector2 GetBoundaryMazePosition(MazeSide side)
     {
-        foreach (Portal portal in portals)
+        switch (side)
         {
-            Cells[portal.Position.x][portal.Position.y].Type = MazeCellType.Portal;
+
+            case MazeSide.Left:
+                return new Vector2(-Width, 0);
+            case MazeSide.Right:
+                return new Vector2(Width, 0);
+            case MazeSide.Top:
+                return new Vector2(0, Height);
+            case MazeSide.Bottom:
+                return new Vector2(0, -Height);
+
+            case MazeSide.TopLeft:
+                return GetBoundaryMazePosition(MazeSide.Top) + GetBoundaryMazePosition(MazeSide.Left);
+            case MazeSide.TopRight:
+                return GetBoundaryMazePosition(MazeSide.Top) + GetBoundaryMazePosition(MazeSide.Right);
+            case MazeSide.BottomLeft:
+                return GetBoundaryMazePosition(MazeSide.Bottom) + GetBoundaryMazePosition(MazeSide.Left);
+            case MazeSide.BottomRight:
+                return GetBoundaryMazePosition(MazeSide.Bottom) + GetBoundaryMazePosition(MazeSide.Right);
+
+            default:
+                return Vector2.zero;
         }
-        Portals = portals;
+    }
+
+
+    public static string GetMazeSideAsText(MazeSide side)
+    {
+        switch (side)
+        {
+            case MazeSide.Top:
+                return "Top";
+            case MazeSide.Left:
+                return "Left";
+            case MazeSide.Right:
+                return "Right";
+            case MazeSide.Bottom:
+                return "Bottom";
+
+            case MazeSide.TopLeft:
+                return "TopLeft";
+            case MazeSide.TopRight:
+                return "TopRight";
+            case MazeSide.BottomRight:
+                return "BottomRight";
+            case MazeSide.BottomLeft:
+                return "BottomLeft";
+
+            default:
+                return "Center";
+        }
+    }
+
+    public void AddPortal(Vector2Int position) {
+        Cells[position.x][position.y].Type = MazeCellType.Portal;
     }
 
     //public void SetPortalsIn(List<PortalIn> portals)

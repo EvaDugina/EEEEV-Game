@@ -16,7 +16,7 @@ namespace Assets.Editor.LabirintTests
 
                 LevelGenerator2D levelGenerator = new(size.x, size.y);
                 Level level = levelGenerator.GenerateLevel();
-                if (level.MainMaze == null)
+                if (level.MainArea == null)
                 {
                     flag = false;
                     break;
@@ -38,7 +38,7 @@ namespace Assets.Editor.LabirintTests
                 levelGenerator.GenerateSecondaryMazes = true;
 
                 Level level = levelGenerator.GenerateLevel();
-                if (level.SecondaryMazes.Count == 0)
+                if (level.SecondaryAreas.Count == 0)
                 {
                     flag = false;
                     break;
@@ -61,7 +61,7 @@ namespace Assets.Editor.LabirintTests
 
                 Level level = levelGenerator.GenerateLevel();
 
-                foreach (PortalIn portalIn in level.MainMaze.PortalsIn)
+                foreach (PortalIn portalIn in level.MainArea.PortalsIn)
                 {
                     if (level.GetMazeByName(portalIn.FromMazeName) == null)
                     {
@@ -71,7 +71,7 @@ namespace Assets.Editor.LabirintTests
                     }
                 }
 
-                foreach (PortalOut portalOut in level.MainMaze.PortalsOut)
+                foreach (PortalOut portalOut in level.MainArea.PortalsOut)
                 {
                     if (level.GetMazeByName(portalOut.ToMazeName) == null)
                     {

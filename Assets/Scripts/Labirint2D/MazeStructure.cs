@@ -1,16 +1,13 @@
 ﻿
-public enum MazeDimension
+//public enum MazeDimension
+//{
+//    One, Two
+//}
+public enum MazeForm
 {
-    One, Two
+    Default, Triangle
 }
-public enum MazeGeometry
-{
-    Square, Rectangle, Triangle
-}
-public enum MazeTopology
-{
-    Plain, Toroid
-}
+
 public enum MazeTessellation
 {
     Orthogonal, Fractal, Crack
@@ -21,28 +18,40 @@ public enum MazeRouting
 }
 public enum MazeTexture
 {
-    Bias, Longitudinall, elite, Symmetry, River
+    Bias, Longitudinall, Elite, Symmetry, River
 }
 
 public class MazeStructure
 {
-    public MazeDimension Dimension;
-    public MazeGeometry Geometry;
-    public MazeTopology Topology;
+    //public MazeDimension Dimension;
+    public MazeForm Form;
+    //public MazeTopology Topology;
     public MazeTessellation Tessellation;
     public MazeRouting Routing;
     public MazeTexture Texture;
+
 }
 
 public class MazeStructureHandler {
+
+    public static MazeStructure GetMazeStructureByAreaType(AreaType type) {
+        if (type == AreaType.Main)
+            return GetMainMazeStructure();
+        else if (type == AreaType.Room)
+            return GetRoomMazeStructure();
+        else if (type == AreaType.Field)
+            return GetFieldMazeStructure();
+        else
+            return GetCorridorMazeStructure();
+    }
 
     public static MazeStructure GetMainMazeStructure()
     {
         return new MazeStructure()
         {
-            Dimension = MazeDimension.Two,
-            Geometry = MazeGeometry.Square,
-            Topology = MazeTopology.Toroid,
+            //Dimension = MazeDimension.Two,
+            Form = MazeForm.Default,
+            //Topology = MazeTopology.Toroid,
             Tessellation = MazeTessellation.Orthogonal,
             Routing = MazeRouting.ParticallyBraid,
             Texture = MazeTexture.Longitudinall
@@ -53,9 +62,9 @@ public class MazeStructureHandler {
     {
         return new MazeStructure()
         {
-            Dimension = MazeDimension.One,
-            Geometry = MazeGeometry.Triangle,
-            Topology = MazeTopology.Plain,
+            //Dimension = MazeDimension.One,
+            Form = MazeForm.Triangle,
+            //Topology = MazeTopology.Plain,
             Tessellation = MazeTessellation.Orthogonal,
             Routing = MazeRouting.HighSparse,
             Texture = MazeTexture.Longitudinall
@@ -66,9 +75,9 @@ public class MazeStructureHandler {
     {
         return new MazeStructure()
         {
-            Dimension = MazeDimension.One,
-            Geometry = MazeGeometry.Square,
-            Topology = MazeTopology.Toroid,
+            //Dimension = MazeDimension.One,
+            Form = MazeForm.Default,
+            //Topology = MazeTopology.Toroid,
             Tessellation = MazeTessellation.Orthogonal,
             Routing = MazeRouting.None,
             Texture = MazeTexture.Longitudinall
@@ -79,9 +88,9 @@ public class MazeStructureHandler {
     {
         return new MazeStructure()
         {
-            Dimension = MazeDimension.One,
-            Geometry = MazeGeometry.Rectangle,
-            Topology = MazeTopology.Plain,
+            //Dimension = MazeDimension.One,
+            Form = MazeForm.Default,
+            //Topology = MazeTopology.Plain,
             Tessellation = MazeTessellation.Orthogonal,
             Routing = MazeRouting.None,
             Texture = MazeTexture.Longitudinall

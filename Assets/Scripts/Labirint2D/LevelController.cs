@@ -1,17 +1,22 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelController2D : MonoBehaviour
+public class LevelController : MonoBehaviour
 {
 
-    [SerializeField] public GameObject Player;
-    [SerializeField] public LabirintsSpawner2D LabirintsSpawner2D;
+    public GameObject Player;
+    public LevelSpawner LevelSpawner;
+    //public LabirintsSpawner2D LabirintsSpawner2D;
 
     [Header("Размеры лабиринта - целые, нечётные числа")]
+
     [Range(21, 99)]
-    [SerializeField] public int Width;
+    public int Width;
     [Range(21, 99)]
-    [SerializeField] public int Height;
+    public int Height;
+
+    public LevelConfiguration LevelConfiguration;
 
     [NonSerialized] public Level Level;
 
@@ -20,9 +25,12 @@ public class LevelController2D : MonoBehaviour
 
     private void Awake()
     {
+
         // Проеряем лабиринт на чётность и если чётный - делаем нечётным
-        GetComponent<LevelController2D>().Width -= Width % 2;
-        GetComponent<LevelController2D>().Height -= Height % 2;
+        GetComponent<LevelController>().Width -= Width % 2;
+        GetComponent<LevelController>().Height -= Height % 2;
+
+        LevelConfiguration.SetAreaParamsToList();
     }
 
 
@@ -30,14 +38,16 @@ public class LevelController2D : MonoBehaviour
     {
 
         // Генерируем уровень
-        LevelGenerator2D levelGenerator = new(Width, Height);
-        Level = levelGenerator.GenerateLevel();
+        LevelGenerator levelGenerator = new(Width, Height, LevelConfiguration.GetAreasParams());
+        Level level = levelGenerator.GenerateLevel();
+
+        LevelSpawner.SpawnLevel(level, LevelConfiguration);
+
+        //LevelGenerator2D levelGenerator = new(Width, Height);
+        //Level = levelGenerator.GenerateLevel();
 
         // Ставим на сцену
-        LabirintsSpawner2D.SpawnLabirints(Level);
-
-        //Vector2Int startPosition = Level.MainMaze.StartPosition;
-        //Player.transform.position = new Vector3(0, 0, 0);
+        //LabirintsSpawner2D.SpawnLabirints(Level);
 
         Width /= 2;
         Height /= 2;
@@ -52,7 +62,8 @@ public class LevelController2D : MonoBehaviour
         int signX = (int)Mathf.Sign(playerPosition.x);
         int ceilPositiveX = (int)playerPosition.x * signX;
 
-        if (flagX) {
+        if (flagX)
+        {
             if (ceilPositiveX != Width - 2)
                 flagX = false;
         }

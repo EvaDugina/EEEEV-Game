@@ -3,34 +3,35 @@ using System.Collections.Generic;
 
 public class Level
 {
-    public Maze MainMaze;
-    public List<Maze> SecondaryMazes;
+    public Area MainArea;
+    public List<Area> SecondaryAreas;
 
-    public Level(Maze mainMaze)
+    public Level(Area mainArea)
     {
-        MainMaze = mainMaze;
-        SecondaryMazes = new List<Maze>(); ;
+        MainArea = mainArea;
+        SecondaryAreas = new List<Area>();
     }
 
-    public List<Maze> GetAllMazes()
+    public List<Area> GetAllAreas()
     {
-        List<Maze> mazes = new List<Maze>
+        List<Area> areas = new List<Area>
         {
-            MainMaze
+            MainArea
         };
-        mazes.AddRange(SecondaryMazes);
-        return mazes;
+        areas.AddRange(SecondaryAreas);
+        return areas;
     }
 
-    public Maze GetMazeByName(string name) { 
-        if (name == MainMaze.Name) 
-            return MainMaze;
+    public Area GetAreaByName(int id) { 
+        if (id == MainArea.Id) 
+            return MainArea;
         
-        foreach (Maze maze in SecondaryMazes)
-            if (name == maze.Name)
-                return maze;
+        foreach (Area area in SecondaryAreas)
+            if (id == area.Id)
+                return area;
 
         return null;
     }
+
 
 }
