@@ -1,58 +1,114 @@
-﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEditor;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public struct AreaParams
+
+[System.Serializable]
+public struct Parameters
 {
-    public AreaType Type;
+    [NonSerialized] public AreaType Type;
     public bool Status;
 
-    [Range(0.1f, 1.0f)]
-    public int SizeKoeff;
-
-    public Vector2Int CellSize;
+    public GenerateParams GenerateParams;
+    public SpawnParams SpawnParams;
 }
+
+[System.Serializable]
+public struct GenerateParams
+{
+    [Range(0.1f, 1.0f)]
+    public float SizeKoeff;
+}
+
+[System.Serializable]
+public struct SpawnParams
+{
+    public CellSpawnParameters CellParameters;
+}
+
+[System.Serializable]
+public struct CellSpawnParameters {
+    public Vector3Int Size;
+    public CellDecoration Decoration;
+}
+
 
 public class LevelConfiguration
 {
 
-    //[Header("Параметры лабиринтов")]
-    // TODO: Сделать через массив
-    //public List<AreaParams> AreaParams = new();
+    private List<Parameters> LevelParameters;
 
-    [Header("Параметры ROOM-лабиринта")]
-    public AreaParams RoomAreaParams;
 
-    [Header("Параметры FIELD-лабиринта")]
-    public AreaParams FieldAreaParams;
+    public LevelConfiguration()
+    {
+        LevelParameters.Add(GenerateMainAreaParams());
+    }
 
-    [Header("Параметры CORRIDOR-лабиринта")]
-    public AreaParams CorridorAreaParams;
 
-    private List<AreaParams> AreasParams;
 
-    public void SetAreaParamsToList() {
-        AreasParams.Add(new AreaParams() { 
+    /* 
+    ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    |   Methods
+    ───────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+    */
+
+    public void AddAreaParamsToList(Parameters parameters)
+    {
+        LevelParameters.Add(parameters);
+    }
+
+
+    public List<Parameters> GetParametersList()
+    {
+        return LevelParameters;
+    }
+
+
+    public List<GenerateParams> GetAreasGenerateParams()
+    {
+        List<GenerateParams> generateParams = new List<GenerateParams> ();
+        foreach (Parameters parameters in LevelParameters) {
+            generateParams.Add(parameters.GenerateParams);
+        }
+        return generateParams;
+    }
+
+    public SpawnParams GetAreaSpawnParamsByType(AreaType type)
+    {
+        foreach (Parameters areaParams in LevelParameters)
+            if (areaParams.Type == type)
+                return areaParams.SpawnParams;
+        return new Parameters().SpawnParams;
+    }
+
+
+    /* 
+    ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    |   Utilities
+    ───────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+    */
+
+
+    private Parameters GenerateMainAreaParams()
+    {
+        return new Parameters()
+        {
             Type = AreaType.Main,
             Status = true,
-            SizeKoeff = 1,
-            CellSize = new Vector2Int(1, 1)
-        });
-        AreasParams.Add(RoomAreaParams);
-        AreasParams.Add(FieldAreaParams);
-        AreasParams.Add(CorridorAreaParams);
-    }
 
-    public List<AreaParams> GetAreasParams() { 
-        return AreasParams;
-    }
-
-    public AreaParams GetAreaParamsByType(AreaType type) { 
-        foreach (AreaParams areaParams in AreasParams) 
-            if (areaParams.Type == type)
-                return areaParams;
-        return new AreaParams();
+            GenerateParams = new GenerateParams()
+            {
+                SizeKoeff = 1,
+            },
+            SpawnParams = new SpawnParams()
+            {
+                CellParameters = new CellSpawnParameters()
+                {
+                    Size = new Vector3Int(1, 1, 1),
+                    Decoration = CellDecoration.Empty
+                }
+            }
+        };
     }
 
 }
