@@ -32,6 +32,11 @@ public struct CellSpawnParameters {
     public CellDecoration Decoration;
 }
 
+public enum CellDecoration
+{
+    Empty, WheatField, BirchField, RedRoom
+}
+
 
 public class LevelConfiguration
 {
@@ -41,6 +46,7 @@ public class LevelConfiguration
 
     public LevelConfiguration()
     {
+        LevelParameters = new List<Parameters>();
         LevelParameters.Add(GenerateMainAreaParams());
     }
 

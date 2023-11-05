@@ -254,6 +254,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2918554686364898350}
+  - component: {fileID: 7423114242258191732}
   m_Layer: 0
   m_Name: Cell2D
   m_TagString: Untagged
@@ -277,6 +278,30 @@ Transform:
   - {fileID: 7046008214743852823}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7423114242258191732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1842833647202691168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93614021bbe358d4bada6d36ad0115a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Walls:
+    TopWall: {fileID: 3989832351414178645}
+    RightWall: {fileID: 6780686382219156156}
+    BottomWall: {fileID: 8160321612790541601}
+    LeftWall: {fileID: 1249820006003301835}
+  Columns:
+    TopLeft: {fileID: 7242165572923239967}
+    TopRight: {fileID: 5203153610441764615}
+    BottomLeft: {fileID: 8160321612790541601}
+    BottomRight: {fileID: 6120635149401453535}
+  Floor: {fileID: 4002636093433614996}
+  TextDistance: {fileID: 4411372295688458373}
 --- !u!1 &2105171078772310147
 GameObject:
   m_ObjectHideFlags: 0
@@ -1236,8 +1261,8 @@ Transform:
   - {fileID: 5714062190928010820}
   - {fileID: 3737378877786393934}
   - {fileID: 254689465064756298}
-  - {fileID: 5343055119488022990}
   - {fileID: 3563124779819246097}
+  - {fileID: 5343055119488022990}
   - {fileID: 8840282610562405873}
   - {fileID: 7368974660668240902}
   - {fileID: 8195885851329372835}

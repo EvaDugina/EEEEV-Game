@@ -85,8 +85,6 @@ public class MazeGenerator
         //Назначаем клеткам дистанции до старта
         //SetDistances(maze);
 
-        Cells = null;
-
         return maze;
     }
 

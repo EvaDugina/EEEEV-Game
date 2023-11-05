@@ -10,7 +10,6 @@ public class CellSpawner : MonoBehaviour
 
     public GameObject OriginalCellPrefab;
     private GameObject ResizedCellPrefab;
-    public Cell2D Cell2D;
 
 
     private Transform CellsFolder;
@@ -38,8 +37,9 @@ public class CellSpawner : MonoBehaviour
     public void SpawnCell(MazeCell mazeCell)
     {
         Cell2D cell = Instantiate(ResizedCellPrefab,
-                    CellsFolder.TransformPoint(new Vector3(mazeCell.X * Cell.Width, mazeCell.Y * Cell.Height, 0)),
-                    Quaternion.identity, CellsFolder).GetComponent<Cell2D>();
+            CellsFolder.TransformPoint(new Vector3(mazeCell.X * Cell.Width, mazeCell.Y * Cell.Height, 0)),
+            Quaternion.identity, CellsFolder)
+            .GetComponent<Cell2D>();
 
         // Показываем стены
         cell.Walls.TopWall.SetActive(mazeCell.WallsStatus.TopWall);

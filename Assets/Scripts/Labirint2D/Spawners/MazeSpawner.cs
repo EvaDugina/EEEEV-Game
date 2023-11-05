@@ -6,7 +6,6 @@ using UnityEngine;
 public class MazeSpawner : MonoBehaviour
 {
     public GameObject MazePrefab;
-    public Maze2D Maze2D;
 
     public CellSpawner CellSpawner;
 

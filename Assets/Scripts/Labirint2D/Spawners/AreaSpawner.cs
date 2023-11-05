@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CellSpawnConfiguration))]
 public class AreaSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject AreaPrefab;
-    public Area2D Area2D;
-
     public MazeSpawner MazeSpawner;
-
-
-    public CellSpawnConfiguration CellSpawnConfiguration;
+    public CellHandler CellHandler;
 
     private Transform AreasFolder;
 
@@ -35,9 +32,8 @@ public class AreaSpawner : MonoBehaviour
 
     public void SpawnArea(Area area, SpawnParams areaParams)
     {
-        CellHandler cellHandler = new CellHandler(CellSpawnConfiguration);
 
-        Cell cellTemplate = cellHandler.GetCellByDecoration(areaParams.CellParameters.Decoration);
+        Cell cellTemplate = CellHandler.CreateCellByDecoration(areaParams.CellParameters.Decoration);
         cellTemplate.SetSize(areaParams.CellParameters.Size);
 
         // Ставим каркас Area

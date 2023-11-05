@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Level2D))]
 public class LevelController : MonoBehaviour
 {
 
@@ -29,25 +30,26 @@ public class LevelController : MonoBehaviour
     public Parameters CorridorAreaParams;
 
 
-    public LevelConfiguration LevelConfiguration;
-
     [NonSerialized] public Level Level;
+    private LevelConfiguration LevelConfiguration;
 
-    private bool flagX = false;
-    private bool flagY = false;
+    //private bool flagX = false;
+    //private bool flagY = false;
 
     private void Awake()
     {
 
         // Проеряем лабиринт на чётность и если чётный - делаем нечётным
-        GetComponent<LevelController>().Width -= Width % 2;
-        GetComponent<LevelController>().Height -= Height % 2;
+        GetComponent<LevelController>().Width -= (Width + 1) % 2;
+        GetComponent<LevelController>().Height -= (Height + 1) % 2;
 
 
         // Заполняем конфигурацию
         RoomAreaParams.Type = AreaType.Room;
         FieldAreaParams.Type = AreaType.Field;
         CorridorAreaParams.Type = AreaType.Corridor;
+
+        LevelConfiguration = new LevelConfiguration();
         LevelConfiguration.AddAreaParamsToList(RoomAreaParams);
         LevelConfiguration.AddAreaParamsToList(FieldAreaParams);
         LevelConfiguration.AddAreaParamsToList(CorridorAreaParams);
@@ -61,7 +63,7 @@ public class LevelController : MonoBehaviour
         LevelGenerator levelGenerator = new(Width, Height, LevelConfiguration.GetParametersList());
         Level level = levelGenerator.GenerateLevel();
 
-        LevelSpawner.SpawnLevel(level, LevelConfiguration);
+        LevelSpawner.SpawnLevel(transform.GetComponent<Level2D>(), level, LevelConfiguration);
 
         //LevelGenerator2D levelGenerator = new(Width, Height);
         //Level = levelGenerator.GenerateLevel();

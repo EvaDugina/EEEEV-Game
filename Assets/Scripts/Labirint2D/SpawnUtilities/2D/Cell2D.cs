@@ -1,14 +1,16 @@
 
 using UnityEngine;
 
+[System.Serializable]
 public struct WallsGameObjects
 {
-    public GameObject LeftWall;
     public GameObject TopWall;
     public GameObject RightWall;
     public GameObject BottomWall;
+    public GameObject LeftWall;
 }
 
+[System.Serializable]
 public struct ColumnsGameObjects
 {
     public GameObject TopLeft;

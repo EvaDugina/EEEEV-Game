@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8173674855557750684}
+  - component: {fileID: 6863991453125174657}
+  - component: {fileID: 2708771959384204343}
   m_Layer: 0
   m_Name: Area
   m_TagString: Untagged
@@ -32,6 +34,32 @@ Transform:
   - {fileID: 7189007606464818319}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6863991453125174657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235241647736092163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 681670ecdbb0e3f449bf221969eb78ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MazeFolder: {fileID: 1275908390930985008}
+--- !u!114 &2708771959384204343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235241647736092163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aaee7e0db1b2764c8485b06ec93989c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CellSpawnConfugiration: {fileID: 0}
 --- !u!1 &1275908390930985008
 GameObject:
   m_ObjectHideFlags: 0
