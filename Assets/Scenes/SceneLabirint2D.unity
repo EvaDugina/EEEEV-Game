@@ -349,7 +349,7 @@ Camera:
   far clip plane: 100
   field of view: 93.66308
   orthographic: 1
-  orthographic size: 15
+  orthographic size: 25
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -634,6 +634,17 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &869424813 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8355324458623418089, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+  m_PrefabInstance: {fileID: 1802120149}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e4edca8530c38548ab0b534338cfacf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &974588508
 GameObject:
   m_ObjectHideFlags: 0
@@ -1171,6 +1182,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 698392026030941220, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: CellSpawnConfiguration
+      value: 
+      objectReference: {fileID: 869424813}
     - target: {fileID: 1047970426568757374, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: CellPrefab
       value: 
@@ -1219,6 +1234,18 @@ PrefabInstance:
       propertyPath: CellPrefab
       value: 
       objectReference: {fileID: 1842833647202691168, guid: 2f97916b129bee849a3b98165d3a6067, type: 3}
+    - target: {fileID: 1730764021364460184, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: StartMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 58e4cd58bcbec1a44b6554cc0eca9d0b, type: 2}
+    - target: {fileID: 1730764021364460184, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: FinishMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 6b592177e65e8f74e9b3eea6a6c1f356, type: 2}
+    - target: {fileID: 1730764021364460184, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: PortalMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 9e484f3e695e6c542ba304448cf8dc44, type: 2}
     - target: {fileID: 4710519834860055386, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: m_Name
       value: Level

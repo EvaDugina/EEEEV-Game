@@ -78,8 +78,11 @@ public class MazeGenerator
         Maze maze = new Maze(width, height, mazeSide);
         maze.Cells = Cells;
 
-        maze.SetStartPosition(StartPosition);
-        maze.SetFinishPosition(FinishPosition);
+        if (maze.Type != MazeType.Boundary)
+        {
+            maze.SetStartPosition(StartPosition);
+            maze.SetFinishPosition(FinishPosition);
+        }
 
         //Назначаем клеткам дистанции до старта
         //SetDistances(maze);
@@ -107,10 +110,15 @@ public class MazeGenerator
 
     private Maze GenerateBoundaryMaze(MazeSide side)
     {
+        // Убираем точки старта и финиша с основного Maze, чтобы сгенерировать boundary Maze без них
+        Cells[StartPosition.x][StartPosition.y].Type = MazeCellType.Default;
+        Cells[FinishPosition.x][FinishPosition.y].Type = MazeCellType.Default;
+
         MazeCell[][] cells = MazeGenerateUtilities.GetMazePartBySide(Cells, side);
 
-        // Убираем точку финиша с граничных лабиринтов
-        cells[FinishPosition.x % cells.Length][FinishPosition.y % cells[0].Length].Type = MazeCellType.Default;
+        // Возвращаем точки старта и финиша на основной Maze
+        Cells[StartPosition.x][StartPosition.y].Type = MazeCellType.Start;
+        Cells[FinishPosition.x][FinishPosition.y].Type = MazeCellType.Finish;
 
         //Vector2 mazePosition = GetBoundaryMazePosition(side, cells.Length, cells[0].Length);
         Maze boundaryMaze = new(cells.Length, cells[0].Length, side)
@@ -433,7 +441,8 @@ public class MazeGenerator
                 Cells[0][y].WallsStatus.LeftWall = false;
                 Cells[xMax][y].WallsStatus.RightWall = false;
             }
-            else {
+            else
+            {
                 Cells[0][y].WallsStatus.LeftWall = true;
                 Cells[xMax][y].WallsStatus.RightWall = true;
             }
@@ -459,7 +468,7 @@ public class MazeGenerator
             //    flagSymmetric = false;
             //    startIndex = -1;
             //}
-            if (Cells[x][0].WallsStatus.LeftWall == Cells[x][yMax].WallsStatus.LeftWall 
+            if (Cells[x][0].WallsStatus.LeftWall == Cells[x][yMax].WallsStatus.LeftWall
                 && Cells[x][0].WallsStatus.RightWall == Cells[x][yMax].WallsStatus.RightWall
                 )
             {

@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class CellHandler : MonoBehaviour
 {
-    public CellSpawnConfiguration CellSpawnConfugiration;
+    public CellSpawnConfiguration CellSpawnConfiguration;
 
 
     public Cell CreateCellByDecoration(CellDecoration decoration)
     {
-        DecorationMaterials materials = CellSpawnConfugiration.GetMaterialsByDecoration(decoration);
+        DecorationMaterials materials = CellSpawnConfiguration.GetMaterialsByDecoration(decoration);
 
         List<Wall> walls = new List<Wall>() {
             new Wall(WallType.Top, materials.Wall),

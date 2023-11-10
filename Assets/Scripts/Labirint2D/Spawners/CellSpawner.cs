@@ -5,6 +5,10 @@ public class CellSpawner : MonoBehaviour
 {
     public GameObject CellPrefab;
 
+    public Material StartMaterial;
+    public Material FinishMaterial;
+    public Material PortalMaterial;
+
     private Transform CellsFolder;
     private Cell Cell;
 
@@ -39,7 +43,16 @@ public class CellSpawner : MonoBehaviour
         SetVisibilityToWallsAndColumns(cell, mazeCell.WallsStatus, mazeCell.ColumnsStatus);
 
         // Выбираем материал пола
-        cell.Floor.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = Cell.Floor.Material;
+        if (mazeCell.Type == MazeCellType.Default)
+            cell.Floor.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = Cell.Floor.Material;
+        else {
+            if (mazeCell.Type == MazeCellType.Start)
+                cell.Floor.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = StartMaterial;
+            else if (mazeCell.Type == MazeCellType.Finish)
+                cell.Floor.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = FinishMaterial;
+            else
+                cell.Floor.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = PortalMaterial;
+        }
         cell.Floor.SetActive(true);
 
 
