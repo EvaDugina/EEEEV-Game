@@ -53,8 +53,10 @@ public class AreaGenerator
         Area.MainMaze = mazeGenerator.GenerateMainMaze(AreaStructure.StartParameters, AreaStructure.FinishParameter);
 
         // Генерируем граничные лабиринты
-        if (Area.Type != AreaType.Corridor && Area.Type != AreaType.Room)
+        if (Area.Topology == AreaTopology.Toroid)
             Area.BoundaryMazes = mazeGenerator.GenerateBoundaryMazes();
+        else
+            Area.MainMaze.Cells = mazeGenerator.GenerateBoundaryWalls();
 
         return Area;
 

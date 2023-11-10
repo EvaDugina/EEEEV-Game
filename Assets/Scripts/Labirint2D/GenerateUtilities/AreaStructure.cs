@@ -99,7 +99,7 @@ public class AreaStructureHandler
     {
         return new AreaStructure()
         {
-            StartParameters = StaticPositionParameter.Center,
+            StartParameters = StaticPositionParameter.Left,
             FinishParameter = DynamicPositionParameter.None,
             PortalInParameter = DynamicPositionParameter.None,
             PortalOutParameters = new List<StaticPositionParameter>() {

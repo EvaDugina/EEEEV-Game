@@ -25,7 +25,7 @@ public class CellSpawnConfiguration : MonoBehaviour
         else if (decoration == CellDecoration.BirchField)
             return BirchFieldDecoration;
         else if (decoration == CellDecoration.RedRoom)
-            return BirchFieldDecoration;
+            return RedRoomDecoration;
         else
             return EmptyDecoration;
     }

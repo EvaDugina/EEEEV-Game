@@ -52,7 +52,7 @@ public class Area
         if (Type == AreaType.Main) Priority = AreaPriority.Main;
         else Priority = AreaPriority.Secondary;
 
-        if (Priority == AreaPriority.Main) Topology = AreaTopology.Toroid;
+        if (Type == AreaType.Main || Type == AreaType.Field) Topology = AreaTopology.Toroid;
         else Topology = AreaTopology.Plain;
 
         X = position.x;

@@ -6,56 +6,55 @@ public class MazeGenerateUtilities
 
     public static MazeCell[][] DefineTriangleMaze(int width, int height)
     {
+        // Формально объявляем и заполняем массив
         MazeCell[][] cells = new MazeCell[width][];
+        for (int x = 0; x < width; x++)
+        {
+            cells[x] = new MazeCell[height];
+            for (int y = 0; y < height; y++)
+                cells[x][y] = new MazeCell(x, y, MazeCellType.Default);
+        }
 
         int countX = (width / 2 - 1);
         int countY = (height / 2 - 1);
         int k = countX / countY;
 
+        // Треугольник, указывающий влево
         int currentHeight = height / 2;
         for (int x = 0; x < width / 2; x++)
         {
-            cells[x] = new MazeCell[height];
-            for (int y = 0; y < height / 2; y++)
-                cells[x][y] = new MazeCell(x, y, MazeCellType.Default);
 
-            if (x < width / 2)
+            for (int y = 0; y < currentHeight; y++)
             {
-                for (int y = 0; y <= currentHeight; y++)
-                {
-                    cells[x][y].SetStatus(MazeCellStatus.Disable);
-                    cells[x][height - y - 1].SetStatus(MazeCellStatus.Disable);
-                }
+                cells[x][y].SetStatus(MazeCellStatus.Disable);
+                cells[x][height - y - 1].SetStatus(MazeCellStatus.Disable);
             }
 
+            // Ступенька
             if (x % k == 0)
                 currentHeight--;
         }
 
+        // Треугольник, указывающий вправо
         currentHeight = 0;
-        for (int x = width / 2; x < width; x++)
+        for (int x = width / 2+1; x < width; x++)
         {
-            cells[x] = new MazeCell[height];
-            for (int y = 0; y < height; y++)
-                cells[x][y] = new MazeCell(x, y, MazeCellType.Default);
 
             if ((x - width / 2) % k == 0)
                 currentHeight++;
 
-            if (width / 2 < x && x < width - 1)
+            for (int y = 0; y < currentHeight; y++)
             {
-                for (int y = 0; y < currentHeight; y++)
-                {
-                    cells[x][y].SetStatus(MazeCellStatus.Disable);
-                    cells[x][height - y - 1].SetStatus(MazeCellStatus.Disable);
-                }
+                cells[x][y].SetStatus(MazeCellStatus.Disable);
+                cells[x][height - y - 1].SetStatus(MazeCellStatus.Disable);
             }
         }
 
         return cells;
     }
 
-    public static MazeCell[][] DefineDefaultMaze(int width, int height) {
+    public static MazeCell[][] DefineDefaultMaze(int width, int height)
+    {
         MazeCell[][] cells = new MazeCell[width][];
         for (int x = 0; x < width; x++)
         {

@@ -93,6 +93,9 @@ public class MazeGenerator
 
     public List<Maze> GenerateBoundaryMazes()
     {
+        // Добавляем проходы для расположения лабиринта на торе
+        CreateBoundaryPasseges();
+
         List<Maze> boundaryMazes = new List<Maze>
         {
             GenerateBoundaryMaze(MazeSide.Left),
@@ -132,6 +135,10 @@ public class MazeGenerator
         return boundaryMaze;
     }
 
+    public MazeCell[][] GenerateBoundaryWalls() {
+        return Cells;
+    }
+
 
     private void GenerateStructure()
     {
@@ -157,7 +164,8 @@ public class MazeGenerator
         }
         else if (Structure.Routing == MazeRouting.HighSparse)
         {
-            GenerateRoutingHighSparse();
+            GenerateRoutingParticallyBraid();
+            //GenerateRoutingHighSparse();
         }
         else
         {
@@ -195,13 +203,13 @@ public class MazeGenerator
 
             List<MazeCell> unvisitedNeighbours = new List<MazeCell>();
 
-            if (x > 0 && !CellsInfo[x - 1][y].Visited)
+            if (x > 0 && !CellsInfo[x - 1][y].Visited && Cells[x - 1][y].Status != MazeCellStatus.Disable)
                 unvisitedNeighbours.Add(Cells[x - 1][y]);
-            if (y > 0 && !CellsInfo[x][y - 1].Visited)
+            if (y > 0 && !CellsInfo[x][y - 1].Visited && Cells[x][y - 1].Status != MazeCellStatus.Disable)
                 unvisitedNeighbours.Add(Cells[x][y - 1]);
-            if (x < Width - 1 && !CellsInfo[x + 1][y].Visited)
+            if (x < Width - 1 && !CellsInfo[x + 1][y].Visited && Cells[x + 1][y].Status != MazeCellStatus.Disable)
                 unvisitedNeighbours.Add(Cells[x + 1][y]);
-            if (y < Height - 1 && !CellsInfo[x][y + 1].Visited)
+            if (y < Height - 1 && !CellsInfo[x][y + 1].Visited && Cells[x][y + 1].Status != MazeCellStatus.Disable)
                 unvisitedNeighbours.Add(Cells[x][y + 1]);
 
             if (unvisitedNeighbours.Count > 0)
@@ -226,13 +234,13 @@ public class MazeGenerator
                 int indexRandomNeighbor = Random.Range(0, 4);
                 MazeCell randomNeighbor = null;
 
-                if (x > 2 && indexRandomNeighbor == 0)
+                if (x > 2 && indexRandomNeighbor == 0 && Cells[x - 1][y].Status != MazeCellStatus.Disable)
                     randomNeighbor = Cells[x - 1][y];
-                else if (x < Width - 2 && indexRandomNeighbor == 1)
+                else if (x < Width - 2 && indexRandomNeighbor == 1 && Cells[x + 1][y].Status != MazeCellStatus.Disable)
                     randomNeighbor = Cells[x + 1][y];
-                else if (y > 2 && indexRandomNeighbor == 2)
+                else if (y > 2 && indexRandomNeighbor == 2 && Cells[x][y - 1].Status != MazeCellStatus.Disable)
                     randomNeighbor = Cells[x][y - 1];
-                else if (y < Height - 2 && indexRandomNeighbor == 3)
+                else if (y < Height - 2 && indexRandomNeighbor == 3 && Cells[x][y + 1].Status != MazeCellStatus.Disable)
                     randomNeighbor = Cells[x][y + 1];
 
                 if (randomNeighbor != null)
@@ -243,11 +251,7 @@ public class MazeGenerator
 
         } while (stackVisited.Count > 0);
 
-        //// Убираем лишние крайние стены
         AddBoundaryWalls();
-
-        // Добавляем проходы для расположения лабиринта на торе
-        CreateBoundaryPasseges();
 
     }
 
@@ -419,7 +423,7 @@ public class MazeGenerator
             //Debug.Log(Width + "(" + Cells.Length + ")" + " " + Height + "(" + Cells[0].Length + ")" + ": (" + xMax + ", " + y + ")");
             if (Cells[0][y].WallsStatus.BottomWall == Cells[xMax][y].WallsStatus.BottomWall
                 && Cells[0][y].WallsStatus.TopWall == Cells[xMax][y].WallsStatus.TopWall
-                )
+                && y % 2 == 1)
             {
                 Cells[0][y].WallsStatus.LeftWall = false;
                 Cells[xMax][y].WallsStatus.RightWall = false;
@@ -453,7 +457,7 @@ public class MazeGenerator
             //}
             if (Cells[x][0].WallsStatus.LeftWall == Cells[x][yMax].WallsStatus.LeftWall
                 && Cells[x][0].WallsStatus.RightWall == Cells[x][yMax].WallsStatus.RightWall
-                )
+                && x % 2 == 1)
             {
                 Cells[x][0].WallsStatus.BottomWall = false;
                 Cells[x][yMax].WallsStatus.TopWall = false;

@@ -1,4 +1,5 @@
 ﻿
+using System;
 using UnityEngine;
 
 public class CellSpawner : MonoBehaviour
@@ -32,6 +33,8 @@ public class CellSpawner : MonoBehaviour
 
     public void SpawnCell(MazeCell mazeCell)
     {
+        if (mazeCell.Status == MazeCellStatus.Disable) return;
+
         GameObject cellObject = Instantiate(CellPrefab,
             CellsFolder.TransformPoint(new Vector3(mazeCell.X * Cell.Width, mazeCell.Y * Cell.Height, 0)),
             Quaternion.identity, CellsFolder);
@@ -40,6 +43,7 @@ public class CellSpawner : MonoBehaviour
 
         Cell2D cell = cellObject.GetComponent<Cell2D>();
 
+        SetMaterialsToWallsAndColumns(cell);
         SetVisibilityToWallsAndColumns(cell, mazeCell.WallsStatus, mazeCell.ColumnsStatus);
 
         // Выбираем материал пола
@@ -70,6 +74,31 @@ public class CellSpawner : MonoBehaviour
         //cell.TextDistance.GetComponent<TextMeshPro>().text = maze.Cells[x][y].DistanceFromStart.ToString();
     }
 
+
+    private void SetMaterialsToWallsAndColumns(Cell2D cell)
+    {
+        foreach (Wall wall in Cell.Walls)
+        {
+            GameObject wallObject;
+            if (wall.Type == WallType.Top) wallObject = cell.Walls.TopWall;
+            else if (wall.Type == WallType.Left) wallObject = cell.Walls.LeftWall;
+            else if (wall.Type == WallType.Right) wallObject = cell.Walls.RightWall;
+            else wallObject = cell.Walls.BottomWall;
+
+            wallObject.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = wall.Material;
+        }
+
+        foreach (Column column in Cell.Columns)
+        {
+            GameObject columnObject;
+            if (column.Type == ColumnType.TopLeft) columnObject = cell.Columns.TopLeft;
+            else if (column.Type == ColumnType.TopRight) columnObject = cell.Columns.TopRight;
+            else if (column.Type == ColumnType.BottomLeft) columnObject = cell.Columns.BottomLeft;
+            else columnObject = cell.Columns.BottomRight;
+
+            columnObject.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = column.ColumnMaterial;
+        }
+    }
 
     public GameObject GetResizedCellPrefab(float width, float height, float length, Transform mazesFolder)
     {

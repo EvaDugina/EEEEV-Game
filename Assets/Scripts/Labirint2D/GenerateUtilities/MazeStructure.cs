@@ -25,7 +25,6 @@ public class MazeStructure
 {
     //public MazeDimension Dimension;
     public MazeForm Form;
-    //public MazeTopology Topology;
     public MazeTessellation Tessellation;
     public MazeRouting Routing;
     public MazeTexture Texture;
@@ -51,7 +50,6 @@ public class MazeStructureHandler {
         {
             //Dimension = MazeDimension.Two,
             Form = MazeForm.Default,
-            //Topology = MazeTopology.Toroid,
             Tessellation = MazeTessellation.Orthogonal,
             Routing = MazeRouting.ParticallyBraid,
             Texture = MazeTexture.Longitudinall
@@ -64,7 +62,6 @@ public class MazeStructureHandler {
         {
             //Dimension = MazeDimension.One,
             Form = MazeForm.Triangle,
-            //Topology = MazeTopology.Plain,
             Tessellation = MazeTessellation.Orthogonal,
             Routing = MazeRouting.HighSparse,
             Texture = MazeTexture.Longitudinall
@@ -77,7 +74,6 @@ public class MazeStructureHandler {
         {
             //Dimension = MazeDimension.One,
             Form = MazeForm.Default,
-            //Topology = MazeTopology.Toroid,
             Tessellation = MazeTessellation.Orthogonal,
             Routing = MazeRouting.None,
             Texture = MazeTexture.Longitudinall
@@ -90,7 +86,6 @@ public class MazeStructureHandler {
         {
             //Dimension = MazeDimension.One,
             Form = MazeForm.Default,
-            //Topology = MazeTopology.Plain,
             Tessellation = MazeTessellation.Orthogonal,
             Routing = MazeRouting.None,
             Texture = MazeTexture.Longitudinall

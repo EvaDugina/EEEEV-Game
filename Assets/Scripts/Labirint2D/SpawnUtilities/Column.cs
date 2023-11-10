@@ -13,13 +13,11 @@ public enum ColumnType
 public class Column
 {
     public ColumnType Type;
-    public Material EnableColumn; 
-    public Material DisableColumn;
+    public Material ColumnMaterial; 
 
     public Column(ColumnType type, Material enableColumn, Material disableColumn)
     {
         Type = type;
-        EnableColumn = enableColumn;
-        DisableColumn = disableColumn;
+        ColumnMaterial = enableColumn;
     }
 }
