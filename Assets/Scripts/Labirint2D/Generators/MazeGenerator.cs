@@ -81,7 +81,8 @@ public class MazeGenerator
         if (maze.Type != MazeType.Boundary)
         {
             maze.SetStartPosition(StartPosition);
-            maze.SetFinishPosition(FinishPosition);
+            if (FinishPosition != -Vector2Int.one)
+                maze.SetFinishPosition(FinishPosition);
         }
 
         //Назначаем клеткам дистанции до старта
@@ -112,13 +113,15 @@ public class MazeGenerator
     {
         // Убираем точки старта и финиша с основного Maze, чтобы сгенерировать boundary Maze без них
         Cells[StartPosition.x][StartPosition.y].Type = MazeCellType.Default;
-        Cells[FinishPosition.x][FinishPosition.y].Type = MazeCellType.Default;
+        if (FinishPosition != -Vector2Int.one)
+            Cells[FinishPosition.x][FinishPosition.y].Type = MazeCellType.Default;
 
         MazeCell[][] cells = MazeGenerateUtilities.GetMazePartBySide(Cells, side);
 
         // Возвращаем точки старта и финиша на основной Maze
         Cells[StartPosition.x][StartPosition.y].Type = MazeCellType.Start;
-        Cells[FinishPosition.x][FinishPosition.y].Type = MazeCellType.Finish;
+        if (FinishPosition != -Vector2Int.one)
+            Cells[FinishPosition.x][FinishPosition.y].Type = MazeCellType.Finish;
 
         //Vector2 mazePosition = GetBoundaryMazePosition(side, cells.Length, cells[0].Length);
         Maze boundaryMaze = new(cells.Length, cells[0].Length, side)
@@ -147,20 +150,19 @@ public class MazeGenerator
 
     private void GenerateRouting()
     {
-        GenerateRoutingParticallyBraid();
 
-        //if (Structure.Routing == MazeRouting.ParticallyBraid)
-        //{
-        //    GenerateRoutingParticallyBraid();
-        //}
-        //else if (Structure.Routing == MazeRouting.HighSparse)
-        //{
-        //    GenerateRoutingHighSparse();
-        //}
-        //else
-        //{
-        //    GenerateRoutingNone();
-        //}
+        if (Structure.Routing == MazeRouting.ParticallyBraid)
+        {
+            GenerateRoutingParticallyBraid();
+        }
+        else if (Structure.Routing == MazeRouting.HighSparse)
+        {
+            GenerateRoutingHighSparse();
+        }
+        else
+        {
+            GenerateRoutingNone();
+        }
 
     }
 
@@ -172,42 +174,9 @@ public class MazeGenerator
         }
     }
 
-
-
-
-
-    //private void RemoveBoundaryCells()
-    //{
-    //    int newWidth = Width - 1;
-    //    int newHeight = Height - 1;
-    //    MazeCell[][] newMaze = new MazeCell[newWidth][];
-    //    Array.Copy(Cells, newMaze, newWidth);
-    //    for (int x = 0; x < newWidth; x++)
-    //    {
-    //        newMaze[x] = new MazeCell[newHeight];
-    //        Array.Copy(Cells[x], newMaze[x], newHeight);
-    //    }
-    //    Cells = newMaze;
-    //    Width -= 1;
-    //    Height -= 1;
-    //}
-
     /// <summary>
     // Генерируем лабиринт, удаляя стены
     /// </summary>
-
-    public void GenerateRoutingNone()
-    {
-
-        // Удаляем все стены
-        for (int x = 0; x < Width; x++)
-        {
-            for (int y = 0; y < Height; y++)
-            {
-                Cells[x][y].RemoveAllWalls();
-            }
-        }
-    }
 
 
     public void GenerateRoutingParticallyBraid()
@@ -286,6 +255,20 @@ public class MazeGenerator
     {
 
     }
+
+    public void GenerateRoutingNone()
+    {
+
+        // Удаляем все стены
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                Cells[x][y].RemoveAllWalls();
+            }
+        }
+    }
+
 
 
     //private void GenerateFieldsInsideMaze(MazeCell[][] mazeCells)

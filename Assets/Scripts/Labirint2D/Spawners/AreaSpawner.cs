@@ -38,7 +38,7 @@ public class AreaSpawner : MonoBehaviour
 
         // Ставим каркас Area
         GameObject areaObject = Instantiate(AreaPrefab,
-            AreasFolder.TransformPoint(new Vector3(-area.Width/2, -area.Height/2, area.ZIndex)),
+            AreasFolder.TransformPoint(new Vector3(-area.Width/2 * cellTemplate.Width, -area.Height/2 * cellTemplate.Height, -area.ZIndex * cellTemplate.Length)),
             Quaternion.identity, AreasFolder);
         areaObject.name = area.Id + area.GetAreaTypeAsText() + "Area";
 

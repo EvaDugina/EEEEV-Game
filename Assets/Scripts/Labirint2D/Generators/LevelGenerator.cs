@@ -67,6 +67,10 @@ public class LevelGenerator
             if (type != AreaType.Corridor)
                 height = (int)(Height * koeff);
             else height = 1;
+
+            // Гарантируем нечётность сторон лабиринта
+            if (width % 2 == 0) width += 1;
+            if (height % 2 == 0) height += 1;
         }
         else
         {
