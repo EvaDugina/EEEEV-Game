@@ -54,10 +54,10 @@ public class MazeCell : ICloneable
         Type = type;
         Status = status;
 
-        WallsStatus.TopWall = false;
-        WallsStatus.RightWall = false;
-        WallsStatus.BottomWall = false;
-        WallsStatus.LeftWall = false;
+        WallsStatus.TopWall = true;
+        WallsStatus.RightWall = true;
+        WallsStatus.BottomWall = true;
+        WallsStatus.LeftWall = true;
 
         ColumnsStatus = new MazeCellColumnsStatus()
         {

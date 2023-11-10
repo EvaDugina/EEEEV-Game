@@ -293,7 +293,7 @@ MonoBehaviour:
   Walls:
     TopWall: {fileID: 3989832351414178645}
     RightWall: {fileID: 6780686382219156156}
-    BottomWall: {fileID: 8160321612790541601}
+    BottomWall: {fileID: 6095815189853775719}
     LeftWall: {fileID: 1249820006003301835}
   Columns:
     TopLeft: {fileID: 7242165572923239967}

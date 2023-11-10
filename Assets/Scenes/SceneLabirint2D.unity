@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1171,6 +1171,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1047970426568757374, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: CellPrefab
+      value: 
+      objectReference: {fileID: 1842833647202691168, guid: 2f97916b129bee849a3b98165d3a6067, type: 3}
     - target: {fileID: 1678810746168365325, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1211,10 +1215,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1730764021364460184, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: CellPrefab
+      value: 
+      objectReference: {fileID: 1842833647202691168, guid: 2f97916b129bee849a3b98165d3a6067, type: 3}
     - target: {fileID: 4710519834860055386, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: m_Name
       value: Level
       objectReference: {fileID: 0}
+    - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 1773131082}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

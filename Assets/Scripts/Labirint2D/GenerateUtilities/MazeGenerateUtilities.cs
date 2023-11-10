@@ -88,45 +88,45 @@ public class MazeGenerateUtilities
         }
 
         int width;
-        MazeCell[][] slicedMaze;
+        MazeCell[][] sideMaze;
         switch (side)
         {
             case MazeSide.Left:
                 width = clone.Length / koefCuttingSiblingMazes;
-                slicedMaze = new MazeCell[width][];
-                Array.Copy(clone, width, slicedMaze, 0, width);
+                sideMaze = new MazeCell[width][];
+                Array.Copy(clone, width + clone.Length % 2, sideMaze, 0, width);
                 break;
             case MazeSide.Right:
                 width = clone.Length / koefCuttingSiblingMazes;
-                slicedMaze = new MazeCell[width][];
-                Array.Copy(clone, 0, slicedMaze, 0, width);
+                sideMaze = new MazeCell[width][];
+                Array.Copy(clone, 0, sideMaze, 0, width);
                 break;
             case MazeSide.Top:
                 width = clone.Length;
-                slicedMaze = new MazeCell[width][];
+                sideMaze = new MazeCell[width][];
                 for (int x = 0; x < width; x++)
                 {
                     int height = clone[x].Length / koefCuttingSiblingMazes;
-                    slicedMaze[x] = new MazeCell[height];
-                    Array.Copy(clone[x], 0, slicedMaze[x], 0, height);
+                    sideMaze[x] = new MazeCell[height];
+                    Array.Copy(clone[x], 0, sideMaze[x], 0, height);
                 }
                 break;
             case MazeSide.Bottom:
                 width = clone.Length;
-                slicedMaze = new MazeCell[width][];
+                sideMaze = new MazeCell[width][];
                 for (int x = 0; x < width; x++)
                 {
                     int height = clone[x].Length / koefCuttingSiblingMazes;
-                    slicedMaze[x] = new MazeCell[height];
-                    Array.Copy(clone[x], height, slicedMaze[x], 0, height);
+                    sideMaze[x] = new MazeCell[height];
+                    Array.Copy(clone[x], height + clone[x].Length % 2, sideMaze[x], 0, height);
                 }
                 break;
             default:
-                slicedMaze = GetMazeTrianglesBySide(clone, side);
+                sideMaze = GetMazeTrianglesBySide(clone, side);
                 break;
         }
 
-        return slicedMaze;
+        return sideMaze;
     }
 
     public static MazeCell[][] GetMazeTrianglesBySide(MazeCell[][] cells, MazeSide side)
@@ -153,5 +153,34 @@ public class MazeGenerateUtilities
         }
 
         return slicedMaze;
+    }
+
+
+    public static Vector2 GetBoundaryMazePositionInsideArea(int mainMazeWidth, int mainMazeHeight, MazeSide side)
+    {
+        switch (side)
+        {
+
+            case MazeSide.Left:
+                return new Vector2(-mainMazeWidth, 0);
+            case MazeSide.Right:
+                return new Vector2(mainMazeWidth, 0);
+            case MazeSide.Top:
+                return new Vector2(0, mainMazeHeight);
+            case MazeSide.Bottom:
+                return new Vector2(0, -mainMazeHeight);
+
+            case MazeSide.TopLeft:
+                return GetBoundaryMazePositionInsideArea(mainMazeWidth, mainMazeHeight, MazeSide.Top) + GetBoundaryMazePositionInsideArea(mainMazeWidth, mainMazeHeight, MazeSide.Left);
+            case MazeSide.TopRight:
+                return GetBoundaryMazePositionInsideArea(mainMazeWidth, mainMazeHeight, MazeSide.Top) + GetBoundaryMazePositionInsideArea(mainMazeWidth, mainMazeHeight, MazeSide.Right);
+            case MazeSide.BottomLeft:
+                return GetBoundaryMazePositionInsideArea(mainMazeWidth, mainMazeHeight, MazeSide.Bottom) + GetBoundaryMazePositionInsideArea(mainMazeWidth, mainMazeHeight, MazeSide.Left);
+            case MazeSide.BottomRight:
+                return GetBoundaryMazePositionInsideArea(mainMazeWidth, mainMazeHeight, MazeSide.Bottom) + GetBoundaryMazePositionInsideArea(mainMazeWidth, mainMazeHeight, MazeSide.Right);
+
+            default:
+                return Vector2.zero;
+        }
     }
 }

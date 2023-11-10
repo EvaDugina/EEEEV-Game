@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 
-public enum MazeType { 
+public enum MazeType
+{
     Main,
     Boundary
 }
 
-public enum MazeSide { 
+public enum MazeSide
+{
     Center, Left, Top, Right, Bottom,
     TopLeft, TopRight, BottomRight, BottomLeft
 }
@@ -26,7 +28,8 @@ public class Maze
     public MazeCell[][] Cells;
 
 
-    public Maze(int width, int height, MazeSide side) {
+    public Maze(int width, int height, MazeSide side)
+    {
 
         Width = width;
         Height = height;
@@ -45,7 +48,8 @@ public class Maze
 */
 
 
-    public void SetSide(MazeSide orientation) {
+    public void SetSide(MazeSide orientation)
+    {
         Side = orientation;
         if (Side == MazeSide.Center) Type = MazeType.Main;
         else Type = MazeType.Boundary;
@@ -69,35 +73,6 @@ public class Maze
 |   GETTERS
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────── 
 */
-
-
-    public Vector2 GetMazePositionInsideArea(MazeSide side)
-    {
-        switch (side)
-        {
-
-            case MazeSide.Left:
-                return new Vector2(-Width, 0);
-            case MazeSide.Right:
-                return new Vector2(Width, 0);
-            case MazeSide.Top:
-                return new Vector2(0, Height);
-            case MazeSide.Bottom:
-                return new Vector2(0, -Height);
-
-            case MazeSide.TopLeft:
-                return GetMazePositionInsideArea(MazeSide.Top) + GetMazePositionInsideArea(MazeSide.Left);
-            case MazeSide.TopRight:
-                return GetMazePositionInsideArea(MazeSide.Top) + GetMazePositionInsideArea(MazeSide.Right);
-            case MazeSide.BottomLeft:
-                return GetMazePositionInsideArea(MazeSide.Bottom) + GetMazePositionInsideArea(MazeSide.Left);
-            case MazeSide.BottomRight:
-                return GetMazePositionInsideArea(MazeSide.Bottom) + GetMazePositionInsideArea(MazeSide.Right);
-
-            default:
-                return Vector2.zero;
-        }
-    }
 
 
     /* 
@@ -142,7 +117,8 @@ public class Maze
 */
 
 
-    public void AddPortal(Vector2Int position) {
+    public void AddPortal(Vector2Int position)
+    {
         Cells[position.x][position.y].Type = MazeCellType.Portal;
     }
 

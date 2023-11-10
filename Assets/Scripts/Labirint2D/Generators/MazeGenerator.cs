@@ -70,7 +70,6 @@ public class MazeGenerator
         GenerateStructure();
 
         //RemoveBoundaryCells();
-
         FinishPosition = GetMazeFinish(finish);
 
         // Показываем / отключаем колонны
@@ -221,17 +220,17 @@ public class MazeGenerator
 
             if (x > 0 && !CellsInfo[x - 1][y].Visited)
                 unvisitedNeighbours.Add(Cells[x - 1][y]);
-            if (x < Width - 1 && !CellsInfo[x + 1][y].Visited)
-                unvisitedNeighbours.Add(Cells[x + 1][y]);
             if (y > 0 && !CellsInfo[x][y - 1].Visited)
                 unvisitedNeighbours.Add(Cells[x][y - 1]);
+            if (x < Width - 1 && !CellsInfo[x + 1][y].Visited)
+                unvisitedNeighbours.Add(Cells[x + 1][y]);
             if (y < Height - 1 && !CellsInfo[x][y + 1].Visited)
                 unvisitedNeighbours.Add(Cells[x][y + 1]);
 
             if (unvisitedNeighbours.Count > 0)
             {
                 MazeCell choosen = unvisitedNeighbours[Random.Range(0, unvisitedNeighbours.Count)];
-                RemoveWall(current, choosen);
+                RemoveBetweenWalls(current, choosen);
 
                 CellsInfo[choosen.X][choosen.Y].Visited = true;
                 stackVisited.Push(choosen);
@@ -261,20 +260,19 @@ public class MazeGenerator
 
                 if (randomNeighbor != null)
                 {
-                    RemoveWall(current, randomNeighbor);
+                    RemoveBetweenWalls(current, randomNeighbor);
                 }
             }
 
         } while (stackVisited.Count > 0);
 
         //// Убираем лишние крайние стены
-        //RemoveBoundaryWalls();
+        AddBoundaryWalls();
 
         // Добавляем проходы для расположения лабиринта на торе
         CreateBoundaryPasseges();
 
     }
-
 
     public void GenerateRoutingHighSparse()
     {
@@ -333,6 +331,27 @@ public class MazeGenerator
 
     //}
 
+
+    private void AddBoundaryWalls()
+    {
+        /// Добавляем стены снизу и сверху для граничных клеток
+        int yMax = Height - 1;
+        for (int x = 0; x < Width; x++)
+        {
+            Cells[x][0].WallsStatus.BottomWall = true;
+            Cells[x][yMax].WallsStatus.TopWall = true;
+        }
+
+        /// Добавляем стены слева и справа для граничных клеток
+        int xMax = Width - 1;
+        for (int y = 0; y < Height; y++)
+        {
+            Cells[0][y].WallsStatus.LeftWall = true;
+            Cells[xMax][y].WallsStatus.RightWall = true;
+
+        }
+    }
+
     //private void RemoveBoundaryWalls()
     //{
     //    /// Убираем лишние стены сверху
@@ -352,7 +371,7 @@ public class MazeGenerator
     //    }
     //}
 
-    private void RemoveWall(MazeCell a, MazeCell b)
+    private void RemoveBetweenWalls(MazeCell a, MazeCell b)
     {
         if (a.X == b.X)
         {
@@ -409,10 +428,14 @@ public class MazeGenerator
             //Debug.Log(Width + "(" + Cells.Length + ")" + " " + Height + "(" + Cells[0].Length + ")" + ": (" + xMax + ", " + y + ")");
             if (Cells[0][y].WallsStatus.BottomWall == Cells[xMax][y].WallsStatus.BottomWall
                 && Cells[0][y].WallsStatus.TopWall == Cells[xMax][y].WallsStatus.TopWall
-                && y % 2 == 1)
+                )
             {
                 Cells[0][y].WallsStatus.LeftWall = false;
                 Cells[xMax][y].WallsStatus.RightWall = false;
+            }
+            else {
+                Cells[0][y].WallsStatus.LeftWall = true;
+                Cells[xMax][y].WallsStatus.RightWall = true;
             }
         }
 
@@ -438,10 +461,15 @@ public class MazeGenerator
             //}
             if (Cells[x][0].WallsStatus.LeftWall == Cells[x][yMax].WallsStatus.LeftWall 
                 && Cells[x][0].WallsStatus.RightWall == Cells[x][yMax].WallsStatus.RightWall
-                && x % 2 == 1)
+                )
             {
                 Cells[x][0].WallsStatus.BottomWall = false;
                 Cells[x][yMax].WallsStatus.TopWall = false;
+            }
+            else
+            {
+                Cells[x][0].WallsStatus.BottomWall = true;
+                Cells[x][yMax].WallsStatus.TopWall = true;
             }
         }
     }
@@ -515,16 +543,16 @@ public class MazeGenerator
         {
             for (int y = 0; y < Height; y++)
             {
-                if (!Cells[x][y].WallsStatus.LeftWall || !Cells[x][y].WallsStatus.TopWall)
+                if (!Cells[x][y].WallsStatus.LeftWall && !Cells[x][y].WallsStatus.TopWall)
                     Cells[x][y].ColumnsStatus.TopLeft = false;
 
-                if (!Cells[x][y].WallsStatus.LeftWall || !Cells[x][y].WallsStatus.BottomWall)
+                if (!Cells[x][y].WallsStatus.LeftWall && !Cells[x][y].WallsStatus.BottomWall)
                     Cells[x][y].ColumnsStatus.BottomLeft = false;
 
-                if (!Cells[x][y].WallsStatus.RightWall || !Cells[x][y].WallsStatus.TopWall)
+                if (!Cells[x][y].WallsStatus.RightWall && !Cells[x][y].WallsStatus.TopWall)
                     Cells[x][y].ColumnsStatus.TopRight = false;
 
-                if (!Cells[x][y].WallsStatus.RightWall || !Cells[x][y].WallsStatus.BottomWall)
+                if (!Cells[x][y].WallsStatus.RightWall && !Cells[x][y].WallsStatus.BottomWall)
                     Cells[x][y].ColumnsStatus.BottomRight = false;
 
             }

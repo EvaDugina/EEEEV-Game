@@ -1,27 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using UnityEngine;
 
 public class CellSpawner : MonoBehaviour
 {
-
-    public GameObject OriginalCellPrefab;
-    private GameObject ResizedCellPrefab;
-
+    public GameObject CellPrefab;
 
     private Transform CellsFolder;
     private Cell Cell;
 
-
-    public void Spawn(Transform cellsFolder, Cell cell, MazeCell[][] mazeCells) {
+    public void Spawn(Transform cellsFolder, Cell cell, GameObject cellPrefab, MazeCell[][] mazeCells)
+    {
 
         CellsFolder = cellsFolder;
         Cell = cell;
-
-        ResizedCellPrefab = GetResizedCellPrefab();
+        CellPrefab = cellPrefab;
 
         for (int x = 0; x < mazeCells.Length; x++)
         {
@@ -36,33 +28,19 @@ public class CellSpawner : MonoBehaviour
 
     public void SpawnCell(MazeCell mazeCell)
     {
-        Cell2D cell = Instantiate(ResizedCellPrefab,
+        GameObject cellObject = Instantiate(CellPrefab,
             CellsFolder.TransformPoint(new Vector3(mazeCell.X * Cell.Width, mazeCell.Y * Cell.Height, 0)),
-            Quaternion.identity, CellsFolder)
-            .GetComponent<Cell2D>();
+            Quaternion.identity, CellsFolder);
+        cellObject.name = "[" + mazeCell.X.ToString() + "][" + mazeCell.Y.ToString() + "] Cell";
+        cellObject.SetActive(true);
 
-        // Показываем стены
-        cell.Walls.TopWall.SetActive(mazeCell.WallsStatus.TopWall);
-        cell.Walls.LeftWall.SetActive(mazeCell.WallsStatus.LeftWall);
-        cell.Walls.BottomWall.SetActive(mazeCell.WallsStatus.BottomWall);
-        cell.Walls.RightWall.SetActive(mazeCell.WallsStatus.RightWall);
+        Cell2D cell = cellObject.GetComponent<Cell2D>();
+
+        SetVisibilityToWallsAndColumns(cell, mazeCell.WallsStatus, mazeCell.ColumnsStatus);
 
         // Выбираем материал пола
         cell.Floor.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = Cell.Floor.Material;
         cell.Floor.SetActive(true);
-
-        //Отключение/включение колонны, когда рядом нет соседей
-        if (mazeCell.ColumnsStatus.TopLeft)
-            cell.Columns.TopLeft.transform.GetChild(0).gameObject.SetActive(false);
-
-        if (mazeCell.ColumnsStatus.TopRight)
-            cell.Columns.TopRight.transform.GetChild(0).gameObject.SetActive(false);
-
-        if (mazeCell.ColumnsStatus.BottomLeft)
-            cell.Columns.BottomLeft.transform.GetChild(0).gameObject.SetActive(false);
-
-        if (mazeCell.ColumnsStatus.BottomRight)
-            cell.Columns.BottomRight.transform.GetChild(0).gameObject.SetActive(false);
 
 
         //else
@@ -80,12 +58,37 @@ public class CellSpawner : MonoBehaviour
     }
 
 
-    public GameObject GetResizedCellPrefab() {
-        GameObject newCellPrefab = Instantiate(OriginalCellPrefab);
-        newCellPrefab.transform.localScale = new Vector3(Cell.Width, Cell.Height, Cell.Length);
+    public GameObject GetResizedCellPrefab(float width, float height, float length, Transform mazesFolder)
+    {
+        GameObject resizedCellPrefab = Instantiate(CellPrefab, mazesFolder);
+        resizedCellPrefab.transform.localScale = new Vector3(width, height, length);
+        resizedCellPrefab.name = "Template Cell";
 
-        return newCellPrefab;
+        resizedCellPrefab.SetActive(false);
+
+        return resizedCellPrefab;
     }
 
+
+    /* 
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+|   Utilities
+───────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+*/
+
+    private void SetVisibilityToWallsAndColumns(Cell2D cell, MazeCellWallsStatus wallsStatus, MazeCellColumnsStatus columnsStatus) {
+
+        // Показываем стены
+        cell.Walls.TopWall.SetActive(wallsStatus.TopWall);
+        cell.Walls.LeftWall.SetActive(wallsStatus.LeftWall);
+        cell.Walls.BottomWall.SetActive(wallsStatus.BottomWall);
+        cell.Walls.RightWall.SetActive(wallsStatus.RightWall);
+
+        //Отключаем / включаем колонны, когда рядом нет соседей)
+        cell.Columns.TopLeft.SetActive(columnsStatus.TopLeft);
+        cell.Columns.TopRight.SetActive(columnsStatus.TopRight);
+        cell.Columns.BottomLeft.SetActive(columnsStatus.BottomLeft);
+        cell.Columns.BottomRight.SetActive(columnsStatus.BottomRight);
+    }
 
 }

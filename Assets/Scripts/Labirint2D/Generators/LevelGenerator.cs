@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class LevelGenerator
@@ -30,19 +31,21 @@ public class LevelGenerator
     /// </summary>
     public Level GenerateLevel()
     {
-
         int id = 0;
-        Level = new(CreateArea(ref id, AreaType.Main, 1.0f));
+        Area area = CreateArea(id, AreaType.Main, LevelParameters[0].GenerateParams.SizeKoeff);
+        Level = new Level(area);
         id++;
 
         foreach (Parameters parameters in LevelParameters)
         {
-            if (parameters.Status)
+            if (parameters.Type != AreaType.Main && parameters.Status)
             {
                 if (AreaGenerator.IsValidAreaSize(Width, Height, parameters.Type, parameters.GenerateParams.SizeKoeff))
                 {
+
                     // Генерируем, добавляем Area и заполняем List Portals
-                    Level.SecondaryAreas.Add(CreateArea(ref id, parameters.Type, parameters.GenerateParams.SizeKoeff));
+                    area = CreateArea(id, parameters.Type, parameters.GenerateParams.SizeKoeff);
+                    Level.SecondaryAreas.Add(area);
                     id++;
                 }
             }
@@ -53,7 +56,7 @@ public class LevelGenerator
     }
 
 
-    private Area CreateArea(ref int id, AreaType type, float koeff)
+    private Area CreateArea(int id, AreaType type, float koeff)
     {
 
         // Высчитываем размер Areas
@@ -82,7 +85,6 @@ public class LevelGenerator
         //AreasConfigList.Add(info);
 
         AreaGenerator areaGenerator = new AreaGenerator(id, type, width, height);
-        id++;
 
         // Генерируем Area
         Area area = areaGenerator.GenerateArea();

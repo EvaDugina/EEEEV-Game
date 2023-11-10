@@ -6,11 +6,14 @@ using UnityEngine;
 public class MazeSpawner : MonoBehaviour
 {
     public GameObject MazePrefab;
-
     public CellSpawner CellSpawner;
 
     private Transform MazesFolder;
-    private Cell Cell; 
+    private Cell Cell;
+    private GameObject CellPrefab;
+
+    private int MainMazeWidth;
+    private int MainMazeHeight;
 
     /* 
 ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -18,11 +21,16 @@ public class MazeSpawner : MonoBehaviour
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────── 
 */
 
-    public void Spawn(Transform mazeFioder, Cell cellTemplate, Maze mainMaze, List<Maze> boundaryMazes) {
-        MazesFolder = mazeFioder;
+    public void Spawn(Transform mazeFolder, Cell cellTemplate, Maze mainMaze, List<Maze> boundaryMazes) {
+        MazesFolder = mazeFolder;
         Cell = cellTemplate;
 
+        CellPrefab = CellSpawner.GetResizedCellPrefab(cellTemplate.Width, cellTemplate.Height, cellTemplate.Length, MazesFolder);
+
         SpawnMaze(mainMaze);
+
+        MainMazeWidth = mainMaze.Width;
+        MainMazeHeight = mainMaze.Height;
 
         foreach (Maze maze in boundaryMazes)
         {
@@ -33,7 +41,11 @@ public class MazeSpawner : MonoBehaviour
 
     public void SpawnMaze(Maze maze)
     {
-        Vector2 mazePosition = maze.GetMazePositionInsideArea(maze.Side);
+        Vector2 mazePosition;
+        if (maze.Type == MazeType.Main)
+            mazePosition = Vector2.zero;
+        else
+            mazePosition = MazeGenerateUtilities.GetBoundaryMazePositionInsideArea(MainMazeWidth, MainMazeHeight, maze.Side);
 
         // Ставим каркас Maze
         GameObject mazeObject = Instantiate(MazePrefab,
@@ -43,7 +55,7 @@ public class MazeSpawner : MonoBehaviour
 
         Maze2D maze2D = mazeObject.GetComponent<Maze2D>();
 
-        CellSpawner.Spawn(maze2D.CellsFolder.transform, Cell, maze.Cells);
+        CellSpawner.Spawn(maze2D.CellsFolder.transform, Cell, CellPrefab, maze.Cells);
     }
 
 
