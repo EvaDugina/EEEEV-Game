@@ -5,8 +5,7 @@ using UnityEngine;
 public struct DecorationMaterials
 {
     public Material Wall;
-    public Material EnableColumn;
-    public Material DisableColumn;
+    public Material Column;
     public Material Floor;
 }
 

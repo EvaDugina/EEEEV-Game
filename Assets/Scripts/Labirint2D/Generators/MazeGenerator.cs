@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
@@ -57,6 +58,7 @@ public class MazeGenerator
     /// <summary>
     // Генерируем ГЛАВНЫЙ лабиринт
     /// </summary>
+    /// 
 
     public Maze GenerateMainMaze(StaticPositionParameter start, DynamicPositionParameter finish)
     {
@@ -76,7 +78,7 @@ public class MazeGenerator
         SetColumnTypes();
 
         Maze maze = new Maze(width, height, mazeSide);
-        maze.Cells = Cells;
+        maze.SetCells(Cells);
 
         if (maze.Type != MazeType.Boundary)
         {
@@ -94,7 +96,8 @@ public class MazeGenerator
     public List<Maze> GenerateBoundaryMazes()
     {
         // Добавляем проходы для расположения лабиринта на торе
-        CreateBoundaryPasseges();
+        if (Structure.Routing != MazeRouting.None)
+            CreateBoundaryPasseges();
 
         List<Maze> boundaryMazes = new List<Maze>
         {
@@ -115,27 +118,28 @@ public class MazeGenerator
     private Maze GenerateBoundaryMaze(MazeSide side)
     {
         // Убираем точки старта и финиша с основного Maze, чтобы сгенерировать boundary Maze без них
-        Cells[StartPosition.x][StartPosition.y].Type = MazeCellType.Default;
+        Cells[StartPosition.x][StartPosition.y].SetType(MazeCellType.Default);
         if (FinishPosition != -Vector2Int.one)
-            Cells[FinishPosition.x][FinishPosition.y].Type = MazeCellType.Default;
+            Cells[FinishPosition.x][FinishPosition.y].SetType(MazeCellType.Default);
 
         MazeCell[][] cells = MazeGenerateUtilities.GetMazePartBySide(Cells, side);
 
         // Возвращаем точки старта и финиша на основной Maze
-        Cells[StartPosition.x][StartPosition.y].Type = MazeCellType.Start;
+        Cells[StartPosition.x][StartPosition.y].SetType(MazeCellType.Start);
         if (FinishPosition != -Vector2Int.one)
-            Cells[FinishPosition.x][FinishPosition.y].Type = MazeCellType.Finish;
+            Cells[FinishPosition.x][FinishPosition.y].SetType(MazeCellType.Finish);
 
         //Vector2 mazePosition = GetBoundaryMazePosition(side, cells.Length, cells[0].Length);
-        Maze boundaryMaze = new(cells.Length, cells[0].Length, side)
-        {
-            Cells = cells
-        };
+        Maze boundaryMaze = new(cells.Length, cells[0].Length, side);
+        boundaryMaze.SetCells(cells);
 
         return boundaryMaze;
     }
 
-    public MazeCell[][] GenerateBoundaryWalls() {
+    public MazeCell[][] GenerateBoundaryWalls()
+    {
+        AddBoundaryWalls();
+        SetColumnTypes();
         return Cells;
     }
 
@@ -192,7 +196,7 @@ public class MazeGenerator
 
         MazeCell current = Cells[StartPosition.x][StartPosition.y];
         CellsInfo[StartPosition.x][StartPosition.y].Visited = true;
-        current.DistanceFromStart = 0;
+        current.SetDistanceFromStart(0);
 
         Stack<MazeCell> stackVisited = new Stack<MazeCell>();
 
@@ -220,7 +224,7 @@ public class MazeGenerator
                 CellsInfo[choosen.X][choosen.Y].Visited = true;
                 stackVisited.Push(choosen);
 
-                choosen.DistanceFromStart = current.DistanceFromStart + 1;
+                choosen.SetDistanceFromStart(current.DistanceFromStart + 1);
 
                 current = choosen;
             }
@@ -268,7 +272,7 @@ public class MazeGenerator
         {
             for (int y = 0; y < Height; y++)
             {
-                Cells[x][y].RemoveAllWalls();
+                Cells[x][y].DisableAllWalls();
             }
         }
     }
@@ -539,16 +543,32 @@ public class MazeGenerator
         {
             for (int y = 0; y < Height; y++)
             {
-                if (!Cells[x][y].WallsStatus.LeftWall && !Cells[x][y].WallsStatus.TopWall)
+                if (Cells[x][y].WallsStatus.LeftWall || Cells[x][y].WallsStatus.TopWall)
+                    Cells[x][y].ColumnsStatus.TopLeft = true;
+                else if (x > 0 && y < Height - 1 && Cells[x - 1][y].WallsStatus.TopWall && Cells[x][y + 1].WallsStatus.LeftWall)
+                    Cells[x][y].ColumnsStatus.TopLeft = true;
+                else
                     Cells[x][y].ColumnsStatus.TopLeft = false;
 
-                if (!Cells[x][y].WallsStatus.LeftWall && !Cells[x][y].WallsStatus.BottomWall)
+                if (Cells[x][y].WallsStatus.LeftWall || Cells[x][y].WallsStatus.BottomWall)
+                    Cells[x][y].ColumnsStatus.BottomLeft = true;
+                else if (x > 0 && y > 0 && Cells[x - 1][y].WallsStatus.BottomWall && Cells[x][y - 1].WallsStatus.LeftWall)
+                    Cells[x][y].ColumnsStatus.BottomLeft = true;
+                else
                     Cells[x][y].ColumnsStatus.BottomLeft = false;
 
-                if (!Cells[x][y].WallsStatus.RightWall && !Cells[x][y].WallsStatus.TopWall)
+                if (Cells[x][y].WallsStatus.RightWall || Cells[x][y].WallsStatus.TopWall)
+                    Cells[x][y].ColumnsStatus.TopRight = true;
+                else if (x < Width - 1 && y < Height - 1 && Cells[x + 1][y].WallsStatus.TopWall && Cells[x][y + 1].WallsStatus.RightWall)
+                    Cells[x][y].ColumnsStatus.TopRight = true;
+                else
                     Cells[x][y].ColumnsStatus.TopRight = false;
 
-                if (!Cells[x][y].WallsStatus.RightWall && !Cells[x][y].WallsStatus.BottomWall)
+                if (Cells[x][y].WallsStatus.RightWall || Cells[x][y].WallsStatus.BottomWall)
+                    Cells[x][y].ColumnsStatus.BottomRight = true;
+                else if (x <  Width - 1 && y > 0 && Cells[x + 1][y].WallsStatus.BottomWall && Cells[x][y - 1].WallsStatus.RightWall)
+                    Cells[x][y].ColumnsStatus.BottomRight = true;
+                else
                     Cells[x][y].ColumnsStatus.BottomRight = false;
 
             }
@@ -655,7 +675,7 @@ public class MazeGenerator
         while (current != startCell && index < arrayVisited.Count - 1)
         {
             if (previous.DistanceFromStart > 0)
-                current.DistanceFromStart = Mathf.Min(current.DistanceFromStart, previous.DistanceFromStart + 1);
+                current.SetDistanceFromStart(Mathf.Min(current.DistanceFromStart, previous.DistanceFromStart + 1));
 
             previous = current;
             current = arrayVisited[index++];

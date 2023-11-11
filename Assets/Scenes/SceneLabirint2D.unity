@@ -1250,6 +1250,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Level
       objectReference: {fileID: 0}
+    - target: {fileID: 8355324458623418089, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: EmptyDecoration.Column
+      value: 
+      objectReference: {fileID: 2100000, guid: 7549dba881ce52c4da16a9b05f86bdab, type: 2}
+    - target: {fileID: 8355324458623418089, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: RedRoomDecoration.Floor
+      value: 
+      objectReference: {fileID: 2100000, guid: 14f4dc55eda5b004db12bbee852ff43e, type: 2}
+    - target: {fileID: 8355324458623418089, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: RedRoomDecoration.Column
+      value: 
+      objectReference: {fileID: 2100000, guid: 6b592177e65e8f74e9b3eea6a6c1f356, type: 2}
+    - target: {fileID: 8355324458623418089, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: WheatFieldDecoration.Wall
+      value: 
+      objectReference: {fileID: 2100000, guid: 7549dba881ce52c4da16a9b05f86bdab, type: 2}
+    - target: {fileID: 8355324458623418089, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: BirchFieldDecoration.Column
+      value: 
+      objectReference: {fileID: 2100000, guid: 7549dba881ce52c4da16a9b05f86bdab, type: 2}
+    - target: {fileID: 8355324458623418089, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: WheatFieldDecoration.Column
+      value: 
+      objectReference: {fileID: 2100000, guid: 7549dba881ce52c4da16a9b05f86bdab, type: 2}
     - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: Player
       value: 

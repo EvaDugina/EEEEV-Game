@@ -16,16 +16,16 @@ public enum MazeSide
 public class Maze
 {
 
-    public int Width;
-    public int Height;
+    public int Width { get; private set; }
+    public int Height { get; private set; }
 
-    public MazeSide Side { get; set; }
-    public MazeType Type { get; set; }
+    public MazeSide Side { get; private set; }
+    public MazeType Type { get; private set; }
 
-    public Vector2Int StartPosition { get; set; }
-    public Vector2Int FinishPosition { get; set; }
+    public Vector2Int StartPosition { get; private set; }
+    public Vector2Int FinishPosition { get; private set; }
 
-    public MazeCell[][] Cells;
+    public MazeCell[][] Cells { get; private set; }
 
 
     public Maze(int width, int height, MazeSide side)
@@ -58,13 +58,17 @@ public class Maze
     public void SetStartPosition(Vector2Int start)
     {
         StartPosition = start;
-        Cells[start.x][start.y].Type = MazeCellType.Start;
+        Cells[start.x][start.y].SetType(MazeCellType.Start);
     }
 
     public void SetFinishPosition(Vector2Int finish)
     {
         FinishPosition = finish;
-        Cells[finish.x][finish.y].Type = MazeCellType.Finish;
+        Cells[finish.x][finish.y].SetType(MazeCellType.Finish);
+    }
+
+    public void SetCells(MazeCell[][] cells) { 
+        Cells = cells;
     }
 
 
@@ -119,7 +123,7 @@ public class Maze
 
     public void AddPortal(Vector2Int position)
     {
-        Cells[position.x][position.y].Type = MazeCellType.Portal;
+        Cells[position.x][position.y].SetType(MazeCellType.Portal);
     }
 
 };

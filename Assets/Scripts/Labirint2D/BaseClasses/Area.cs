@@ -28,21 +28,23 @@ public struct Portal
 
 public class Area
 {
-    public int Id;
-    public AreaType Type;
-    public AreaPriority Priority;
+    public int Id { get; private set; }
+    public AreaType Type { get; private set; }
+    public AreaPriority Priority { get; private set; }
 
-    public float X, Y;
-    public int ZIndex;
+    public float X { get; private set; }
+    public float Y { get; private set; }
+    public int ZIndex { get; private set; }
 
-    public int Width, Height;
+    public int Width { get; private set; }
+    public int Height { get; private set; }
 
-    public AreaTopology Topology;
+    public AreaTopology Topology { get; private set; }
 
-    public Maze MainMaze;
-    public List<Maze> BoundaryMazes;
+    public Maze MainMaze { get; private set; }
+    public List<Maze> BoundaryMazes { get; private set; }
 
-    public List<Portal> Portals;
+    public List<Portal> Portals { get; private set; }
 
     public Area(int id, AreaType type, Vector2 position, int width, int height)
     {
@@ -120,6 +122,14 @@ public class Area
     ───────────────────────────────────────────────────────────────────────────────────────────────────────────── 
     */
 
+    public void SetMainMaze(Maze maze)
+    {
+        MainMaze = maze;
+    }
+
+    public void SetBoundaryMazes(List<Maze> mazes) {
+        BoundaryMazes = mazes;
+    }
 
     public void AddPortals(List<Portal> portals)
     {

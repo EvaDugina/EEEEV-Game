@@ -46,17 +46,16 @@ public class AreaGenerator
 
     public Area GenerateArea() {
 
-        int id = Area.Id;
         MazeGenerator mazeGenerator = new MazeGenerator(Area.Width, Area.Height, MazeStructure);
 
         // Генерируем лабиринт с точкой финиша
-        Area.MainMaze = mazeGenerator.GenerateMainMaze(AreaStructure.StartParameters, AreaStructure.FinishParameter);
+        Area.SetMainMaze(mazeGenerator.GenerateMainMaze(AreaStructure.StartParameters, AreaStructure.FinishParameter));
 
         // Генерируем граничные лабиринты
         if (Area.Topology == AreaTopology.Toroid)
-            Area.BoundaryMazes = mazeGenerator.GenerateBoundaryMazes();
+            Area.SetBoundaryMazes(mazeGenerator.GenerateBoundaryMazes());
         else
-            Area.MainMaze.Cells = mazeGenerator.GenerateBoundaryWalls();
+            Area.MainMaze.SetCells(mazeGenerator.GenerateBoundaryWalls());
 
         return Area;
 

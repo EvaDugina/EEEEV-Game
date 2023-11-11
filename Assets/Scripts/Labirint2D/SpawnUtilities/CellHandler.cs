@@ -19,10 +19,10 @@ public class CellHandler : MonoBehaviour
         };
 
         List<Column> columns = new List<Column>() {
-            new Column(ColumnType.TopLeft, materials.EnableColumn, materials.DisableColumn),
-            new Column(ColumnType.TopRight, materials.EnableColumn, materials.DisableColumn),
-            new Column(ColumnType.BottomRight, materials.EnableColumn, materials.DisableColumn),
-            new Column(ColumnType.BottomLeft, materials.EnableColumn, materials.DisableColumn),
+            new Column(ColumnType.TopLeft, materials.Column, materials.Column),
+            new Column(ColumnType.TopRight, materials.Column, materials.Column),
+            new Column(ColumnType.BottomRight, materials.Column, materials.Column),
+            new Column(ColumnType.BottomLeft, materials.Column, materials.Column),
         };
 
         Floor floor = new Floor(materials.Floor);

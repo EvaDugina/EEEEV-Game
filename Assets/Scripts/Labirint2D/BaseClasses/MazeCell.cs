@@ -34,16 +34,16 @@ public struct MazeCellColumnsStatus
 public class MazeCell : ICloneable
 {
 
-    public int X;
-    public int Y;
+    public int X { get; private set; }
+    public int Y { get; private set; }
 
-    public MazeCellType Type;
-    public MazeCellStatus Status;
+    public MazeCellType Type { get; private set; }
+    public MazeCellStatus Status { get; private set; }
 
     public MazeCellWallsStatus WallsStatus;
     public MazeCellColumnsStatus ColumnsStatus;
 
-    public int DistanceFromStart;
+    public int DistanceFromStart { get; private set; }
 
 
     public MazeCell(int x, int y, MazeCellType type, MazeCellStatus status = MazeCellStatus.Enable)
@@ -54,10 +54,13 @@ public class MazeCell : ICloneable
         Type = type;
         Status = status;
 
-        WallsStatus.TopWall = true;
-        WallsStatus.RightWall = true;
-        WallsStatus.BottomWall = true;
-        WallsStatus.LeftWall = true;
+        WallsStatus = new MazeCellWallsStatus()
+        {
+            TopWall = true,
+            RightWall = true,
+            BottomWall = true,
+            LeftWall = true
+        };
 
         ColumnsStatus = new MazeCellColumnsStatus()
         {
@@ -73,18 +76,55 @@ public class MazeCell : ICloneable
 
     public object Clone() => MemberwiseClone();
 
+
+    /* 
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+|   SETTERS
+───────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+*/
+
     public void SetStatus(MazeCellStatus status)
     {
         Status = status;
     }
 
-
-    public void RemoveAllWalls()
+    public void SetType(MazeCellType type)
     {
-        WallsStatus.TopWall = false;
-        WallsStatus.RightWall = false;
-        WallsStatus.BottomWall = false;
-        WallsStatus.LeftWall = false;
+        Type = type;
+    }
+
+    public void SetDistanceFromStart(int distance)
+    {
+        DistanceFromStart = distance;
+    }
+
+    /* 
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+|   UTILITIES
+───────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+*/
+
+    public void EnableAllWalls() {
+        WallsStatus = new MazeCellWallsStatus()
+        {
+            TopWall = true,
+            RightWall = true,
+            BottomWall = true,
+            LeftWall = true
+        };
+    }
+
+    public void DisableAllWalls()
+    {
+
+        WallsStatus = new MazeCellWallsStatus()
+        {
+            TopWall = false,
+            RightWall = false,
+            BottomWall = false,
+            LeftWall = false
+        };
+
     }
 
 }

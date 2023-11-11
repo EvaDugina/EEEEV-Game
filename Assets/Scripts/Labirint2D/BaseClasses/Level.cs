@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class Level
 {
-    public Area MainArea;
-    public List<Area> SecondaryAreas;
+    public Area MainArea { get; private set; }
+    public List<Area> SecondaryAreas { get; private set; }
 
     public Level(Area mainArea)
     {
