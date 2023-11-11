@@ -31,7 +31,6 @@ public class Cell
         return Floor.Material;
     }
 
-
     public void SetSize(Vector3 size) {
         Width = size.x;
         Height = size.y;

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
@@ -17,33 +18,20 @@ public class MazeGenerator
     private int Width;
     private int Height;
 
-    private MazeStructure Structure;
-
     private Vector2Int StartPosition;
     private Vector2Int FinishPosition;
 
     private MazeCell[][] Cells;
-    private CellInfo[][] CellsInfo;
+
+    private MazeStructureGenerator MazeStructureGenerator;
 
 
     public MazeGenerator(int width, int height, MazeStructure structure)
     {
-
         Width = width;
         Height = height;
 
-        //Maze = new Maze(width, height);
-        Structure = structure;
-
-        CellsInfo = new CellInfo[width][];
-        for (int x = 0; x < width; x++)
-        {
-            CellsInfo[x] = new CellInfo[height];
-            for (int y = 0; y < height; y++)
-            {
-                CellsInfo[x][y].Visited = false;
-            }
-        }
+        MazeStructureGenerator = new MazeStructureGenerator(Width, Height, structure);
 
     }
 
@@ -69,7 +57,9 @@ public class MazeGenerator
 
         StartPosition = AreaStructureHandler.GetPositionByStaticParameter(start, Width, Height);
 
-        GenerateStructure();
+        Cells = MazeStructureGenerator.GenerateStructure(StartPosition);
+
+        AddBoundaryWalls();
 
         //RemoveBoundaryCells();
         FinishPosition = GetMazeFinish(finish);
@@ -93,11 +83,16 @@ public class MazeGenerator
         return maze;
     }
 
-    public List<Maze> GenerateBoundaryMazes()
+
+    public List<Maze> GenerateBoundaryMazes(MazeRouting routing)
     {
         // Добавляем проходы для расположения лабиринта на торе
-        if (Structure.Routing != MazeRouting.None)
+        if (routing == MazeRouting.None)
+            RemoveBoundaryWalls();
+        else
             CreateBoundaryPasseges();
+
+        SetColumnTypes();
 
         List<Maze> boundaryMazes = new List<Maze>
         {
@@ -134,147 +129,6 @@ public class MazeGenerator
         boundaryMaze.SetCells(cells);
 
         return boundaryMaze;
-    }
-
-    public MazeCell[][] GenerateBoundaryWalls()
-    {
-        AddBoundaryWalls();
-        SetColumnTypes();
-        return Cells;
-    }
-
-
-    private void GenerateStructure()
-    {
-        GenerateForm();
-        GenerateRouting();
-        GenerateTexture();
-    }
-
-    private void GenerateForm()
-    {
-        if (Structure.Form == MazeForm.Triangle)
-            Cells = MazeGenerateUtilities.DefineTriangleMaze(Width, Height);
-        else
-            Cells = MazeGenerateUtilities.DefineDefaultMaze(Width, Height);
-    }
-
-    private void GenerateRouting()
-    {
-
-        if (Structure.Routing == MazeRouting.ParticallyBraid)
-        {
-            GenerateRoutingParticallyBraid();
-        }
-        else if (Structure.Routing == MazeRouting.HighSparse)
-        {
-            GenerateRoutingParticallyBraid();
-            //GenerateRoutingHighSparse();
-        }
-        else
-        {
-            GenerateRoutingNone();
-        }
-
-    }
-
-    private void GenerateTexture()
-    {
-        if (Structure.Texture == MazeTexture.Longitudinall)
-        {
-
-        }
-    }
-
-    /// <summary>
-    // Генерируем лабиринт, удаляя стены
-    /// </summary>
-
-
-    public void GenerateRoutingParticallyBraid()
-    {
-
-        MazeCell current = Cells[StartPosition.x][StartPosition.y];
-        CellsInfo[StartPosition.x][StartPosition.y].Visited = true;
-        current.SetDistanceFromStart(0);
-
-        Stack<MazeCell> stackVisited = new Stack<MazeCell>();
-
-        do
-        {
-            int x = current.X;
-            int y = current.Y;
-
-            List<MazeCell> unvisitedNeighbours = new List<MazeCell>();
-
-            if (x > 0 && !CellsInfo[x - 1][y].Visited && Cells[x - 1][y].Status != MazeCellStatus.Disable)
-                unvisitedNeighbours.Add(Cells[x - 1][y]);
-            if (y > 0 && !CellsInfo[x][y - 1].Visited && Cells[x][y - 1].Status != MazeCellStatus.Disable)
-                unvisitedNeighbours.Add(Cells[x][y - 1]);
-            if (x < Width - 1 && !CellsInfo[x + 1][y].Visited && Cells[x + 1][y].Status != MazeCellStatus.Disable)
-                unvisitedNeighbours.Add(Cells[x + 1][y]);
-            if (y < Height - 1 && !CellsInfo[x][y + 1].Visited && Cells[x][y + 1].Status != MazeCellStatus.Disable)
-                unvisitedNeighbours.Add(Cells[x][y + 1]);
-
-            if (unvisitedNeighbours.Count > 0)
-            {
-                MazeCell choosen = unvisitedNeighbours[Random.Range(0, unvisitedNeighbours.Count)];
-                RemoveBetweenWalls(current, choosen);
-
-                CellsInfo[choosen.X][choosen.Y].Visited = true;
-                stackVisited.Push(choosen);
-
-                choosen.SetDistanceFromStart(current.DistanceFromStart + 1);
-
-                current = choosen;
-            }
-            else
-            {
-                current = stackVisited.Pop();
-                x = current.X;
-                y = current.Y;
-
-                // Заплетаем лаибринт, кроме гранчных клеток, у них - фиксированная ширина = 1
-                int indexRandomNeighbor = Random.Range(0, 4);
-                MazeCell randomNeighbor = null;
-
-                if (x > 2 && indexRandomNeighbor == 0 && Cells[x - 1][y].Status != MazeCellStatus.Disable)
-                    randomNeighbor = Cells[x - 1][y];
-                else if (x < Width - 2 && indexRandomNeighbor == 1 && Cells[x + 1][y].Status != MazeCellStatus.Disable)
-                    randomNeighbor = Cells[x + 1][y];
-                else if (y > 2 && indexRandomNeighbor == 2 && Cells[x][y - 1].Status != MazeCellStatus.Disable)
-                    randomNeighbor = Cells[x][y - 1];
-                else if (y < Height - 2 && indexRandomNeighbor == 3 && Cells[x][y + 1].Status != MazeCellStatus.Disable)
-                    randomNeighbor = Cells[x][y + 1];
-
-                if (randomNeighbor != null)
-                {
-                    RemoveBetweenWalls(current, randomNeighbor);
-                }
-            }
-
-        } while (stackVisited.Count > 0);
-
-        AddBoundaryWalls();
-
-    }
-
-    public void GenerateRoutingHighSparse()
-    {
-
-    }
-
-    public void GenerateRoutingNone()
-    {
-
-        // Удаляем все стены
-        for (int x = 0; x < Width; x++)
-        {
-            for (int y = 0; y < Height; y++)
-            {
-                Cells[x][y].DisableAllWalls();
-            }
-        }
     }
 
 
@@ -351,52 +205,23 @@ public class MazeGenerator
         }
     }
 
-    //private void RemoveBoundaryWalls()
-    //{
-    //    /// Убираем лишние стены сверху
-    //    int yMax =Height - 1;
-    //    for (int x = 0; x <Width; x++)
-    //    {
-    //        //Cells[x][yMax].LeftWall = false;
-    //        Cells[x][yMax].Floor = false;
-    //    }
-
-    //    /// Убираем лишние стены справа
-    //    int xMax =Width - 1;
-    //    for (int y = 0; y <Height; y++)
-    //    {
-    //        //Cells[xMax][y].BottomWall = false;
-    //        Cells[xMax][y].Floor = false;
-    //    }
-    //}
-
-    private void RemoveBetweenWalls(MazeCell a, MazeCell b)
+    private void RemoveBoundaryWalls()
     {
-        if (a.X == b.X)
+        /// Убираем стены снизу и сверху для граничных клеток
+        int yMax = Height - 1;
+        for (int x = 0; x < Width; x++)
         {
-            if (a.Y > b.Y)
-            {
-                a.WallsStatus.BottomWall = false;
-                b.WallsStatus.TopWall = false;
-            }
-            else
-            {
-                b.WallsStatus.BottomWall = false;
-                a.WallsStatus.TopWall = false;
-            }
+            Cells[x][0].WallsStatus.BottomWall = false;
+            Cells[x][yMax].WallsStatus.TopWall = false;
         }
-        else if (a.Y == b.Y)
+
+        /// Убираем стены слева и справа для граничных клеток
+        int xMax = Width - 1;
+        for (int y = 0; y < Height; y++)
         {
-            if (a.X > b.X)
-            {
-                a.WallsStatus.LeftWall = false;
-                b.WallsStatus.RightWall = false;
-            }
-            else
-            {
-                b.WallsStatus.LeftWall = false;
-                a.WallsStatus.RightWall = false;
-            }
+            Cells[0][y].WallsStatus.LeftWall = false;
+            Cells[xMax][y].WallsStatus.RightWall = false;
+
         }
     }
 
@@ -566,7 +391,7 @@ public class MazeGenerator
 
                 if (Cells[x][y].WallsStatus.RightWall || Cells[x][y].WallsStatus.BottomWall)
                     Cells[x][y].ColumnsStatus.BottomRight = true;
-                else if (x <  Width - 1 && y > 0 && Cells[x + 1][y].WallsStatus.BottomWall && Cells[x][y - 1].WallsStatus.RightWall)
+                else if (x < Width - 1 && y > 0 && Cells[x + 1][y].WallsStatus.BottomWall && Cells[x][y - 1].WallsStatus.RightWall)
                     Cells[x][y].ColumnsStatus.BottomRight = true;
                 else
                     Cells[x][y].ColumnsStatus.BottomRight = false;
@@ -644,44 +469,44 @@ public class MazeGenerator
     //    } while (listVisited.Count > 0);
     //}
 
-    private MazeCell GetNeignbourWithMinDistance(MazeCell[] neighbours)
-    {
-        if (neighbours.Length == 0)
-            return null;
+    //private MazeCell GetNeignbourWithMinDistance(MazeCell[] neighbours)
+    //{
+    //    if (neighbours.Length == 0)
+    //        return null;
 
-        int minDistance = neighbours[0].DistanceFromStart, minIndex = 0;
-        for (int i = 0; i < neighbours.Length; i++)
-            if (minDistance > neighbours[i].DistanceFromStart)
-            {
-                minDistance = neighbours[i].DistanceFromStart;
-                minIndex = i;
-            }
+    //    int minDistance = neighbours[0].DistanceFromStart, minIndex = 0;
+    //    for (int i = 0; i < neighbours.Length; i++)
+    //        if (minDistance > neighbours[i].DistanceFromStart)
+    //        {
+    //            minDistance = neighbours[i].DistanceFromStart;
+    //            minIndex = i;
+    //        }
 
-        return neighbours[minIndex];
-    }
+    //    return neighbours[minIndex];
+    //}
 
-    private void ChangeDistance(MazeCell startCell, List<MazeCell> visited)
-    {
-        if (visited.Count < 1)
-        {
-            return;
-        }
+    //private void ChangeDistance(MazeCell startCell, List<MazeCell> visited)
+    //{
+    //    if (visited.Count < 1)
+    //    {
+    //        return;
+    //    }
 
-        List<MazeCell> arrayVisited = visited;
+    //    List<MazeCell> arrayVisited = visited;
 
-        int index = 0;
-        MazeCell current = arrayVisited[index];
-        MazeCell previous = startCell;
-        while (current != startCell && index < arrayVisited.Count - 1)
-        {
-            if (previous.DistanceFromStart > 0)
-                current.SetDistanceFromStart(Mathf.Min(current.DistanceFromStart, previous.DistanceFromStart + 1));
+    //    int index = 0;
+    //    MazeCell current = arrayVisited[index];
+    //    MazeCell previous = startCell;
+    //    while (current != startCell && index < arrayVisited.Count - 1)
+    //    {
+    //        if (previous.DistanceFromStart > 0)
+    //            current.SetDistanceFromStart(Mathf.Min(current.DistanceFromStart, previous.DistanceFromStart + 1));
 
-            previous = current;
-            current = arrayVisited[index++];
+    //        previous = current;
+    //        current = arrayVisited[index++];
 
-        }
+    //    }
 
-    }
+    //}
 
 }
