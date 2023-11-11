@@ -22,8 +22,8 @@ public class MazeGenerator
     private Vector2Int StartPosition;
     private Vector2Int FinishPosition;
 
-    public MazeCell[][] Cells;
-    public CellInfo[][] CellsInfo;
+    private MazeCell[][] Cells;
+    private CellInfo[][] CellsInfo;
 
 
     public MazeGenerator(int width, int height, MazeStructure structure)

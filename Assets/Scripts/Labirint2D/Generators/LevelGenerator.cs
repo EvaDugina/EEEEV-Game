@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LevelGenerator
 {
-    public Level Level;
+    private Level Level;
 
     private int Width;
     private int Height;

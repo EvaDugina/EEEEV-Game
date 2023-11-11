@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class MazeSpawner : MonoBehaviour
 {
-    public GameObject MazePrefab;
-    public CellSpawner CellSpawner;
+    [SerializeField] private GameObject MazePrefab;
+    [SerializeField] private CellSpawner CellSpawner;
 
     private Transform MazesFolder;
     private Cell Cell;

@@ -4,7 +4,7 @@ public class LevelSpawner : MonoBehaviour
 {
 
     [SerializeField] private GameObject LevelObject;
-    public AreaSpawner AreaSpawner;
+    [SerializeField] private AreaSpawner AreaSpawner;
 
     [Space]
     [SerializeField] private RouteLineRenderer2D RouteLineRenderer;

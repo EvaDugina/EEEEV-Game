@@ -5,8 +5,8 @@ using UnityEngine;
 public class AreaSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject AreaPrefab;
-    public MazeSpawner MazeSpawner;
-    public CellHandler CellHandler;
+    [SerializeField] private MazeSpawner MazeSpawner;
+    [SerializeField] private CellHandler CellHandler;
 
     private Transform AreasFolder;
 

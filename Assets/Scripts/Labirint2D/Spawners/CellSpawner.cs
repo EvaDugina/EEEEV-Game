@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CellSpawner : MonoBehaviour
 {
-    public GameObject CellPrefab;
+    [SerializeField] private GameObject CellPrefab;
 
-    public Material StartMaterial;
-    public Material FinishMaterial;
-    public Material PortalMaterial;
+    [SerializeField] private Material StartMaterial;
+    [SerializeField] private Material FinishMaterial;
+    [SerializeField] private Material PortalMaterial;
 
     private Transform CellsFolder;
     private Cell Cell;

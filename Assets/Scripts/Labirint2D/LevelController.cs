@@ -5,32 +5,32 @@ using UnityEngine;
 public class LevelController : MonoBehaviour
 {
 
-    public GameObject Player;
-    public LevelSpawner LevelSpawner;
+    [SerializeField] private GameObject Player;
+    [SerializeField] private LevelSpawner LevelSpawner;
     //public LabirintsSpawner2D LabirintsSpawner2D;
 
     [Header("Размеры лабиринта - целые, нечётные числа")]
 
     [Range(21, 99)]
-    public int Width;
+    [SerializeField] private int Width;
     [Range(21, 99)]
-    public int Height;
+    [SerializeField] private int Height;
 
     //[Header("Параметры лабиринтов")]
     // TODO: Сделать через массив
     //public List<AreaParams> AreaParams = new();
 
     [Header("Параметры ROOM-лабиринта")]
-    public Parameters RoomAreaParams;
+    [SerializeField] private Parameters RoomAreaParams;
 
     [Header("Параметры FIELD-лабиринта")]
-    public Parameters FieldAreaParams;
+    [SerializeField] private Parameters FieldAreaParams;
 
     [Header("Параметры CORRIDOR-лабиринта")]
-    public Parameters CorridorAreaParams;
+    [SerializeField] private Parameters CorridorAreaParams;
 
 
-    [NonSerialized] public Level Level;
+    private Level Level;
     private LevelConfiguration LevelConfiguration;
 
     private bool flagX = false;
