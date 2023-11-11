@@ -1280,7 +1280,7 @@ PrefabInstance:
       objectReference: {fileID: 1773131082}
     - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: RoomAreaParams.Status
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: FieldAreaParams.Status

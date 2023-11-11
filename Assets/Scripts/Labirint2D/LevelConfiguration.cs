@@ -46,8 +46,10 @@ public class LevelConfiguration
 
     public LevelConfiguration()
     {
-        LevelParameters = new List<Parameters>();
-        LevelParameters.Add(GenerateMainAreaParams());
+        LevelParameters = new List<Parameters>
+        {
+            GenerateMainAreaParams()
+        };
     }
 
 

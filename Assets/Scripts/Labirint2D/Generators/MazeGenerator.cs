@@ -1,11 +1,5 @@
-﻿
-using System;
-using System.Collections.Generic;
-using TMPro;
-using UnityEditor.Experimental.GraphView;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
-using Random = UnityEngine.Random;
 
 public struct CellInfo
 {

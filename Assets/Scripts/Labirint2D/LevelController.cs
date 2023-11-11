@@ -63,16 +63,17 @@ public class LevelController : MonoBehaviour
         LevelGenerator levelGenerator = new(Width, Height, LevelConfiguration.GetParametersList());
         Level level = levelGenerator.GenerateLevel();
 
+        // Отрисовываем уровень
         LevelSpawner.SpawnLevel(transform.GetComponent<Level2D>(), level, LevelConfiguration);
 
-        //LevelGenerator2D levelGenerator = new(Width, Height);
-        //Level = levelGenerator.GenerateLevel();
-
-        // Ставим на сцену
-        //LabirintsSpawner2D.SpawnLabirints(Level);
-
+        // Устанавливаем радиус
         Width /= 2;
         Height /= 2;
+
+        // Помещаем игрока в начальную клетку
+        Vector3Int cellSize = LevelConfiguration.GetParametersList()[0].SpawnParams.CellParameters.Size;
+        SetPlayerToCell(level.MainArea.MainMaze.Cells[0][0], level.MainArea.ZIndex, cellSize.x, cellSize.y);
+
     }
 
     //Update is called once per frame
@@ -125,6 +126,17 @@ public class LevelController : MonoBehaviour
         //    }
         //}
 
+
+        Player.transform.position = playerPosition;
+    }
+
+    public void SetPlayerToCell(MazeCell mazeCell, int zIndex, float cellWidth, float cellHeight)
+    {
+        Vector3 playerPosition = Player.transform.position;
+
+        playerPosition.x = mazeCell.X * cellWidth + cellWidth / 2;
+        playerPosition.y = mazeCell.Y * cellHeight + cellHeight / 2;
+        playerPosition.z = zIndex;
 
         Player.transform.position = playerPosition;
     }
