@@ -1260,7 +1260,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: FieldAreaParams.Status
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: CorridorAreaParams.Status
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: RoomAreaParams.SpawnParams.Decoration
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: FieldAreaParams.SpawnParams.Decoration
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: RoomAreaParams.GenerateParams.SizeKoeff
@@ -1269,6 +1281,22 @@ PrefabInstance:
     - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: FieldAreaParams.GenerateParams.SizeKoeff
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: CorridorAreaParams.SpawnParams.Decoration
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: RoomAreaParams.SpawnParams.CellParameters.Size.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: RoomAreaParams.SpawnParams.CellParameters.Size.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: RoomAreaParams.SpawnParams.CellParameters.Size.z
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

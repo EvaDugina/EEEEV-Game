@@ -33,12 +33,12 @@ public class AreaSpawner : MonoBehaviour
     public void SpawnArea(Area area, SpawnParams areaParams)
     {
 
-        Cell cellTemplate = CellHandler.CreateCellByDecoration(areaParams.CellParameters.Decoration);
+        Cell cellTemplate = CellHandler.CreateCellByDecoration(areaParams.Decoration);
         cellTemplate.SetSize(areaParams.CellParameters.Size);
 
         // Ставим каркас Area
         GameObject areaObject = Instantiate(AreaPrefab,
-            AreasFolder.TransformPoint(new Vector3(-area.Width/2 * cellTemplate.Width, -area.Height/2 * cellTemplate.Height, -area.ZIndex * cellTemplate.Length)),
+            AreasFolder.TransformPoint(new Vector3(-area.Width/2 * cellTemplate.Width, -area.Height/2 * cellTemplate.Height, -area.ZIndex)),
             Quaternion.identity, AreasFolder);
         areaObject.name = area.Id + area.GetAreaTypeAsText() + "Area";
 
