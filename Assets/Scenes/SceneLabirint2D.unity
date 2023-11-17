@@ -374,7 +374,7 @@ Transform:
   m_GameObject: {fileID: 211241070}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 2, y: 2.75, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1279,8 +1279,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1773131082}
     - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: MainCamera
+      value: 
+      objectReference: {fileID: 211241072}
+    - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: AreasController
+      value: 
+      objectReference: {fileID: 2047130634}
+    - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: RoomAreaParams.Status
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8495543880825413780, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: FieldAreaParams.Status
@@ -1325,7 +1333,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4710519834860055386, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2047130634}
   m_SourcePrefab: {fileID: 100100000, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
 --- !u!1 &1966176012
 GameObject:
@@ -1406,6 +1417,47 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1966176012}
   m_CullTransparentMesh: 1
+--- !u!1 &2047130630 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4710519834860055386, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+  m_PrefabInstance: {fileID: 1802120149}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2047130634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047130630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9a5cf9b88b542f47aed32defd65b1e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RoomAreaParams:
+    Status: 0
+    GenerateParams:
+      SizeKoeff: 0.25
+    SpawnParams:
+      Decoration: 3
+      CellParameters:
+        Size: {x: 2, y: 2, z: 2}
+  FieldAreaParams:
+    Status: 1
+    GenerateParams:
+      SizeKoeff: 0.5
+    SpawnParams:
+      Decoration: 1
+      CellParameters:
+        Size: {x: 1, y: 1, z: 1}
+  CorridorAreaParams:
+    Status: 0
+    GenerateParams:
+      SizeKoeff: 0.5
+    SpawnParams:
+      Decoration: 2
+      CellParameters:
+        Size: {x: 1, y: 1, z: 1}
 --- !u!1 &2064650874
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 
 public class Level
@@ -22,7 +23,7 @@ public class Level
         return areas;
     }
 
-    public Area GetAreaByName(int id) { 
+    public Area GetAreaById(int id) { 
         if (id == MainArea.Id) 
             return MainArea;
         
@@ -30,7 +31,7 @@ public class Level
             if (id == area.Id)
                 return area;
 
-        return null;
+        throw new ArgumentException("Area с таким Name не существует!");
     }
 
 

@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aaee7e0db1b2764c8485b06ec93989c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CellSpawnConfugiration: {fileID: 0}
+  CellSpawnConfiguration: {fileID: 0}
 --- !u!1 &1275908390930985008
 GameObject:
   m_ObjectHideFlags: 0

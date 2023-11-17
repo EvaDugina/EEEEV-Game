@@ -72,6 +72,12 @@ public class LevelConfiguration
     }
 
 
+    public Parameters GetParametersByAreaType(AreaType type) {
+        foreach (Parameters parameters in LevelParameters)
+            if (type == parameters.Type) return parameters;
+        return new Parameters();
+    }
+
     public List<GenerateParams> GetAreasGenerateParams()
     {
         List<GenerateParams> generateParams = new List<GenerateParams> ();

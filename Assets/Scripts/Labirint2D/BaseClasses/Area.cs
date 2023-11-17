@@ -1,7 +1,9 @@
 ﻿
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Vector2 = UnityEngine.Vector2;
 
 public enum AreaPriority
@@ -99,6 +101,12 @@ public class Area
         return mazes;
     }
 
+    public MazeCell GetCell(Vector2Int position)
+    {
+        Maze maze = GetMazeByPosition(position);
+        return maze.Cells[Mathf.Abs(position.x) % maze.Width][Mathf.Abs(position.y) % maze.Height];
+    }
+
     public string GetAreaTypeAsText()
     {
         switch (Type)
@@ -115,6 +123,63 @@ public class Area
         }
     }
 
+    public MazeCellType GetCellTypeByPosition(Vector2Int position)
+    {
+        return GetMazeByPosition(position).Cells[position.x][position.y].Type;
+    }
+
+    public Maze GetMazeByPosition(Vector2Int position)
+    {
+        if (position.x >= Width && position.y >= Height)
+            return GetMazeBySide(MazeSide.TopRight);
+        else if (position.x < 0 && position.y < 0)
+            return GetMazeBySide(MazeSide.BottomLeft);
+        else if (position.x >= Width && position.y < 0)
+            return GetMazeBySide(MazeSide.BottomRight);
+        else if (position.x < 0 && position.y >= Height)
+            return GetMazeBySide(MazeSide.TopLeft);
+
+        if (position.x >= Width)
+            return GetMazeBySide(MazeSide.Right);
+        else if (position.y >= Height)
+            return GetMazeBySide(MazeSide.Top);
+        else if (position.x < 0)
+            return GetMazeBySide(MazeSide.Left);
+        else if (position.y < 0)
+            return GetMazeBySide(MazeSide.Bottom);
+
+        return MainMaze;
+    }
+
+    public Maze GetMazeBySide(MazeSide side)
+    {
+        foreach (Maze maze in BoundaryMazes)
+        {
+            if (maze.Side == side) return maze;
+        }
+
+        return MainMaze;
+    }
+
+    public Portal GetPortalByPosition(Vector2Int position)
+    {
+        foreach (Portal portal in Portals)
+        {
+            if (portal.Position == position) return portal;
+        }
+
+        throw new ArgumentException("Портала по данной позиции клетки не существует");
+    }
+
+    public Portal GetPortalByToAreaId(int areaId)
+    {
+        foreach (Portal portal in Portals)
+        {
+            if (portal.ToAreaId == areaId) return portal;
+        }
+
+        throw new ArgumentException("Портала к данному Area не существует");
+    }
 
     /* 
     ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -127,7 +192,8 @@ public class Area
         MainMaze = maze;
     }
 
-    public void SetBoundaryMazes(List<Maze> mazes) {
+    public void SetBoundaryMazes(List<Maze> mazes)
+    {
         BoundaryMazes = mazes;
     }
 
@@ -143,5 +209,12 @@ public class Area
         MainMaze.AddPortal(portal.Position);
         Portals.Add(portal);
     }
+
+    /* 
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+|   SETTERS
+───────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+*/
+
 
 }
