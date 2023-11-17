@@ -1451,7 +1451,7 @@ MonoBehaviour:
       CellParameters:
         Size: {x: 1, y: 1, z: 1}
   CorridorAreaParams:
-    Status: 1
+    Status: 0
     GenerateParams:
       SizeKoeff: 0.5
     SpawnParams:

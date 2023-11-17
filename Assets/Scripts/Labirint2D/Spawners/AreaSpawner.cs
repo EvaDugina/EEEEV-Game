@@ -41,6 +41,7 @@ public class AreaSpawner : MonoBehaviour
             AreasFolder.TransformPoint(new Vector3(0, 0, -area.ZIndex)),
             Quaternion.identity, AreasFolder);
         areaObject.name = area.Id + area.GetAreaTypeAsText() + "Area";
+        areaObject.SetActive(false);
 
         Area2D area2D = areaObject.GetComponent<Area2D>();
 

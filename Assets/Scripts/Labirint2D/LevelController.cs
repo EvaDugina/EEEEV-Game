@@ -24,7 +24,7 @@ public class LevelController : MonoBehaviour
 
     private Level Level;
     private Area CurrentArea;
-    private Transform CurrenAreaTransform;
+    private GameObject CurrenAreaObject;
     private MazeCell CurrentMazeCell;
 
     private bool IsEnableToHorizintalTeleport = false;
@@ -148,7 +148,7 @@ public class LevelController : MonoBehaviour
 
     private void RefreshCurrentMazeCell(Vector3 playerPosition)
     {
-        Vector2Int position = AreasController.ParseToAreaSizePosition(CurrentArea.Type, CurrenAreaTransform.TransformPoint(playerPosition));
+        Vector2Int position = AreasController.ParseToAreaSizePosition(CurrentArea.Type, CurrenAreaObject.transform.TransformPoint(playerPosition));
         CurrentMazeCell = CurrentArea.GetCell(position);
 
     }
@@ -157,9 +157,13 @@ public class LevelController : MonoBehaviour
     public void TeleportPlayer(GameObject areaObject, Area destinationArea)
     {
         Area lastArea = CurrentArea;
-
+       
         CurrentArea = Level.GetAreaById(destinationArea.Id);
-        CurrenAreaTransform = areaObject.transform;
+
+        if (CurrenAreaObject != null)
+            CurrenAreaObject.SetActive(false);
+        CurrenAreaObject = areaObject;
+        areaObject.SetActive(true);
 
         Vector2Int areaPlayerPosition;
         if (CurrentArea.Type == AreaType.Main && lastArea != null)
@@ -184,7 +188,7 @@ public class LevelController : MonoBehaviour
         playerPosition.y = mazeCell.Y * cellHeight + cellHeight / 2;
         playerPosition.z = 0;
 
-        Player.transform.position = CurrenAreaTransform.TransformPoint(playerPosition);
+        Player.transform.position = CurrenAreaObject.transform.TransformPoint(playerPosition);
 
         CurrentMazeCell = CurrentArea.GetCell(new Vector2Int(mazeCell.X, mazeCell.Y));
     }
