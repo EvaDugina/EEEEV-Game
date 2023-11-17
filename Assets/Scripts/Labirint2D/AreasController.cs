@@ -57,7 +57,10 @@ public class AreasController : MonoBehaviour
     {
         // Находим нужный нам Area, на который осущетсвляется переход
         GameObject areaObject = transform.GetComponent<Level2D>().AreasFolder.transform.GetChild(destinationArea.Id).gameObject;
-        Debug.Log("Поворачиваем " + areaObject.name);
+
+        // Если топология - тор, не вращаем
+        if (destinationArea.Topology == AreaTopology.Toroid)
+            return areaObject;
 
         // Находим точку, вокруг которой будем вращать Area
         Vector2 pointAroundRotation = TranslateAreaCoordinatesToRealCoordinates(destinationArea.Type, destinationArea.MainMaze.StartPosition);
@@ -74,6 +77,7 @@ public class AreasController : MonoBehaviour
         else areaLocalEulerAngels.z = 0;
         areaObject.transform.localEulerAngles = areaLocalEulerAngels;
 
+        // Меняем позицию после поворота
         areaPosition = areaObject.transform.position;
         Vector3Int cellSize = LevelConfiguration.GetParametersByAreaType(destinationArea.Type).SpawnParams.CellParameters.Size;
         if (vectorMovement.x > 0)

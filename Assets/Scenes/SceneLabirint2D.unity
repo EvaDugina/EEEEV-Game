@@ -1443,7 +1443,7 @@ MonoBehaviour:
       CellParameters:
         Size: {x: 2, y: 2, z: 2}
   FieldAreaParams:
-    Status: 1
+    Status: 0
     GenerateParams:
       SizeKoeff: 0.5
     SpawnParams:
@@ -1451,7 +1451,7 @@ MonoBehaviour:
       CellParameters:
         Size: {x: 1, y: 1, z: 1}
   CorridorAreaParams:
-    Status: 0
+    Status: 1
     GenerateParams:
       SizeKoeff: 0.5
     SpawnParams:
