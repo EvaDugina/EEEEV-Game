@@ -109,6 +109,7 @@ public class MazeGenerator
 
     public static Maze GenerateReflectedMainMaze(Maze maze)
     {
+
         Maze topPartMaze = GenerateBoundaryMaze(MazeSide.Top, maze.Cells);
         Maze bottomPartMaze = GenerateBoundaryMaze(MazeSide.Bottom, maze.Cells);
 
@@ -130,7 +131,7 @@ public class MazeGenerator
                 index += 1;
             }
 
-            // Убираем стены у последней строки верхнего maze
+            // Убираем стены у последней строки нижнего maze
             reflectedMazeCells[x][index] = (MazeCell)topPartMaze.Cells[x][topPartMaze.Height - 1].Clone();
             reflectedMazeCells[x][index].SetXY(x, index);
             if (maze.Cells[x][yMiddle].WallsStatus.BottomWall == false)
@@ -149,7 +150,7 @@ public class MazeGenerator
             }
             index += 1;
 
-            // Убираем стены у первой строки нижнего maze
+            // Убираем стены у первой строки верхнего maze
             reflectedMazeCells[x][index] = (MazeCell)bottomPartMaze.Cells[x][0].Clone();
             reflectedMazeCells[x][index].SetXY(x, index);
             if (maze.Cells[x][yMiddle].WallsStatus.TopWall == false)

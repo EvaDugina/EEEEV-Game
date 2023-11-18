@@ -30,6 +30,10 @@ public class LevelController : MonoBehaviour
     private bool IsEnableToHorizintalTeleport = false;
     private bool IsEnableToVerticalTeleport = false;
 
+    //точность до милисекунды
+    private float PeriodTeleportToReflectedArea = 60.0f;
+    private float NextActionTime = 15.0f;
+
     private void Awake()
     {
 
@@ -55,9 +59,14 @@ public class LevelController : MonoBehaviour
         // Отрисовываем уровень
         LevelSpawner.SpawnLevel(transform.GetComponent<Level2D>(), Level, AreasController.GetLevelConfiguration());
 
+        //// Отдельно отрисовываем ReflectedArea
+        //Area reflectedArea = levelGenerator.CreateReflectedArea(4, Level.MainArea);
+        //Level.SetReflectedArea(reflectedArea);
+        //LevelSpawner.SpawnReflectedArea(Level, AreasController.GetLevelConfiguration());
+
         // Помещаем игрока в начальную клетку
         GameObject areaObject = RotateArea(Level.MainArea);
-        TeleportPlayer(areaObject, Level.MainArea);
+        TeleportPlayer(areaObject, Level.MainArea, false);
     }
 
     //Update is called once per frame
@@ -80,8 +89,30 @@ public class LevelController : MonoBehaviour
             // Поворачиваем Destination Area, если оно - не Main
             GameObject areaObject = RotateArea(destinationArea);
 
-            TeleportPlayer(areaObject, destinationArea);
+            TeleportPlayer(areaObject, destinationArea, false);
             return;
+        }
+        else if (Time.time > NextActionTime)
+        {
+            Debug.Log(Time.time + " ? " + NextActionTime + " + " + PeriodTeleportToReflectedArea + " = " + (NextActionTime + PeriodTeleportToReflectedArea));
+            NextActionTime += PeriodTeleportToReflectedArea;
+
+            if (CurrentArea.Type == AreaType.Main || CurrentArea.Type == AreaType.ReflectedMain)
+            {
+
+                Area destinationArea;
+                if (CurrentArea.Type == AreaType.Main)
+                    destinationArea = Level.ReflectedArea;
+                else
+                {
+                    destinationArea = Level.MainArea;
+                }
+
+                // Поворачиваем Destination Area, если оно - не Main и не ReflectedMain
+                GameObject areaObject = RotateArea(destinationArea);
+
+                TeleportPlayer(areaObject, destinationArea, true);
+            }
         }
 
         if (CurrentArea.Topology == AreaTopology.Toroid)
@@ -92,9 +123,10 @@ public class LevelController : MonoBehaviour
         }
     }
 
-    private GameObject RotateArea(Area destinationArea) {
+    private GameObject RotateArea(Area destinationArea)
+    {
         GameObject areaObject;
-        if (destinationArea.Type == AreaType.Main)
+        if (destinationArea.Type == AreaType.Main || destinationArea.Type == AreaType.ReflectedMain)
         {
             areaObject = transform.GetComponent<Level2D>().AreasFolder.transform.GetChild(destinationArea.Id).gameObject;
             return areaObject;
@@ -154,10 +186,10 @@ public class LevelController : MonoBehaviour
     }
 
 
-    public void TeleportPlayer(GameObject areaObject, Area destinationArea)
+    public void TeleportPlayer(GameObject areaObject, Area destinationArea, bool reflectedTeleport)
     {
         Area lastArea = CurrentArea;
-       
+
         CurrentArea = Level.GetAreaById(destinationArea.Id);
 
         if (CurrenAreaObject != null)
@@ -166,15 +198,33 @@ public class LevelController : MonoBehaviour
         areaObject.SetActive(true);
 
         Vector2Int areaPlayerPosition;
-        if (CurrentArea.Type == AreaType.Main && lastArea != null)
+        if (!reflectedTeleport)
         {
-            Portal portal = CurrentArea.GetPortalByToAreaId(lastArea.Id);
-            areaPlayerPosition = AreasController.GenerateOutPortal(portal.Position);
-            if (areaPlayerPosition == Vector2Int.zero)
+            if (CurrentArea.Type == AreaType.Main && lastArea != null)
+            {
+                Portal portal = CurrentArea.GetPortalByToAreaId(lastArea.Id);
+                areaPlayerPosition = AreasController.GenerateOutPortal(portal.Position);
+                if (areaPlayerPosition == Vector2Int.zero)
+                    areaPlayerPosition = CurrentArea.MainMaze.StartPosition;
+            }
+            else
                 areaPlayerPosition = CurrentArea.MainMaze.StartPosition;
         }
         else
-            areaPlayerPosition = CurrentArea.MainMaze.StartPosition;
+        {
+            if (CurrentMazeCell.Y > Height / 2)
+            {
+                int offset = (CurrentMazeCell.Y - 1) % (Height / 2);
+                areaPlayerPosition = new Vector2Int(CurrentMazeCell.X, 0 + offset);
+            }
+            else if (CurrentMazeCell.Y < Height / 2)
+            {
+                int offset = CurrentMazeCell.Y % (Height / 2);
+                areaPlayerPosition = new Vector2Int(CurrentMazeCell.X, Height / 2 + offset + 1);
+            }
+            else
+                areaPlayerPosition = new Vector2Int(CurrentMazeCell.X, Height / 2);
+        }
 
         Vector3Int cellSize = AreasController.GetCellSize(CurrentArea.Type);
         SetPlayerToCell(CurrentArea.GetCell(areaPlayerPosition), CurrentArea.ZIndex, cellSize.x, cellSize.y);
@@ -184,13 +234,15 @@ public class LevelController : MonoBehaviour
     {
         Vector3 playerPosition = Player.transform.position;
 
-        playerPosition.x = mazeCell.X * cellWidth + cellWidth / 2;
-        playerPosition.y = mazeCell.Y * cellHeight + cellHeight / 2;
+        float positionXInCell = (playerPosition.x - ((int)playerPosition.x)) % cellWidth;
+        float positionYInCell = (playerPosition.y - ((int)playerPosition.y)) % cellHeight;
+        playerPosition.x = mazeCell.X * cellWidth + positionXInCell;
+        playerPosition.y = mazeCell.Y * cellHeight + positionYInCell;
         playerPosition.z = 0;
 
         Player.transform.position = CurrenAreaObject.transform.TransformPoint(playerPosition);
 
-        CurrentMazeCell = CurrentArea.GetCell(new Vector2Int(mazeCell.X, mazeCell.Y));
+        CurrentMazeCell = mazeCell;
     }
 
 

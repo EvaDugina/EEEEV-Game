@@ -89,7 +89,7 @@ public class MazeGenerateUtilities
                 sideMaze = new MazeCell[width][];
                 Array.Copy(clone, 0, sideMaze, 0, width);
                 break;
-            case MazeSide.Top:
+            case MazeSide.Bottom:
                 width = clone.Length;
                 sideMaze = new MazeCell[width][];
                 for (int x = 0; x < width; x++)
@@ -99,7 +99,7 @@ public class MazeGenerateUtilities
                     Array.Copy(clone[x], 0, sideMaze[x], 0, height);
                 }
                 break;
-            case MazeSide.Bottom:
+            case MazeSide.Top:
                 width = clone.Length;
                 sideMaze = new MazeCell[width][];
                 for (int x = 0; x < width; x++)

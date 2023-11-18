@@ -11,6 +11,7 @@ public class Level
     public Level(Area mainArea)
     {
         MainArea = mainArea;
+        ReflectedArea = null;
         SecondaryAreas = new List<Area>();
     }
 
@@ -27,12 +28,15 @@ public class Level
     public Area GetAreaById(int id) { 
         if (id == MainArea.Id) 
             return MainArea;
-        
+
+        if (id == ReflectedArea.Id)
+            return ReflectedArea;
+
         foreach (Area area in SecondaryAreas)
             if (id == area.Id)
                 return area;
 
-        throw new ArgumentException("Area с таким Name не существует!");
+        throw new ArgumentException("Area с таким Id не существует!");
     }
 
 

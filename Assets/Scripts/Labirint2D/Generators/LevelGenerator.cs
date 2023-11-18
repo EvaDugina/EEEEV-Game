@@ -36,8 +36,9 @@ public class LevelGenerator
         Level = new Level(area);
         id++;
 
-        Area reflectedArea = CreateReflectedArea(-1, area);
-        Level.SetReflectedArea(reflectedArea);
+        Level.SetReflectedArea(CreateReflectedArea(id, area));
+        id++;
+        
 
         foreach (Parameters parameters in LevelParameters)
         {

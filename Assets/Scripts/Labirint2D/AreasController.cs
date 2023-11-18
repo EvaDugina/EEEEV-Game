@@ -38,6 +38,8 @@ public class AreasController : MonoBehaviour
 
     public Vector3Int GetCellSize(AreaType areaType)
     {
+        if (areaType == AreaType.ReflectedMain)
+            areaType = AreaType.Main;
         return LevelConfiguration.GetParametersByAreaType(areaType).SpawnParams.CellParameters.Size;
     }
 
@@ -114,6 +116,9 @@ public class AreasController : MonoBehaviour
 
     private Vector2 TranslateAreaCoordinatesToRealCoordinates(AreaType areaType, Vector2Int point)
     {
+        if (areaType == AreaType.ReflectedMain)
+            areaType = AreaType.Main;
+
         Vector3Int cellSize = LevelConfiguration.GetParametersByAreaType(areaType).SpawnParams.CellParameters.Size;
 
         Vector2 realPoint = new Vector2Int(point.x, point.y);
@@ -126,6 +131,9 @@ public class AreasController : MonoBehaviour
 
     public Vector2Int ParseToAreaSizePosition(AreaType areaType, Vector3 playerPosition)
     {
+        if (areaType == AreaType.ReflectedMain)
+            areaType = AreaType.Main;
+
         Vector3Int cellSize = LevelConfiguration.GetParametersByAreaType(areaType).SpawnParams.CellParameters.Size;
         Vector2Int currentPositionInArea = new Vector2Int((int)(playerPosition.x / cellSize.x), (int)(playerPosition.y / cellSize.y));
         return currentPositionInArea;

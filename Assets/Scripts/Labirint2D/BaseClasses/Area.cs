@@ -108,7 +108,9 @@ public class Area
     public MazeCell GetCell(Vector2Int position)
     {
         Maze maze = GetMazeByPosition(position);
-        return maze.Cells[Mathf.Abs(position.x) % maze.Width][Mathf.Abs(position.y) % maze.Height];
+        int x = Mathf.Abs(position.x);
+        int y = Mathf.Abs(position.y);
+        return maze.Cells[x % maze.Width][y % maze.Height];
     }
 
     public string GetAreaTypeAsText()
