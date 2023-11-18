@@ -73,18 +73,7 @@ public class MazeGenerateUtilities
     {
         int koefCuttingSiblingMazes = 2;
 
-        int cloneWidth = cells.Length;
-        int cloneHeight = cells[0].Length;
-
-        MazeCell[][] clone = new MazeCell[cloneWidth][];
-        for (int x = 0; x < cloneWidth; x++)
-        {
-            clone[x] = new MazeCell[cloneHeight];
-            for (int y = 0; y < cloneHeight; y++)
-            {
-                clone[x][y] = (MazeCell)cells[x][y].Clone();
-            }
-        }
+        MazeCell[][] clone = GenerateCloneMazeCells(cells);
 
         int width;
         MazeCell[][] sideMaze;
@@ -126,6 +115,28 @@ public class MazeGenerateUtilities
         }
 
         return sideMaze;
+    }
+
+    public static Maze GenerateCloneMaze(Maze prototypeMaze) {
+
+        Maze maze = new Maze(prototypeMaze.Width, prototypeMaze.Height, prototypeMaze.Side);
+        maze.SetCells(GenerateCloneMazeCells(prototypeMaze.Cells));
+        return maze;
+    }
+
+    public static MazeCell[][] GenerateCloneMazeCells(MazeCell[][] cells) {
+        int cloneWidth = cells.Length;
+        int cloneHeight = cells[0].Length;
+        MazeCell [][] cloneCells = new MazeCell[cloneWidth][];
+        for (int x = 0; x < cloneWidth; x++)
+        {
+            cloneCells[x] = new MazeCell[cloneHeight];
+            for (int y = 0; y < cloneHeight; y++)
+            {
+                cloneCells[x][y] = (MazeCell)cells[x][y].Clone();
+            }
+        }
+        return cloneCells;
     }
 
     public static MazeCell[][] GetMazeTrianglesBySide(MazeCell[][] cells, MazeSide side)

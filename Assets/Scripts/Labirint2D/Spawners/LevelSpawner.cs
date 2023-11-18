@@ -13,7 +13,7 @@ public class LevelSpawner : MonoBehaviour
 
     public void SpawnLevel(Level2D level2D, Level level, LevelConfiguration levelConfiguration)
     {
-        AreaSpawner.Spawn(level2D.AreasFolder.transform, levelConfiguration, level.MainArea, level.SecondaryAreas);
+        AreaSpawner.Spawn(level2D.AreasFolder.transform, levelConfiguration, level.MainArea, level.ReflectedArea, level.SecondaryAreas);
     }
 
 }

@@ -18,10 +18,11 @@ public class AreaSpawner : MonoBehaviour
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────── 
 */
 
-    public void Spawn(Transform areasFolder, LevelConfiguration levelConfiguration, Area mainArea, List<Area> secondaryAreas) {
+    public void Spawn(Transform areasFolder, LevelConfiguration levelConfiguration, Area mainArea, Area reflectedArea, List<Area> secondaryAreas) {
         AreasFolder = areasFolder;
 
         SpawnArea(mainArea, levelConfiguration.GetAreaSpawnParamsByType(AreaType.Main));
+        SpawnArea(reflectedArea, levelConfiguration.GetAreaSpawnParamsByType(AreaType.Main));
 
         foreach (Area area in secondaryAreas)
         {

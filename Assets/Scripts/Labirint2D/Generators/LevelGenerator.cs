@@ -36,6 +36,9 @@ public class LevelGenerator
         Level = new Level(area);
         id++;
 
+        Area reflectedArea = CreateReflectedArea(-1, area);
+        Level.SetReflectedArea(reflectedArea);
+
         foreach (Parameters parameters in LevelParameters)
         {
             if (parameters.Type != AreaType.Main && parameters.Status)
@@ -104,6 +107,10 @@ public class LevelGenerator
         }
 
         return area;
+    }
+
+    public Area CreateReflectedArea(int id, Area prototypeArea) {
+        return AreaGenerator.GenerateReflectedToroidalArea(id, prototypeArea);
     }
 
 }

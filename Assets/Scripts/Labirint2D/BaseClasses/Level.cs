@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Level
 {
     public Area MainArea { get; private set; }
+    public Area ReflectedArea { get; private set; }
     public List<Area> SecondaryAreas { get; private set; }
 
     public Level(Area mainArea)
@@ -32,6 +33,11 @@ public class Level
                 return area;
 
         throw new ArgumentException("Area с таким Name не существует!");
+    }
+
+
+    public void SetReflectedArea(Area area) {
+        ReflectedArea = area;
     }
 
 

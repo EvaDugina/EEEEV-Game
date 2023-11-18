@@ -12,8 +12,12 @@ public enum AreaPriority
 
 public enum AreaType
 {
-    Main, Field, Room, Corridor
+    Main, Field, Room, Corridor, ReflectedMain
 }
+
+//public enum AreaStatus { 
+//    Default, Reflected
+//}
 
 public enum AreaTopology
 {
@@ -32,6 +36,7 @@ public class Area
     public int Id { get; private set; }
     public AreaType Type { get; private set; }
     public AreaPriority Priority { get; private set; }
+    //public AreaStatus Status { get; private set; }
 
     public float X { get; private set; }
     public float Y { get; private set; }
@@ -55,7 +60,7 @@ public class Area
         if (Type == AreaType.Main) Priority = AreaPriority.Main;
         else Priority = AreaPriority.Secondary;
 
-        if (Type == AreaType.Main || Type == AreaType.Field) Topology = AreaTopology.Toroid;
+        if (Type == AreaType.Main || Type == AreaType.Field || Type == AreaType.ReflectedMain) Topology = AreaTopology.Toroid;
         else Topology = AreaTopology.Plain;
 
         X = position.x;
@@ -116,6 +121,8 @@ public class Area
                 return "Field";
             case AreaType.Corridor:
                 return "Corridor";
+            case AreaType.ReflectedMain:
+                return "ReflectedMain";
 
             default:
                 return "Main";

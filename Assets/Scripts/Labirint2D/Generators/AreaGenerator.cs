@@ -59,6 +59,20 @@ public class AreaGenerator
 
     }
 
+    public static Area GenerateReflectedToroidalArea(int id, Area prototypeArea)
+    {
+        Area area = new Area(id, AreaType.ReflectedMain, Vector2Int.zero, prototypeArea.Width, prototypeArea.Height);
+
+        // Генерируем лабиринт с точкой финиша
+        area.SetMainMaze(MazeGenerator.GenerateReflectedMainMaze(prototypeArea.MainMaze));
+
+        // Генерируем граничные лабиринты
+        //if (prototypeArea.Topology == AreaTopology.Toroid)
+        //    area.SetBoundaryMazes(MazeGenerator.GenerateBoundaryMazesForReflectedMaze(prototypeArea.GetBoundaryMazes()));
+
+        return area;
+    }
+
     public static List<Portal> CreatePortals(Area fromArea, int toAreaId)
     {
         AreaStructure areaStructure = AreaStructureHandler.GetAreaStructureByAreaType(fromArea.Type);

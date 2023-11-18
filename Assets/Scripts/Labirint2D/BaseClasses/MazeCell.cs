@@ -83,6 +83,11 @@ public class MazeCell : ICloneable
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────── 
 */
 
+    public void SetXY(int x, int y) {
+        X = x;
+        Y=y;
+    }
+
     public void SetStatus(MazeCellStatus status)
     {
         Status = status;
