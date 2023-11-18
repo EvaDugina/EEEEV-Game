@@ -115,28 +115,58 @@ public class MazeGenerator
         Maze reflectedMainMaze = new Maze(maze.Width, maze.Height, MazeSide.Center);
         MazeCell[][] reflectedMazeCells = new MazeCell[maze.Width][];
 
+        int yMiddle = maze.Height / 2;
+
         for (int x = 0; x < maze.Width; x++)
         {
+
             reflectedMazeCells[x] = new MazeCell[maze.Height];
             int index = 0;
-            for (int y = 0; y < bottomPartMaze.Height; y++)
+
+            for (int y = 0; y < topPartMaze.Height - 1; y++)
+            {
+                reflectedMazeCells[x][index] = (MazeCell)topPartMaze.Cells[x][y].Clone();
+                reflectedMazeCells[x][index].SetXY(x, index);
+                index += 1;
+            }
+
+            // Убираем стены у последней строки верхнего maze
+            reflectedMazeCells[x][index] = (MazeCell)topPartMaze.Cells[x][topPartMaze.Height - 1].Clone();
+            reflectedMazeCells[x][index].SetXY(x, index);
+            if (maze.Cells[x][yMiddle].WallsStatus.BottomWall == false)
+            {
+                reflectedMazeCells[x][index].DisableTopWall();
+            }
+            index += 1;
+
+            // Добавляем осевые клетки, которых нет на Boundary Mazes (берём их из основного Maze)
+            reflectedMazeCells[x][index] = (MazeCell)maze.Cells[x][index].Clone();
+            reflectedMazeCells[x][index].SetXY(x, index);
+            if (bottomPartMaze.Cells[x][0].WallsStatus.BottomWall == topPartMaze.Cells[x][topPartMaze.Height - 1].WallsStatus.TopWall == false)
+            {
+                reflectedMazeCells[x][index].DisableTopWall();
+                reflectedMazeCells[x][index].DisableBottomWall();
+            }
+            index += 1;
+
+            // Убираем стены у первой строки нижнего maze
+            reflectedMazeCells[x][index] = (MazeCell)bottomPartMaze.Cells[x][0].Clone();
+            reflectedMazeCells[x][index].SetXY(x, index);
+            if (maze.Cells[x][yMiddle].WallsStatus.TopWall == false)
+            {
+                reflectedMazeCells[x][index].DisableBottomWall();
+            }
+            index += 1;
+
+            for (int y = 1; y < bottomPartMaze.Height; y++)
             {
                 reflectedMazeCells[x][index] = (MazeCell)bottomPartMaze.Cells[x][y].Clone();
                 reflectedMazeCells[x][index].SetXY(x, index);
                 index += 1;
             }
 
-            // Добавляем осевые клетки, которых нет на Boundary Mazes (берём их из основного Maze)
-            reflectedMazeCells[x][index] = (MazeCell)maze.Cells[x][index].Clone();
-            reflectedMazeCells[x][index].SetXY(x, index);
-            index += 1;
 
-            for (int y = 0; y < topPartMaze.Height; y++)
-            {
-                reflectedMazeCells[x][index] = (MazeCell)topPartMaze.Cells[x][y].Clone();
-                reflectedMazeCells[x][index].SetXY(x, index);
-                index += 1;
-            }
+
         }
 
         reflectedMainMaze.SetCells(reflectedMazeCells);
@@ -165,7 +195,8 @@ public class MazeGenerator
             }
 
 
-            else {
+            else
+            {
                 newBoundaryMazes.Add(maze);
             }
         }

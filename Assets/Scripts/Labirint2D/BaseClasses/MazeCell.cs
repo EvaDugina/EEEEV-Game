@@ -132,4 +132,12 @@ public class MazeCell : ICloneable
 
     }
 
+    public void DisableTopWall() {
+        WallsStatus.TopWall = false;
+    }
+
+    public void DisableBottomWall() {
+        WallsStatus.BottomWall = false;
+    }
+
 }
