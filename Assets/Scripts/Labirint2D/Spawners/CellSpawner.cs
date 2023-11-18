@@ -24,6 +24,7 @@ public class CellSpawner : MonoBehaviour
         {
             for (int y = 0; y < mazeCells[x].Length; y++)
             {
+                mazeCells[x][y].SetXY(x, y);
                 SpawnCell(mazeCells[x][y]);
 
             }

@@ -194,7 +194,6 @@ public class MazeGenerator
                 newBoundaryMazes.Add(changedMaze);
             }
 
-
             else
             {
                 newBoundaryMazes.Add(maze);

@@ -67,8 +67,8 @@ public class AreaGenerator
         area.SetMainMaze(MazeGenerator.GenerateReflectedMainMaze(prototypeArea.MainMaze));
 
         // Генерируем граничные лабиринты
-        //if (prototypeArea.Topology == AreaTopology.Toroid)
-        //    area.SetBoundaryMazes(MazeGenerator.GenerateBoundaryMazesForReflectedMaze(prototypeArea.GetBoundaryMazes()));
+        if (prototypeArea.Topology == AreaTopology.Toroid)
+            area.SetBoundaryMazes(MazeGenerator.GenerateBoundaryMazesForReflectedMaze(prototypeArea.GetBoundaryMazes()));
 
         return area;
     }

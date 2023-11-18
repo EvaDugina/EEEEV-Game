@@ -172,13 +172,13 @@ public class MazeGenerateUtilities
         {
 
             case MazeSide.Left:
-                return new Vector2(-mainMazeWidth, 0);
+                return new Vector2(-mainMazeWidth/2, 0);
             case MazeSide.Right:
                 return new Vector2(mainMazeWidth, 0);
             case MazeSide.Top:
                 return new Vector2(0, mainMazeHeight);
             case MazeSide.Bottom:
-                return new Vector2(0, -mainMazeHeight);
+                return new Vector2(0, -mainMazeHeight/2);
 
             case MazeSide.TopLeft:
                 return GetBoundaryMazePositionInsideArea(mainMazeWidth, mainMazeHeight, MazeSide.Top) + GetBoundaryMazePositionInsideArea(mainMazeWidth, mainMazeHeight, MazeSide.Left);
