@@ -189,6 +189,7 @@ public class LevelController : MonoBehaviour
     public void TeleportPlayer(GameObject areaObject, Area destinationArea, bool reflectedTeleport)
     {
         Area lastArea = CurrentArea;
+        bool isFirstSpawn = lastArea == null;
 
         CurrentArea = Level.GetAreaById(destinationArea.Id);
 
@@ -200,7 +201,7 @@ public class LevelController : MonoBehaviour
         Vector2Int areaPlayerPosition;
         if (!reflectedTeleport)
         {
-            if (CurrentArea.Type == AreaType.Main && lastArea != null)
+            if (CurrentArea.Type == AreaType.Main && !isFirstSpawn)
             {
                 Portal portal = CurrentArea.GetPortalByToAreaId(lastArea.Id);
                 areaPlayerPosition = AreasController.GenerateOutPortal(portal.Position);
@@ -227,15 +228,25 @@ public class LevelController : MonoBehaviour
         }
 
         Vector3Int cellSize = AreasController.GetCellSize(CurrentArea.Type);
-        SetPlayerToCell(CurrentArea.GetCell(areaPlayerPosition), CurrentArea.ZIndex, cellSize.x, cellSize.y);
+        SetPlayerToCell(CurrentArea.GetCell(areaPlayerPosition), cellSize.x, cellSize.y, isFirstSpawn);
     }
 
-    public void SetPlayerToCell(MazeCell mazeCell, int zIndex, float cellWidth, float cellHeight)
+    public void SetPlayerToCell(MazeCell mazeCell, float cellWidth, float cellHeight, bool isFirstSpawn)
     {
         Vector3 playerPosition = Player.transform.position;
 
-        float positionXInCell = (playerPosition.x - ((int)playerPosition.x)) % cellWidth;
-        float positionYInCell = (playerPosition.y - ((int)playerPosition.y)) % cellHeight;
+        float positionXInCell, positionYInCell;
+        if (!isFirstSpawn)
+        {
+            positionXInCell = (playerPosition.x - ((int)playerPosition.x)) % cellWidth;
+            positionYInCell = (playerPosition.y - ((int)playerPosition.y)) % cellHeight;
+        }
+        else {
+            positionXInCell = cellWidth / 2;
+            positionYInCell = cellHeight / 2;
+        }
+
+        
         playerPosition.x = mazeCell.X * cellWidth + positionXInCell;
         playerPosition.y = mazeCell.Y * cellHeight + positionYInCell;
         playerPosition.z = 0;
