@@ -4,16 +4,16 @@
  * text of license https://opensource.org/licenses/MIT
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 
 [RequireComponent(typeof(CharacterController))]
 
 // basic WASD-style movement control
 public class FpsMovement3D : MonoBehaviour
 {
-    [SerializeField] private Camera headCam;
+    [SerializeField] private Camera HeadCamera;
+    [SerializeField] private Transform ArrowTransform;
 
     public float speed = 6.0f;
     public float gravity = -9.8f;
@@ -57,7 +57,10 @@ public class FpsMovement3D : MonoBehaviour
 
     private void RotateCharacter()
     {
-        transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityHor, 0);
+        float xAxis = Input.GetAxis("Mouse X");
+        transform.Rotate(0, xAxis * sensitivityHor, 0);
+        ArrowTransform.Rotate(0, xAxis * sensitivityHor, 0);
+
     }
 
     private void RotateCamera()
@@ -65,8 +68,8 @@ public class FpsMovement3D : MonoBehaviour
         rotationVert -= Input.GetAxis("Mouse Y") * sensitivityVert;
         rotationVert = Mathf.Clamp(rotationVert, minimumVert, maximumVert);
 
-        headCam.transform.localEulerAngles = new Vector3(
-            rotationVert, headCam.transform.localEulerAngles.y, 0
+        HeadCamera.transform.localEulerAngles = new Vector3(
+            rotationVert, HeadCamera.transform.localEulerAngles.y, 0
         );
     }
 }

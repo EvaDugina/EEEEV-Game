@@ -1,15 +1,13 @@
 using System;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Level2D))]
 public class LevelController : MonoBehaviour
 {
 
     [SerializeField] private GameObject Player;
-    [SerializeField] private Camera MainCamera;
+    [SerializeField] private Camera MiniMapCamera;
     [SerializeField] private LevelSpawner LevelSpawner;
     [SerializeField] private AreasController AreasController;
     //public LabirintsSpawner2D LabirintsSpawner2D;
@@ -19,16 +17,13 @@ public class LevelController : MonoBehaviour
     [Range(21, 99)]
     [SerializeField] private int Width;
     [Range(21, 99)]
-    [SerializeField] private int Height;
+    [SerializeField] private int Length;
 
 
     private Level Level;
     private Area CurrentArea;
     private GameObject CurrenAreaObject;
     private MazeCell CurrentMazeCell;
-
-    private bool IsEnableToHorizintalTeleport = false;
-    private bool IsEnableToVerticalTeleport = false;
 
     //точность до милисекунды
     private float PeriodTeleportToReflectedArea = 60.0f;
@@ -39,21 +34,17 @@ public class LevelController : MonoBehaviour
 
         // Проеряем лабиринт на чётность и если чётный - делаем нечётным
         GetComponent<LevelController>().Width -= (Width + 1) % 2;
-        GetComponent<LevelController>().Height -= (Height + 1) % 2;
+        GetComponent<LevelController>().Length -= (Length + 1) % 2;
 
     }
 
 
     private void Start()
     {
-
-        Vector3 cameraPosition = MainCamera.transform.position;
-        cameraPosition.x = Width / 2;
-        cameraPosition.y = Height / 2;
-        MainCamera.transform.position = cameraPosition;
+        SetCameraPosition(new Vector2(Width / 2, Length / 2));
 
         // Генерируем уровень
-        LevelGenerator levelGenerator = new(Width, Height, AreasController.GetLevelParameters());
+        LevelGenerator levelGenerator = new(Width, Length, AreasController.GetLevelParameters());
         Level = levelGenerator.GenerateLevel();
 
         // Отрисовываем уровень
@@ -91,35 +82,56 @@ public class LevelController : MonoBehaviour
             TeleportPlayer(areaObject, destinationArea, false);
             return;
         }
-        else if (Time.time > NextActionTime)
-        {
-            Debug.Log(Time.time + " ? " + NextActionTime + " + " + PeriodTeleportToReflectedArea + " = " + (NextActionTime + PeriodTeleportToReflectedArea));
-            NextActionTime += PeriodTeleportToReflectedArea;
 
-            if (CurrentArea.Type == AreaType.Main || CurrentArea.Type == AreaType.ReflectedMain)
-            {
+        // пермещаем Player на Reflected Area
+        //else if (Time.time > NextActionTime)
+        //{
+        //    Debug.Log(Time.time + " ? " + NextActionTime + " + " + PeriodTeleportToReflectedArea + " = " + (NextActionTime + PeriodTeleportToReflectedArea));
+        //    NextActionTime += PeriodTeleportToReflectedArea;
 
-                Area destinationArea;
-                if (CurrentArea.Type == AreaType.Main)
-                    destinationArea = Level.ReflectedArea;
-                else
-                {
-                    destinationArea = Level.MainArea;
-                }
+        //    if (CurrentArea.Type == AreaType.Main || CurrentArea.Type == AreaType.ReflectedMain)
+        //    {
 
-                // Поворачиваем Destination Area, если оно - не Main и не ReflectedMain
-                GameObject areaObject = RotateArea(destinationArea);
+        //        Area destinationArea;
+        //        if (CurrentArea.Type == AreaType.Main)
+        //            destinationArea = Level.ReflectedArea;
+        //        else
+        //        {
+        //            destinationArea = Level.MainArea;
+        //        }
 
-                TeleportPlayer(areaObject, destinationArea, true);
-            }
-        }
+        //        // Поворачиваем Destination Area, если оно - не Main и не ReflectedMain
+        //        GameObject areaObject = RotateArea(destinationArea);
 
+        //        TeleportPlayer(areaObject, destinationArea, true);
+        //    }
+        //}
+
+        Vector3 newPlayerPosition = playerPosition;
         if (CurrentArea.Topology == AreaTopology.Toroid)
         {
-            Vector3 newPlayerPosition = TranslatePlayer(playerPosition);
+            newPlayerPosition = TranslatePlayer(playerPosition);
             if (newPlayerPosition != playerPosition)
                 Player.transform.position = newPlayerPosition;
         }
+
+        MoveCamera(newPlayerPosition);
+    }
+
+    public void SetCameraPosition(Vector3 newPosition) {
+        Vector3 cameraPosition = MiniMapCamera.transform.position;
+        cameraPosition.x = newPosition.x;
+        cameraPosition.y = 10;
+        cameraPosition.z = newPosition.z;
+        MiniMapCamera.transform.position = cameraPosition;
+    }
+
+    public void MoveCamera(Vector3 targetPosition) {
+        Vector3 cameraPosition = MiniMapCamera.transform.position;
+        cameraPosition.x = targetPosition.x;
+        cameraPosition.y = 10;
+        cameraPosition.z = targetPosition.z;
+        MiniMapCamera.transform.position = cameraPosition;
     }
 
     private GameObject RotateArea(Area destinationArea)
@@ -139,37 +151,26 @@ public class LevelController : MonoBehaviour
     private Vector3 TranslatePlayer(Vector3 playerPosition)
     {
 
-        if (IsEnableToHorizintalTeleport)
-        {
-            if (2 <= Mathf.Abs(playerPosition.x) && Mathf.Abs(playerPosition.x) <= CurrentArea.MainMaze.Width - 2)
-                IsEnableToHorizintalTeleport = false;
-        }
-        else if (playerPosition.x > CurrentArea.MainMaze.Width + 1)
+        if (playerPosition.x > CurrentArea.MainMaze.Width + Random.Range(0, CurrentArea.MainMaze.Width / 4))
         {
             playerPosition.x = Mathf.Abs(playerPosition.x) - CurrentArea.MainMaze.Width;
-            IsEnableToHorizintalTeleport = true;
+            //IsEnableToHorizintalTeleport = true;
         }
         else if (playerPosition.x < -1)
         {
             playerPosition.x = CurrentArea.MainMaze.Width - Mathf.Abs(playerPosition.x);
-            IsEnableToHorizintalTeleport = true;
+            //IsEnableToHorizintalTeleport = true;
         }
 
-
-        if (IsEnableToVerticalTeleport)
-        {
-            if (2 <= Mathf.Abs(playerPosition.z) && Mathf.Abs(playerPosition.z) <= CurrentArea.MainMaze.Height - 2)
-                IsEnableToVerticalTeleport = false;
-        }
-        else if (playerPosition.z > CurrentArea.MainMaze.Height + 1)
+        if (playerPosition.z > CurrentArea.MainMaze.Height + Random.Range(0, CurrentArea.MainMaze.Width / 4))
         {
             playerPosition.z = Mathf.Abs(playerPosition.z) - CurrentArea.MainMaze.Height;
-            IsEnableToVerticalTeleport = true;
+            //IsEnableToVerticalTeleport = true;
         }
         else if (playerPosition.z < -1)
         {
             playerPosition.z = CurrentArea.MainMaze.Height - Mathf.Abs(playerPosition.z);
-            IsEnableToVerticalTeleport = true;
+            //IsEnableToVerticalTeleport = true;
         }
 
 
@@ -212,18 +213,18 @@ public class LevelController : MonoBehaviour
         }
         else
         {
-            if (CurrentMazeCell.Y > Height / 2)
+            if (CurrentMazeCell.Y > Length / 2)
             {
-                int offset = (CurrentMazeCell.Y - 1) % (Height / 2);
+                int offset = (CurrentMazeCell.Y - 1) % (Length / 2);
                 areaPlayerPosition = new Vector2Int(CurrentMazeCell.X, 0 + offset);
             }
-            else if (CurrentMazeCell.Y < Height / 2)
+            else if (CurrentMazeCell.Y < Length / 2)
             {
-                int offset = CurrentMazeCell.Y % (Height / 2);
-                areaPlayerPosition = new Vector2Int(CurrentMazeCell.X, Height / 2 + offset + 1);
+                int offset = CurrentMazeCell.Y % (Length / 2);
+                areaPlayerPosition = new Vector2Int(CurrentMazeCell.X, Length / 2 + offset + 1);
             }
             else
-                areaPlayerPosition = new Vector2Int(CurrentMazeCell.X, Height / 2);
+                areaPlayerPosition = new Vector2Int(CurrentMazeCell.X, Length / 2);
         }
 
         Vector3Int cellSize = AreasController.GetCellSize(CurrentArea.Type);
@@ -252,10 +253,11 @@ public class LevelController : MonoBehaviour
         //playerPosition.y = Player.transform.localScale.y / 2;
 
         // Для тестирования
-        playerPosition.y = playerPosition.y;
+        //playerPosition.y = playerPosition.y;
 
         playerPosition.z = mazeCell.Y * cellHeight + positionYInCell;
 
+        SetCameraPosition(playerPosition);
         Player.transform.position = CurrenAreaObject.transform.TransformPoint(playerPosition);
 
         CurrentMazeCell = mazeCell;

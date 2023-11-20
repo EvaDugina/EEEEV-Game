@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2315463704093182702}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BottomRightColumn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 254689465064756298}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2918554686364898350}
   - component: {fileID: 6865915155371093501}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cell3D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 7930721167393648025}
   - component: {fileID: 8619515121133749934}
   - component: {fileID: 3563260593024850611}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DistanceFromStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,7 +305,7 @@ GameObject:
   - component: {fileID: 2565139561271512798}
   - component: {fileID: 6933642790194195191}
   - component: {fileID: 6821984988460433158}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Column Child
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -407,7 +407,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8370432556745743418}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TopRightColumn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -442,7 +442,7 @@ GameObject:
   - component: {fileID: 5590013611671524618}
   - component: {fileID: 1318637807567356852}
   - component: {fileID: 3138532536773275912}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftWall Child
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -544,7 +544,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 829824231186787957}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RightWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -579,7 +579,7 @@ GameObject:
   - component: {fileID: 8453300313261691895}
   - component: {fileID: 397794540290052519}
   - component: {fileID: 3426821407690803975}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftWall Child
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -681,7 +681,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8195885851329372835}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -713,7 +713,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3422740368791003583}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TopWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -748,7 +748,7 @@ GameObject:
   - component: {fileID: 1680640511970035600}
   - component: {fileID: 7414373752039600030}
   - component: {fileID: 8877433271263532087}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Column Child
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -853,7 +853,7 @@ GameObject:
   - component: {fileID: 6314426858158570231}
   - component: {fileID: 8173641643488476350}
   - component: {fileID: 345221522975528649}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Column Child
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -955,7 +955,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7046008214743852823}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cell Child
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -998,7 +998,7 @@ GameObject:
   - component: {fileID: 4731307559101318427}
   - component: {fileID: 1538953706151381773}
   - component: {fileID: 8258298810005990998}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Column Child
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1100,7 +1100,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3737378877786393934}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BottomWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1132,7 +1132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7929541593941335781}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TopLeftColumn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1167,7 +1167,7 @@ GameObject:
   - component: {fileID: 5231453000966750691}
   - component: {fileID: 135266098689358835}
   - component: {fileID: 6107440718539618011}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BottomWall Child
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1272,7 +1272,7 @@ GameObject:
   - component: {fileID: 6716078121042567094}
   - component: {fileID: 1518536081250925682}
   - component: {fileID: 5346775796106369245}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1377,7 +1377,7 @@ GameObject:
   - component: {fileID: 989344731937473572}
   - component: {fileID: 5863654239209397109}
   - component: {fileID: 8572005461504226259}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BottomWall Child
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1479,7 +1479,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8840282610562405873}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BottomLeftColumn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
