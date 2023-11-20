@@ -110,8 +110,8 @@ public class MazeGenerator
     public static Maze GenerateReflectedMainMaze(Maze maze)
     {
 
-        Maze topPartMaze = GenerateBoundaryMaze(MazeSide.Top, maze.Cells);
-        Maze bottomPartMaze = GenerateBoundaryMaze(MazeSide.Bottom, maze.Cells);
+        Maze bottomPartMaze = GenerateBoundaryMaze(MazeSide.Top, maze.Cells);
+        Maze topPartMaze = GenerateBoundaryMaze(MazeSide.Bottom, maze.Cells);
 
         Maze reflectedMainMaze = new Maze(maze.Width, maze.Height, MazeSide.Center);
         MazeCell[][] reflectedMazeCells = new MazeCell[maze.Width][];

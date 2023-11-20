@@ -37,7 +37,7 @@ public class CellSpawner : MonoBehaviour
         if (mazeCell.Status == MazeCellStatus.Disable) return;
 
         GameObject cellObject = Instantiate(CellPrefab,
-            CellsFolder.TransformPoint(new Vector3(mazeCell.X * Cell.Width, mazeCell.Y * Cell.Height, 0)),
+            CellsFolder.TransformPoint(new Vector3(mazeCell.X * Cell.Width, 0, mazeCell.Y * Cell.Length)),
             Quaternion.identity, CellsFolder);
         cellObject.name = "[" + mazeCell.X.ToString() + "][" + mazeCell.Y.ToString() + "] Cell";
         cellObject.SetActive(true);

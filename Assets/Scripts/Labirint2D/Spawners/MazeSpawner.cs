@@ -49,7 +49,7 @@ public class MazeSpawner : MonoBehaviour
 
         // Ставим каркас Maze
         GameObject mazeObject = Instantiate(MazePrefab,
-            MazesFolder.TransformPoint(new Vector3(mazePosition.x, mazePosition.y, 0)),
+            MazesFolder.TransformPoint(new Vector3(mazePosition.x, 0, mazePosition.y)),
             Quaternion.identity, MazesFolder);
         mazeObject.name = maze.GetMazeSideAsText() + "Maze";
 

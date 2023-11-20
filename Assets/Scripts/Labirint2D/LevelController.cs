@@ -77,7 +77,6 @@ public class LevelController : MonoBehaviour
         RefreshCurrentMazeCell(playerPosition);
 
         Vector2Int currentCellPosition = new Vector2Int(CurrentMazeCell.X, CurrentMazeCell.Y);
-        //MazeCellType currentCellType = CurrentArea.GetCell(currentCellPosition).Type;
         Debug.Log(currentCellPosition);
         if (CurrentMazeCell.Type == MazeCellType.Portal)
         {
@@ -159,17 +158,17 @@ public class LevelController : MonoBehaviour
 
         if (IsEnableToVerticalTeleport)
         {
-            if (2 <= Mathf.Abs(playerPosition.y) && Mathf.Abs(playerPosition.y) <= CurrentArea.MainMaze.Height - 2)
+            if (2 <= Mathf.Abs(playerPosition.z) && Mathf.Abs(playerPosition.z) <= CurrentArea.MainMaze.Height - 2)
                 IsEnableToVerticalTeleport = false;
         }
-        else if (playerPosition.y > CurrentArea.MainMaze.Height + 1)
+        else if (playerPosition.z > CurrentArea.MainMaze.Height + 1)
         {
-            playerPosition.y = Mathf.Abs(playerPosition.y) - CurrentArea.MainMaze.Height;
+            playerPosition.z = Mathf.Abs(playerPosition.z) - CurrentArea.MainMaze.Height;
             IsEnableToVerticalTeleport = true;
         }
-        else if (playerPosition.y < -1)
+        else if (playerPosition.z < -1)
         {
-            playerPosition.y = CurrentArea.MainMaze.Height - Mathf.Abs(playerPosition.y);
+            playerPosition.z = CurrentArea.MainMaze.Height - Mathf.Abs(playerPosition.z);
             IsEnableToVerticalTeleport = true;
         }
 
@@ -239,7 +238,7 @@ public class LevelController : MonoBehaviour
         if (!isFirstSpawn)
         {
             positionXInCell = (playerPosition.x - ((int)playerPosition.x)) % cellWidth;
-            positionYInCell = (playerPosition.y - ((int)playerPosition.y)) % cellHeight;
+            positionYInCell = (playerPosition.z - ((int)playerPosition.z)) % cellHeight;
         }
         else {
             positionXInCell = cellWidth / 2;
@@ -248,8 +247,14 @@ public class LevelController : MonoBehaviour
 
         
         playerPosition.x = mazeCell.X * cellWidth + positionXInCell;
-        playerPosition.y = mazeCell.Y * cellHeight + positionYInCell;
-        playerPosition.z = 0;
+
+        // Для игры
+        //playerPosition.y = Player.transform.localScale.y / 2;
+
+        // Для тестирования
+        playerPosition.y = playerPosition.y;
+
+        playerPosition.z = mazeCell.Y * cellHeight + positionYInCell;
 
         Player.transform.position = CurrenAreaObject.transform.TransformPoint(playerPosition);
 
