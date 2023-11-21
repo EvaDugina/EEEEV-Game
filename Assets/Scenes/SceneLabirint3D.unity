@@ -542,8 +542,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9a5cf9b88b542f47aed32defd65b1e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MainAreaParams:
+    Status: 1
+    GenerateParams:
+      SizeKoeff: 1
+    SpawnParams:
+      Decoration: 0
+      CellParameters:
+        Size: {x: 1, y: 1, z: 1}
   RoomAreaParams:
-    Status: 0
+    Status: 1
     GenerateParams:
       SizeKoeff: 0.25
     SpawnParams:
@@ -551,7 +559,7 @@ MonoBehaviour:
       CellParameters:
         Size: {x: 2, y: 2, z: 2}
   FieldAreaParams:
-    Status: 0
+    Status: 1
     GenerateParams:
       SizeKoeff: 0.5
     SpawnParams:
@@ -639,7 +647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a78d79ad419d444e8388e9143cd8bba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headCam: {fileID: 1436652856}
+  HeadCamera: {fileID: 1436652856}
   speed: 3
   gravity: 0
   sensitivityHor: 2
@@ -842,8 +850,8 @@ Transform:
   m_GameObject: {fileID: 527194795}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -0.15}
-  m_LocalScale: {x: 0.75, y: 1, z: 0.75}
+  m_LocalPosition: {x: 0, y: 5, z: -0.15}
+  m_LocalScale: {x: 1.5, y: 1, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 104358279}
@@ -982,7 +990,7 @@ Transform:
   m_GameObject: {fileID: 747820517}
   serializedVersion: 2
   m_LocalRotation: {x: 0.6532815, y: 0.27059805, z: -0.27059805, w: 0.6532815}
-  m_LocalPosition: {x: 0, y: 0, z: 0.25}
+  m_LocalPosition: {x: 0, y: 0, z: 0.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 
@@ -52,6 +53,8 @@ public class Area
 
     public List<Portal> Portals { get; private set; }
 
+    public bool Visited { get; private set; }
+
     public Area(int id, AreaType type, Vector2 position, int width, int height)
     {
         Id = id;
@@ -74,6 +77,8 @@ public class Area
         BoundaryMazes = new List<Maze>();
 
         Portals = new List<Portal>();
+
+        Visited = false;
 
     }
 
@@ -129,6 +134,19 @@ public class Area
             default:
                 return "Main";
         }
+    }
+
+    public StaticPositionParameter GetPortalSide(Portal portal) {
+        if (portal.Position.x < Width/2)
+            return StaticPositionParameter.Bottom;
+        else if (portal.Position.x > Width /2)
+            return StaticPositionParameter.Top;
+        else if (portal.Position.y < Height/ 2)
+            return StaticPositionParameter.Right;
+        else if (portal.Position.y > Height / 2)
+            return StaticPositionParameter.Left;
+        
+        return StaticPositionParameter.Random;
     }
 
     public MazeCellType GetCellTypeByPosition(Vector2Int position)
@@ -205,11 +223,17 @@ public class Area
         BoundaryMazes = mazes;
     }
 
+    public void SetVisited(bool visited) { 
+        Visited = visited;
+    }
+
     public void AddPortals(List<Portal> portals)
     {
         foreach (Portal portal in portals)
+        {
             MainMaze.AddPortal(portal.Position);
-        Portals = portals;
+            Portals.Add(portal);
+        }
     }
 
     public void AddPortal(Portal portal)

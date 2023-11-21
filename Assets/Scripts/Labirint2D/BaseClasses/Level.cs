@@ -29,7 +29,7 @@ public class Level
         if (id == MainArea.Id) 
             return MainArea;
 
-        if (id == ReflectedArea.Id)
+        if (ReflectedArea != null && ReflectedArea.Id == id)
             return ReflectedArea;
 
         foreach (Area area in SecondaryAreas)

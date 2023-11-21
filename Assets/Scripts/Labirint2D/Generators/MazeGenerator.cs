@@ -181,7 +181,7 @@ public class MazeGenerator
         List<Maze> newBoundaryMazes = new List<Maze>();
         foreach (Maze maze in boundaryMazes)
         {
-            // Меняем местами верхний и нижний
+            // Меняем местами верхний и нижний, левый и правый и тд
             if (maze.Side == MazeSide.Top)
             {
                 Maze changedMaze = MazeGenerateUtilities.GenerateCloneMaze(maze);
@@ -192,6 +192,18 @@ public class MazeGenerator
             {
                 Maze changedMaze = MazeGenerateUtilities.GenerateCloneMaze(maze);
                 changedMaze.SetSide(MazeSide.Top);
+                newBoundaryMazes.Add(changedMaze);
+            }
+            else if (maze.Side == MazeSide.Right)
+            {
+                Maze changedMaze = MazeGenerateUtilities.GenerateCloneMaze(maze);
+                changedMaze.SetSide(MazeSide.Left);
+                newBoundaryMazes.Add(changedMaze);
+            }
+            else if (maze.Side == MazeSide.Left)
+            {
+                Maze changedMaze = MazeGenerateUtilities.GenerateCloneMaze(maze);
+                changedMaze.SetSide(MazeSide.Right);
                 newBoundaryMazes.Add(changedMaze);
             }
 

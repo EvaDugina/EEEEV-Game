@@ -25,9 +25,11 @@ public class LevelController : MonoBehaviour
     private GameObject CurrenAreaObject;
     private MazeCell CurrentMazeCell;
 
-    //точность до милисекунды
-    private float PeriodTeleportToReflectedArea = 60.0f;
-    private float NextActionTime = 15.0f;
+    // Для перемещения раз в определённое время на ReflectedArea
+    private float PeriodTeleportToReflectedArea = 10.0f;
+    private float NextActionTime = 5.0f;
+
+    private StaticPositionParameter PlayerMovingSideInMainMaze;
 
     private void Awake()
     {
@@ -47,17 +49,15 @@ public class LevelController : MonoBehaviour
         LevelGenerator levelGenerator = new(Width, Length, AreasController.GetLevelParameters());
         Level = levelGenerator.GenerateLevel();
 
+        //foreach (Portal portal in Level.MainArea.Portals)
+        //    Debug.Log(portal.Position);
+
         // Отрисовываем уровень
         LevelSpawner.SpawnLevel(transform.GetComponent<Level2D>(), Level, AreasController.GetLevelConfiguration());
 
-        //// Отдельно отрисовываем ReflectedArea
-        //Area reflectedArea = levelGenerator.CreateReflectedArea(4, Level.MainArea);
-        //Level.SetReflectedArea(reflectedArea);
-        //LevelSpawner.SpawnReflectedArea(Level, AreasController.GetLevelConfiguration());
-
         // Помещаем игрока в начальную клетку
         GameObject areaObject = RotateArea(Level.MainArea);
-        TeleportPlayer(areaObject, Level.MainArea, false);
+        TeleportPlayer(areaObject, Level.MainArea, StaticPositionParameter.None, false);
     }
 
     //Update is called once per frame
@@ -66,9 +66,9 @@ public class LevelController : MonoBehaviour
 
         Vector3 playerPosition = Player.transform.position;
         RefreshCurrentMazeCell(playerPosition);
+        //Debug.Log(currentCellPosition);
 
         Vector2Int currentCellPosition = new Vector2Int(CurrentMazeCell.X, CurrentMazeCell.Y);
-        Debug.Log(currentCellPosition);
         if (CurrentMazeCell.Type == MazeCellType.Portal)
         {
             // Определяем Area для телепортации
@@ -76,15 +76,22 @@ public class LevelController : MonoBehaviour
             Portal portal = CurrentArea.GetPortalByPosition(currentCellPosition);
             Area destinationArea = Level.GetAreaById(portal.ToAreaId);
 
-            // Поворачиваем Destination Area, если оно - не Main
-            GameObject areaObject = RotateArea(destinationArea);
+            if (!destinationArea.Visited || destinationArea.Type == AreaType.Main || destinationArea.Type == AreaType.ReflectedMain)
+            {
 
-            TeleportPlayer(areaObject, destinationArea, false);
-            return;
+                // Поворачиваем Destination Area, если оно - не Main
+                GameObject areaObject = RotateArea(destinationArea);
+
+                StaticPositionParameter portalSide = CurrentArea.GetPortalSide(portal);
+                portalSide = ChooseSideForPortalOut(portalSide);
+
+                TeleportPlayer(areaObject, destinationArea, portalSide, false);
+                return;
+            }
         }
 
-        // пермещаем Player на Reflected Area
-        //else if (Time.time > NextActionTime)
+        // пермещаем Player на ReflectedArea
+        //else if (Time.time > NextActionTime && Level.ReflectedArea != null)
         //{
         //    Debug.Log(Time.time + " ? " + NextActionTime + " + " + PeriodTeleportToReflectedArea + " = " + (NextActionTime + PeriodTeleportToReflectedArea));
         //    NextActionTime += PeriodTeleportToReflectedArea;
@@ -103,7 +110,7 @@ public class LevelController : MonoBehaviour
         //        // Поворачиваем Destination Area, если оно - не Main и не ReflectedMain
         //        GameObject areaObject = RotateArea(destinationArea);
 
-        //        TeleportPlayer(areaObject, destinationArea, true);
+        //        TeleportPlayer(areaObject, destinationArea, StaticPositionParameter.None, true);
         //    }
         //}
 
@@ -118,18 +125,70 @@ public class LevelController : MonoBehaviour
         MoveCamera(newPlayerPosition);
     }
 
-    public void SetCameraPosition(Vector3 newPosition) {
+    public StaticPositionParameter ChooseSideForPortalOut(StaticPositionParameter portalSide)
+    {
+        if (PlayerMovingSideInMainMaze == StaticPositionParameter.Top)
+        {
+            if (portalSide == StaticPositionParameter.Top)
+                return StaticPositionParameter.Top;
+            else if (portalSide == StaticPositionParameter.Bottom)
+                return StaticPositionParameter.Bottom;
+            else if (portalSide == StaticPositionParameter.Left)
+                return StaticPositionParameter.Left;
+            else if (portalSide == StaticPositionParameter.Right)
+                return StaticPositionParameter.Right;
+        }
+        else if (PlayerMovingSideInMainMaze == StaticPositionParameter.Bottom)
+        {
+            if (portalSide == StaticPositionParameter.Top)
+                return StaticPositionParameter.Bottom;
+            else if (portalSide == StaticPositionParameter.Bottom)
+                return StaticPositionParameter.Top;
+            else if (portalSide == StaticPositionParameter.Left)
+                return StaticPositionParameter.Right;
+            else if (portalSide == StaticPositionParameter.Right)
+                return StaticPositionParameter.Left;
+        }
+        else if (PlayerMovingSideInMainMaze == StaticPositionParameter.Left)
+        {
+            if (portalSide == StaticPositionParameter.Top)
+                return StaticPositionParameter.Left;
+            else if (portalSide == StaticPositionParameter.Bottom)
+                return StaticPositionParameter.Right;
+            else if (portalSide == StaticPositionParameter.Right)
+                return StaticPositionParameter.Top;
+            else if (portalSide == StaticPositionParameter.Left)
+                return StaticPositionParameter.Bottom;
+        }
+        else
+        {
+            if (portalSide == StaticPositionParameter.Top)
+                return StaticPositionParameter.Right;
+            else if (portalSide == StaticPositionParameter.Bottom)
+                return StaticPositionParameter.Left;
+            else if (portalSide == StaticPositionParameter.Right)
+                return StaticPositionParameter.Bottom;
+            else if (portalSide == StaticPositionParameter.Left)
+                return StaticPositionParameter.Top;
+        }
+
+        return PlayerMovingSideInMainMaze;
+    }
+
+    public void SetCameraPosition(Vector3 newPosition)
+    {
         Vector3 cameraPosition = MiniMapCamera.transform.position;
         cameraPosition.x = newPosition.x;
-        cameraPosition.y = 10;
+        cameraPosition.y = newPosition.y;
         cameraPosition.z = newPosition.z;
         MiniMapCamera.transform.position = cameraPosition;
     }
 
-    public void MoveCamera(Vector3 targetPosition) {
+    public void MoveCamera(Vector3 targetPosition)
+    {
         Vector3 cameraPosition = MiniMapCamera.transform.position;
         cameraPosition.x = targetPosition.x;
-        cameraPosition.y = 10;
+        cameraPosition.y = targetPosition.y + 5;
         cameraPosition.z = targetPosition.z;
         MiniMapCamera.transform.position = cameraPosition;
     }
@@ -137,14 +196,20 @@ public class LevelController : MonoBehaviour
     private GameObject RotateArea(Area destinationArea)
     {
         GameObject areaObject;
-        if (destinationArea.Type == AreaType.Main || destinationArea.Type == AreaType.ReflectedMain)
-        {
-            areaObject = transform.GetComponent<Level2D>().AreasFolder.transform.GetChild(destinationArea.Id).gameObject;
-            return areaObject;
-        }
 
-        Vector2 vectorMovement = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        areaObject = AreasController.RotateSecondaryAreaRelativelyPlayerMovement(destinationArea, vectorMovement);
+        // Для 2D:
+        //if (destinationArea.Type == AreaType.Main || destinationArea.Type == AreaType.ReflectedMain)
+        //{
+        //    areaObject = transform.GetComponent<Level2D>().AreasFolder.transform.GetChild(destinationArea.Id).gameObject;
+        //    return areaObject;
+        //}
+
+        //Vector2 vectorMovement = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        //areaObject = AreasController.RotateSecondaryAreaRelativelyPlayerMovement2D(destinationArea, vectorMovement);
+
+        //Для 3D:
+        areaObject = transform.GetComponent<Level2D>().AreasFolder.transform.GetChild(destinationArea.Id).gameObject;
+
         return areaObject;
     }
 
@@ -154,23 +219,19 @@ public class LevelController : MonoBehaviour
         if (playerPosition.x > CurrentArea.MainMaze.Width + Random.Range(0, CurrentArea.MainMaze.Width / 4))
         {
             playerPosition.x = Mathf.Abs(playerPosition.x) - CurrentArea.MainMaze.Width;
-            //IsEnableToHorizintalTeleport = true;
         }
         else if (playerPosition.x < -1)
         {
             playerPosition.x = CurrentArea.MainMaze.Width - Mathf.Abs(playerPosition.x);
-            //IsEnableToHorizintalTeleport = true;
         }
 
         if (playerPosition.z > CurrentArea.MainMaze.Height + Random.Range(0, CurrentArea.MainMaze.Width / 4))
         {
             playerPosition.z = Mathf.Abs(playerPosition.z) - CurrentArea.MainMaze.Height;
-            //IsEnableToVerticalTeleport = true;
         }
         else if (playerPosition.z < -1)
         {
             playerPosition.z = CurrentArea.MainMaze.Height - Mathf.Abs(playerPosition.z);
-            //IsEnableToVerticalTeleport = true;
         }
 
 
@@ -181,36 +242,81 @@ public class LevelController : MonoBehaviour
     private void RefreshCurrentMazeCell(Vector3 playerPosition)
     {
         Vector2Int position = AreasController.ParseToAreaSizePosition(CurrentArea.Type, CurrenAreaObject.transform.TransformPoint(playerPosition));
+
+        MazeCell previousMazeCell = CurrentMazeCell;
         CurrentMazeCell = CurrentArea.GetCell(position);
+
+        if (previousMazeCell != null && (CurrentArea.Type == AreaType.Main || CurrentArea.Type == AreaType.ReflectedMain))
+        {
+            if (CurrentArea.GetMazeByPosition(position).Type == MazeType.Main)
+            {
+                if (previousMazeCell.Y < CurrentMazeCell.Y)
+                    PlayerMovingSideInMainMaze = StaticPositionParameter.Top;
+                else if (previousMazeCell.Y > CurrentMazeCell.Y)
+                    PlayerMovingSideInMainMaze = StaticPositionParameter.Bottom;
+                else if (previousMazeCell.X < CurrentMazeCell.X)
+                    PlayerMovingSideInMainMaze = StaticPositionParameter.Right;
+                else if (previousMazeCell.X > CurrentMazeCell.X)
+                    PlayerMovingSideInMainMaze = StaticPositionParameter.Left;
+            }
+        }
+
+        Debug.Log(PlayerMovingSideInMainMaze + ": (" + CurrentMazeCell.X + ", " + CurrentMazeCell.Y + ")");
 
     }
 
 
-    public void TeleportPlayer(GameObject areaObject, Area destinationArea, bool reflectedTeleport)
+    public void TeleportPlayer(GameObject areaObject, Area destinationArea, StaticPositionParameter portalParameter, bool reflectedTeleport)
     {
         Area lastArea = CurrentArea;
         bool isFirstSpawn = lastArea == null;
 
         CurrentArea = Level.GetAreaById(destinationArea.Id);
+        CurrentMazeCell = null;
 
         if (CurrenAreaObject != null)
             CurrenAreaObject.SetActive(false);
         CurrenAreaObject = areaObject;
         areaObject.SetActive(true);
 
+        CurrentArea.SetVisited(true);
+
+
         Vector2Int areaPlayerPosition;
+        float eulerAnglesZ = 0f;
         if (!reflectedTeleport)
         {
-            if (CurrentArea.Type == AreaType.Main && !isFirstSpawn)
+            if (isFirstSpawn)
+            {
+                areaPlayerPosition = CurrentArea.MainMaze.StartPosition;
+                eulerAnglesZ = 0f;
+            }
+            else if (CurrentArea.Type == AreaType.Main)
             {
                 Portal portal = CurrentArea.GetPortalByToAreaId(lastArea.Id);
-                areaPlayerPosition = AreasController.GenerateOutPortal(portal.Position);
+                areaPlayerPosition = AreasController.GenerateOutPortal(portal.Position, portalParameter);
                 if (areaPlayerPosition == Vector2Int.zero)
                     areaPlayerPosition = CurrentArea.MainMaze.StartPosition;
+
+                if (portalParameter == StaticPositionParameter.Top)
+                    eulerAnglesZ = 0;
+                else if (portalParameter == StaticPositionParameter.Bottom)
+                    eulerAnglesZ = 180;
+                else if (portalParameter == StaticPositionParameter.Right)
+                    eulerAnglesZ = 90;
+                else if (portalParameter == StaticPositionParameter.Left)
+                    eulerAnglesZ = -90;
+                else
+                    eulerAnglesZ = Player.transform.localEulerAngles.z;
             }
             else
+            {
                 areaPlayerPosition = CurrentArea.MainMaze.StartPosition;
+                eulerAnglesZ = 90f;
+            }
         }
+
+        // Для ReflectedArea:
         else
         {
             if (CurrentMazeCell.Y > Length / 2)
@@ -228,39 +334,48 @@ public class LevelController : MonoBehaviour
         }
 
         Vector3Int cellSize = AreasController.GetCellSize(CurrentArea.Type);
-        SetPlayerToCell(CurrentArea.GetCell(areaPlayerPosition), cellSize.x, cellSize.y, isFirstSpawn);
+        SetPlayerToCell(CurrentArea.GetCell(areaPlayerPosition), cellSize, reflectedTeleport);
+        RotatePlayerToSecondaryArea(eulerAnglesZ);
     }
 
-    public void SetPlayerToCell(MazeCell mazeCell, float cellWidth, float cellHeight, bool isFirstSpawn)
+    public void SetPlayerToCell(MazeCell mazeCell, Vector3 cellSize, bool reflectedTeleport)
     {
         Vector3 playerPosition = Player.transform.position;
 
-        float positionXInCell, positionYInCell;
-        if (!isFirstSpawn)
+        float positionXInCell, positionZInCell;
+        if (reflectedTeleport)
         {
-            positionXInCell = (playerPosition.x - ((int)playerPosition.x)) % cellWidth;
-            positionYInCell = (playerPosition.z - ((int)playerPosition.z)) % cellHeight;
+            positionXInCell = (playerPosition.x - ((int)playerPosition.x)) % cellSize.x;
+            positionZInCell = (playerPosition.z - ((int)playerPosition.z)) % cellSize.z;
         }
-        else {
-            positionXInCell = cellWidth / 2;
-            positionYInCell = cellHeight / 2;
+        else
+        {
+            positionXInCell = cellSize.x / 2;
+            positionZInCell = cellSize.z / 2;
         }
 
-        
-        playerPosition.x = mazeCell.X * cellWidth + positionXInCell;
+
+        playerPosition.x = mazeCell.X * cellSize.x + positionXInCell;
 
         // Для игры
         //playerPosition.y = Player.transform.localScale.y / 2;
 
         // Для тестирования
-        //playerPosition.y = playerPosition.y;
+        playerPosition.y = 5;
 
-        playerPosition.z = mazeCell.Y * cellHeight + positionYInCell;
+        playerPosition.z = mazeCell.Y * cellSize.z + positionZInCell;
 
-        SetCameraPosition(playerPosition);
         Player.transform.position = CurrenAreaObject.transform.TransformPoint(playerPosition);
+        SetCameraPosition(Player.transform.position);
 
         CurrentMazeCell = mazeCell;
+    }
+
+    public void RotatePlayerToSecondaryArea(float eulerAnglesZ)
+    {
+        Vector3 playerLocalEulerAngels = Player.transform.localEulerAngles;
+        playerLocalEulerAngels.y = eulerAnglesZ;
+        Player.transform.localEulerAngles = playerLocalEulerAngels;
     }
 
 

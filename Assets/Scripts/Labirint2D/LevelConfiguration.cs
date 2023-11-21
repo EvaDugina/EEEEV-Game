@@ -48,7 +48,7 @@ public class LevelConfiguration
     {
         LevelParameters = new List<Parameters>
         {
-            GenerateMainAreaParams()
+            //GenerateMainAreaParams()
         };
     }
 

@@ -69,6 +69,8 @@ public class MazeGenerateUtilities
         return cells;
     }
 
+
+
     public static MazeCell[][] GetMazePartBySide(MazeCell[][] cells, MazeSide side)
     {
         int koefCuttingSiblingMazes = 2;

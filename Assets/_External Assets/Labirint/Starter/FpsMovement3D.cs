@@ -13,7 +13,6 @@ using Vector3 = UnityEngine.Vector3;
 public class FpsMovement3D : MonoBehaviour
 {
     [SerializeField] private Camera HeadCamera;
-    [SerializeField] private Transform ArrowTransform;
 
     public float speed = 6.0f;
     public float gravity = -9.8f;
@@ -53,13 +52,13 @@ public class FpsMovement3D : MonoBehaviour
         movement = transform.TransformDirection(movement);
 
         charController.Move(movement);
+
     }
 
     private void RotateCharacter()
     {
         float xAxis = Input.GetAxis("Mouse X");
         transform.Rotate(0, xAxis * sensitivityHor, 0);
-        ArrowTransform.Rotate(0, xAxis * sensitivityHor, 0);
 
     }
 

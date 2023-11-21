@@ -11,6 +11,9 @@ public class AreasController : MonoBehaviour
     //public List<AreaParams> AreaParams = new();
 
     [Header("Параметры ROOM-лабиринта")]
+    [SerializeField] private Parameters MainAreaParams;
+
+    [Header("Параметры ROOM-лабиринта")]
     [SerializeField] private Parameters RoomAreaParams;
 
     [Header("Параметры FIELD-лабиринта")]
@@ -24,13 +27,16 @@ public class AreasController : MonoBehaviour
     private void Awake()
     {
 
+        MainAreaParams.Status = true;
 
         // Заполняем конфигурацию
+        RoomAreaParams.Type = AreaType.Main;
         RoomAreaParams.Type = AreaType.Room;
         FieldAreaParams.Type = AreaType.Field;
         CorridorAreaParams.Type = AreaType.Corridor;
 
         LevelConfiguration = new LevelConfiguration();
+        LevelConfiguration.AddAreaParamsToList(MainAreaParams);
         LevelConfiguration.AddAreaParamsToList(RoomAreaParams);
         LevelConfiguration.AddAreaParamsToList(FieldAreaParams);
         LevelConfiguration.AddAreaParamsToList(CorridorAreaParams);
@@ -51,11 +57,11 @@ public class AreasController : MonoBehaviour
     public LevelConfiguration GetLevelConfiguration()
     {
         return LevelConfiguration;
-    }
+    } 
 
 
 
-    public GameObject RotateSecondaryAreaRelativelyPlayerMovement(Area destinationArea, Vector2 vectorMovement)
+    public GameObject RotateSecondaryAreaRelativelyPlayerMovement2D(Area destinationArea, Vector2 vectorMovement)
     {
         // Находим нужный нам Area, на который осущетсвляется переход
         GameObject areaObject = transform.GetComponent<Level2D>().AreasFolder.transform.GetChild(destinationArea.Id).gameObject;
@@ -73,40 +79,41 @@ public class AreasController : MonoBehaviour
 
         // Поворачиваем его, если надо
         Vector3 areaLocalEulerAngels = areaObject.transform.localEulerAngles;
-        if (vectorMovement.y > 0) areaLocalEulerAngels.z = 90;
-        else if (vectorMovement.y < 0) areaLocalEulerAngels.z = -90;
-        else if (vectorMovement.x < 0) areaLocalEulerAngels.z = 180;
-        else areaLocalEulerAngels.z = 0;
+        if (vectorMovement.y > 0) areaLocalEulerAngels.y = 90;
+        else if (vectorMovement.y < 0) areaLocalEulerAngels.y = -90;
+        else if (vectorMovement.x < 0) areaLocalEulerAngels.y = 180;
+        else areaLocalEulerAngels.y = 0;
         areaObject.transform.localEulerAngles = areaLocalEulerAngels;
 
         // Меняем позицию после поворота
         areaPosition = areaObject.transform.position;
         Vector3Int cellSize = LevelConfiguration.GetParametersByAreaType(destinationArea.Type).SpawnParams.CellParameters.Size;
         if (vectorMovement.x > 0)
-            areaObject.transform.position = new Vector3(areaPosition.x - pointAroundRotation.x, areaPosition.y - pointAroundRotation.y, areaPosition.z);
+            areaObject.transform.position = new Vector3(areaPosition.x - pointAroundRotation.x, areaPosition.y, areaPosition.z - pointAroundRotation.y);
         else if (vectorMovement.x < 0)
-            areaObject.transform.position = new Vector3(areaPosition.x + pointAroundRotation.x, areaPosition.y + pointAroundRotation.y + cellSize.y, areaPosition.z);
+            areaObject.transform.position = new Vector3(areaPosition.x + pointAroundRotation.x, areaPosition.y, areaPosition.z + pointAroundRotation.y + cellSize.z);
         else if (vectorMovement.y > 0)
-            areaObject.transform.position = new Vector3(areaPosition.x + pointAroundRotation.x, areaPosition.y + pointAroundRotation.y + cellSize.y, areaPosition.z);
+            areaObject.transform.position = new Vector3(areaPosition.x + pointAroundRotation.x, areaPosition.y, areaPosition.z + pointAroundRotation.y + cellSize.z);
         else if (vectorMovement.y < 0)
-            areaObject.transform.position = new Vector3(0, areaPosition.y - pointAroundRotation.y, areaPosition.z);
+            areaObject.transform.position = new Vector3(0, areaPosition.y, areaPosition.z - pointAroundRotation.y);
 
         return areaObject;
     }
 
-    public Vector2Int GenerateOutPortal(/*Area currentArea, */Vector2Int portalPosition)
+    public Vector2Int GenerateOutPortal(/*Area currentArea, */Vector2Int portalPosition, StaticPositionParameter portalParameter)
     {
-        //MazeCell mazeCell = currentArea.GetCell(portalPosition);
-        if (/*!mazeCell.WallsStatus.LeftWall &&*/ Input.GetAxis("Horizontal") < 0)
+        Debug.Log(Input.GetAxis("Vertical"));
+        Debug.Log(Input.GetAxis("Horizontal"));
+        if (portalParameter == StaticPositionParameter.Left)
             return new Vector2Int(portalPosition.x - 1, portalPosition.y);
 
-        else if (/*!mazeCell.WallsStatus.RightWall &&*/ Input.GetAxis("Horizontal") > 0)
+        else if (portalParameter == StaticPositionParameter.Right)
             return new Vector2Int(portalPosition.x + 1, portalPosition.y);
 
-        else if (/*!mazeCell.WallsStatus.TopWall &&*/ Input.GetAxis("Vertical") > 0)
+        else if (portalParameter == StaticPositionParameter.Top)
             return new Vector2Int(portalPosition.x, portalPosition.y + 1);
 
-        else if (/*!mazeCell.WallsStatus.BottomWall &&*/ Input.GetAxis("Vertical") < 0)
+        else if (portalParameter == StaticPositionParameter.Bottom)
             return new Vector2Int(portalPosition.x, portalPosition.y - 1);
 
         else
@@ -135,7 +142,7 @@ public class AreasController : MonoBehaviour
             areaType = AreaType.Main;
 
         Vector3Int cellSize = LevelConfiguration.GetParametersByAreaType(areaType).SpawnParams.CellParameters.Size;
-        Vector2Int currentPositionInArea = new Vector2Int((int)(playerPosition.x / cellSize.x), (int)(playerPosition.y / cellSize.y));
+        Vector2Int currentPositionInArea = new Vector2Int((int)(playerPosition.x / cellSize.x), (int)(playerPosition.z / cellSize.z));
         return currentPositionInArea;
     }
 }
