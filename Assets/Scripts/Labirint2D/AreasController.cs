@@ -145,4 +145,5 @@ public class AreasController : MonoBehaviour
         Vector2Int currentPositionInArea = new Vector2Int((int)(playerPosition.x / cellSize.x), (int)(playerPosition.z / cellSize.z));
         return currentPositionInArea;
     }
+
 }

@@ -409,6 +409,10 @@ PrefabInstance:
       propertyPath: PortalMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 9e484f3e695e6c542ba304448cf8dc44, type: 2}
+    - target: {fileID: 4622585028246516787, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: BoundaryCenterMazePrefab
+      value: 
+      objectReference: {fileID: 1742853868352982181, guid: 5ca780c619b5b8445ba730e3793395e2, type: 3}
     - target: {fileID: 4710519834860055386, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: m_Name
       value: Level
