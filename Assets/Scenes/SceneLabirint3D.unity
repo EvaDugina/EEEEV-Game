@@ -396,7 +396,7 @@ PrefabInstance:
     - target: {fileID: 1730764021364460184, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: CellPrefab
       value: 
-      objectReference: {fileID: 1842833647202691168, guid: 9252ca8214246b84b9676787a4107eb2, type: 3}
+      objectReference: {fileID: 1842833647202691168, guid: 0ff4ae5f13514354b814ec502666d46c, type: 3}
     - target: {fileID: 1730764021364460184, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: StartMaterial
       value: 
