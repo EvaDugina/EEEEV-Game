@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CellHandler : MonoBehaviour
 {
-    public CellSpawnConfiguration CellSpawnConfiguration;
+    public CellsSpawnConfiguration CellSpawnConfiguration;
 
 
     public Cell CreateCellByDecoration(CellDecoration decoration)

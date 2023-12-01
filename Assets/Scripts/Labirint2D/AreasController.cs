@@ -10,6 +10,11 @@ public class AreasController : MonoBehaviour
     // TODO: Сделать через массив
     //public List<AreaParams> AreaParams = new();
 
+    [SerializeField] private GameObject EmptyDecorationPrefab;
+    [SerializeField] private GameObject RedRoomDecorationPrefab;
+    [SerializeField] private GameObject WheatFieldDecorationPrefab;
+    [SerializeField] private GameObject BirchFieldDecorationPrefab;
+
     [Header("Параметры ROOM-лабиринта")]
     [SerializeField] private Parameters MainAreaParams;
 

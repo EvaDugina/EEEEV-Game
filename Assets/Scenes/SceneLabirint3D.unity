@@ -348,7 +348,7 @@ PrefabInstance:
     - target: {fileID: 698392026030941220, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: CellSpawnConfiguration
       value: 
-      objectReference: {fileID: 252960843}
+      objectReference: {fileID: 0}
     - target: {fileID: 1047970426568757374, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: CellPrefab
       value: 
@@ -409,6 +409,54 @@ PrefabInstance:
       propertyPath: PortalMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 9e484f3e695e6c542ba304448cf8dc44, type: 2}
+    - target: {fileID: 3248615533337143467, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: EmptyDecoration.Wall
+      value: 
+      objectReference: {fileID: 2100000, guid: 7549dba881ce52c4da16a9b05f86bdab, type: 2}
+    - target: {fileID: 3248615533337143467, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: EmptyDecoration.Floor
+      value: 
+      objectReference: {fileID: 2100000, guid: 14f4dc55eda5b004db12bbee852ff43e, type: 2}
+    - target: {fileID: 3248615533337143467, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: EmptyDecoration.Column
+      value: 
+      objectReference: {fileID: 2100000, guid: 7549dba881ce52c4da16a9b05f86bdab, type: 2}
+    - target: {fileID: 3248615533337143467, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: RedRoomDecoration.Wall
+      value: 
+      objectReference: {fileID: 2100000, guid: 6b592177e65e8f74e9b3eea6a6c1f356, type: 2}
+    - target: {fileID: 3248615533337143467, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: RedRoomDecoration.Floor
+      value: 
+      objectReference: {fileID: 2100000, guid: 14f4dc55eda5b004db12bbee852ff43e, type: 2}
+    - target: {fileID: 3248615533337143467, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: RedRoomDecoration.Column
+      value: 
+      objectReference: {fileID: 2100000, guid: 6b592177e65e8f74e9b3eea6a6c1f356, type: 2}
+    - target: {fileID: 3248615533337143467, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: BirchFieldDecoration.Wall
+      value: 
+      objectReference: {fileID: 2100000, guid: 14f4dc55eda5b004db12bbee852ff43e, type: 2}
+    - target: {fileID: 3248615533337143467, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: WheatFieldDecoration.Wall
+      value: 
+      objectReference: {fileID: 2100000, guid: 14f4dc55eda5b004db12bbee852ff43e, type: 2}
+    - target: {fileID: 3248615533337143467, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: BirchFieldDecoration.Floor
+      value: 
+      objectReference: {fileID: 2100000, guid: 7549dba881ce52c4da16a9b05f86bdab, type: 2}
+    - target: {fileID: 3248615533337143467, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: WheatFieldDecoration.Floor
+      value: 
+      objectReference: {fileID: 2100000, guid: 771ab1a71ecbb98459b156d2461ee407, type: 2}
+    - target: {fileID: 3248615533337143467, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: BirchFieldDecoration.Column
+      value: 
+      objectReference: {fileID: 2100000, guid: 14f4dc55eda5b004db12bbee852ff43e, type: 2}
+    - target: {fileID: 3248615533337143467, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: WheatFieldDecoration.Column
+      value: 
+      objectReference: {fileID: 2100000, guid: 14f4dc55eda5b004db12bbee852ff43e, type: 2}
     - target: {fileID: 4622585028246516787, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: BoundaryCenterMazePrefab
       value: 
@@ -518,17 +566,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1678810746168365325, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
   m_PrefabInstance: {fileID: 252960841}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &252960843 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8355324458623418089, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
-  m_PrefabInstance: {fileID: 252960841}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e4edca8530c38548ab0b534338cfacf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &252960844 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4710519834860055386, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
@@ -546,6 +583,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9a5cf9b88b542f47aed32defd65b1e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EmptyDecorationPrefab: {fileID: 0}
+  RedRoomDecorationPrefab: {fileID: 0}
+  WheatFieldDecorationPrefab: {fileID: 0}
+  BirchFieldDecorationPrefab: {fileID: 0}
   MainAreaParams:
     Status: 1
     GenerateParams:
@@ -555,7 +596,7 @@ MonoBehaviour:
       CellParameters:
         Size: {x: 1, y: 1, z: 1}
   RoomAreaParams:
-    Status: 1
+    Status: 0
     GenerateParams:
       SizeKoeff: 0.25
     SpawnParams:
@@ -563,7 +604,7 @@ MonoBehaviour:
       CellParameters:
         Size: {x: 2, y: 2, z: 2}
   FieldAreaParams:
-    Status: 1
+    Status: 0
     GenerateParams:
       SizeKoeff: 0.5
     SpawnParams:

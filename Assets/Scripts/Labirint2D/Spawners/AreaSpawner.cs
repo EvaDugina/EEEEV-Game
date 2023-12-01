@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CellSpawnConfiguration))]
+[RequireComponent(typeof(CellsSpawnConfiguration))]
 public class AreaSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject AreaPrefab;
