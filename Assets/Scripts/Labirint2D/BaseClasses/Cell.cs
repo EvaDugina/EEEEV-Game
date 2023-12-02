@@ -7,33 +7,16 @@ using UnityEngine;
 public class Cell
 {
 
-    public List<Wall> Walls;
-    public List<Column> Columns;
-    public Floor Floor;
+    public GameObject CellPrefab;
 
-    public float Width;
-    public float Length;
-    public float Height;
+    public int Width;
+    public int Height;
+    public int Length;
 
-    public Cell(List<Wall> walls, List<Column> columns, Floor floor)
-    {
-        Walls = walls;
-        Columns = columns;
-        Floor = floor;
-
-        Width = 1.0f;
-        Height = 1.0f;
-        Length = 1.0f;
-    }
-
-    public Material GetFloorMaterial()
-    {
-        return Floor.Material;
-    }
-
-    public void SetSize(Vector3 size) {
-        Width = size.x;
-        Height = size.y;
-        Length = size.z;
+    public Cell(GameObject cellDecorationPrefab, Vector3Int cellSize) {
+        CellPrefab = cellDecorationPrefab;
+        Width = cellSize.x;
+        Height = cellSize.y;
+        Length = cellSize.z;
     }
 }

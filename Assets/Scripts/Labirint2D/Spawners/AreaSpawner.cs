@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CellsSpawnConfiguration))]
+//[RequireComponent(typeof(CellsSpawnPrefabs))]
 public class AreaSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject AreaPrefab;
     [SerializeField] private MazeSpawner MazeSpawner;
-    [SerializeField] private CellHandler CellHandler;
+    [SerializeField] private CellsSpawnPrefabs CellsSpawnPrefabs;
+    //[SerializeField] private CellHandler CellHandler;
 
     [SerializeField] private GameObject BoundaryCenterMazePrefab;
 
@@ -81,8 +82,9 @@ public class AreaSpawner : MonoBehaviour
     public void SpawnArea(Area area, SpawnParams areaParams)
     {
 
-        Cell cellTemplate = CellHandler.CreateCellByDecoration(areaParams.Decoration);
-        cellTemplate.SetSize(areaParams.CellParameters.Size);
+        //Cell cellTemplate = CellHandler.CreateCellByDecoration(areaParams.Decoration);
+        GameObject cellDecorationPrefab = CellsSpawnPrefabs.GetCellDecorationByDecoration(areaParams.Decoration);
+        Cell cellTemplate = new Cell(cellDecorationPrefab, areaParams.CellSize);
 
         // Ставим каркас Area
         GameObject areaObject = Instantiate(AreaPrefab,

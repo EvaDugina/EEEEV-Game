@@ -10,11 +10,6 @@ public class AreasController : MonoBehaviour
     // TODO: Сделать через массив
     //public List<AreaParams> AreaParams = new();
 
-    [SerializeField] private GameObject EmptyDecorationPrefab;
-    [SerializeField] private GameObject RedRoomDecorationPrefab;
-    [SerializeField] private GameObject WheatFieldDecorationPrefab;
-    [SerializeField] private GameObject BirchFieldDecorationPrefab;
-
     [Header("Параметры ROOM-лабиринта")]
     [SerializeField] private Parameters MainAreaParams;
 
@@ -27,7 +22,7 @@ public class AreasController : MonoBehaviour
     [Header("Параметры CORRIDOR-лабиринта")]
     [SerializeField] private Parameters CorridorAreaParams;
 
-    [SerializeField] private LevelConfiguration LevelConfiguration;
+    private LevelConfiguration LevelConfiguration;
 
     private void Awake()
     {
@@ -51,7 +46,7 @@ public class AreasController : MonoBehaviour
     {
         if (areaType == AreaType.ReflectedMain)
             areaType = AreaType.Main;
-        return LevelConfiguration.GetParametersByAreaType(areaType).SpawnParams.CellParameters.Size;
+        return LevelConfiguration.GetParametersByAreaType(areaType).SpawnParams.CellSize;
     }
 
     public List<Parameters> GetLevelParameters()
@@ -92,7 +87,7 @@ public class AreasController : MonoBehaviour
 
         // Меняем позицию после поворота
         areaPosition = areaObject.transform.position;
-        Vector3Int cellSize = LevelConfiguration.GetParametersByAreaType(destinationArea.Type).SpawnParams.CellParameters.Size;
+        Vector3Int cellSize = LevelConfiguration.GetParametersByAreaType(destinationArea.Type).SpawnParams.CellSize;
         if (vectorMovement.x > 0)
             areaObject.transform.position = new Vector3(areaPosition.x - pointAroundRotation.x, areaPosition.y, areaPosition.z - pointAroundRotation.y);
         else if (vectorMovement.x < 0)
@@ -131,7 +126,7 @@ public class AreasController : MonoBehaviour
         if (areaType == AreaType.ReflectedMain)
             areaType = AreaType.Main;
 
-        Vector3Int cellSize = LevelConfiguration.GetParametersByAreaType(areaType).SpawnParams.CellParameters.Size;
+        Vector3Int cellSize = LevelConfiguration.GetParametersByAreaType(areaType).SpawnParams.CellSize;
 
         Vector2 realPoint = new Vector2Int(point.x, point.y);
         realPoint.x *= cellSize.x;
@@ -146,7 +141,7 @@ public class AreasController : MonoBehaviour
         if (areaType == AreaType.ReflectedMain)
             areaType = AreaType.Main;
 
-        Vector3Int cellSize = LevelConfiguration.GetParametersByAreaType(areaType).SpawnParams.CellParameters.Size;
+        Vector3Int cellSize = LevelConfiguration.GetParametersByAreaType(areaType).SpawnParams.CellSize;
         Vector2Int currentPositionInArea = new Vector2Int((int)(playerPosition.x / cellSize.x), (int)(playerPosition.z / cellSize.z));
         return currentPositionInArea;
     }

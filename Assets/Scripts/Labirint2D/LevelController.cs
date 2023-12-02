@@ -26,8 +26,8 @@ public class LevelController : MonoBehaviour
     private MazeCell CurrentMazeCell;
 
     // Для перемещения раз в определённое время на ReflectedArea
-    private float PeriodTeleportToReflectedArea = 10.0f;
-    private float NextActionTime = 5.0f;
+    //private float PeriodTeleportToReflectedArea = 10.0f;
+    //private float NextActionTime = 5.0f;
 
     private StaticPositionParameter PlayerMovingSideInMainMaze;
 
@@ -83,7 +83,7 @@ public class LevelController : MonoBehaviour
                 GameObject areaObject = RotateArea(destinationArea);
 
                 StaticPositionParameter portalSide = CurrentArea.GetPortalSide(portal);
-                portalSide = ChooseSideForPortalOut(portalSide);
+                portalSide = ChooseSideAfterReturningFromPortal(portalSide);
 
                 TeleportPlayer(areaObject, destinationArea, portalSide, false);
                 return;
@@ -125,7 +125,7 @@ public class LevelController : MonoBehaviour
         MoveCamera(newPlayerPosition);
     }
 
-    public StaticPositionParameter ChooseSideForPortalOut(StaticPositionParameter portalSide)
+    public StaticPositionParameter ChooseSideAfterReturningFromPortal(StaticPositionParameter portalSide)
     {
         if (PlayerMovingSideInMainMaze == StaticPositionParameter.Top)
         {

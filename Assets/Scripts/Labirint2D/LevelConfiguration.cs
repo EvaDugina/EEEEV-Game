@@ -24,12 +24,7 @@ public struct GenerateParams
 public struct SpawnParams
 {
     public CellDecoration Decoration;
-    public CellSpawnParameters CellParameters;
-}
-
-[System.Serializable]
-public struct CellSpawnParameters {
-    public Vector3Int Size;
+    public Vector3Int CellSize;
 }
 
 public enum CellDecoration
@@ -117,10 +112,7 @@ public class LevelConfiguration
             SpawnParams = new SpawnParams()
             {
                 Decoration = CellDecoration.Empty,
-                CellParameters = new CellSpawnParameters()
-                {
-                    Size = new Vector3Int(1, 1, 1)
-                }
+                CellSize = new Vector3Int(1, 1, 1)
             }
         };
     }

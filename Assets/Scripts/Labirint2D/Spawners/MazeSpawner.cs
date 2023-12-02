@@ -25,7 +25,7 @@ public class MazeSpawner : MonoBehaviour
         MazesFolder = mazeFolder;
         Cell = cellTemplate;
 
-        CellPrefab = CellSpawner.GetResizedCellPrefab(cellTemplate.Width, cellTemplate.Height, cellTemplate.Length, MazesFolder);
+        CellPrefab = CellSpawner.GetResizedCellPrefab(cellTemplate.CellPrefab, cellTemplate.Width, cellTemplate.Height, cellTemplate.Length, MazesFolder);
 
         SpawnMaze(mainMaze);
 

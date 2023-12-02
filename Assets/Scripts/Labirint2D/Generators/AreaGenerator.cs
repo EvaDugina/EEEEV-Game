@@ -79,7 +79,7 @@ public class AreaGenerator
 
         List<Portal> portals = new List<Portal>();
         foreach (StaticPositionParameter parameter in areaStructure.PortalOutParameters) {
-            Portal portalOut = PortalsHandler.CreatePortalOut(fromArea, toAreaId, parameter, fromArea.Portals);
+            Portal portalOut = PortalsHandler.CreatePortalIn(fromArea, toAreaId, parameter, fromArea.Portals);
             portals.Add(portalOut);
         }
         return portals;

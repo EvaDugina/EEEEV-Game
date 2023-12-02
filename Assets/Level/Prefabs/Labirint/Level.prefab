@@ -191,7 +191,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 479242d315734cb46a3743d537013f77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OriginalCellPrefab: {fileID: 1842833647202691168, guid: 2f97916b129bee849a3b98165d3a6067, type: 3}
+  StartMaterial: {fileID: 0}
+  FinishMaterial: {fileID: 0}
+  PortalMaterial: {fileID: 0}
 --- !u!1 &4710519834860055386
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,33 +242,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b5988d699853cb46844f1ecb28def0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 0}
+  MiniMapCamera: {fileID: 0}
   LevelSpawner: {fileID: 3841342438327897368}
+  AreasController: {fileID: 0}
   Width: 34
-  Height: 34
-  RoomAreaParams:
-    Status: 0
-    GenerateParams:
-      SizeKoeff: 0.5
-    SpawnParams:
-      CellParameters:
-        Size: {x: 1, y: 1, z: 1}
-        Decoration: 3
-  FieldAreaParams:
-    Status: 0
-    GenerateParams:
-      SizeKoeff: 0.75
-    SpawnParams:
-      CellParameters:
-        Size: {x: 1, y: 1, z: 1}
-        Decoration: 1
-  CorridorAreaParams:
-    Status: 0
-    GenerateParams:
-      SizeKoeff: 0.5
-    SpawnParams:
-      CellParameters:
-        Size: {x: 1, y: 1, z: 1}
-        Decoration: 0
+  Length: 0
 --- !u!114 &4315534982779542700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,8 +430,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8399260035822910399}
   - component: {fileID: 4622585028246516787}
-  - component: {fileID: 698392026030941220}
-  - component: {fileID: 8355324458623418089}
+  - component: {fileID: 4647619872316330480}
   m_Layer: 0
   m_Name: AreaSpawner
   m_TagString: Untagged
@@ -487,21 +467,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AreaPrefab: {fileID: 1235241647736092163, guid: 2ea8a129e54db0a43bb1c84f13074011, type: 3}
   MazeSpawner: {fileID: 1047970426568757374}
-  CellHandler: {fileID: 698392026030941220}
---- !u!114 &698392026030941220
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8888582916569882319}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aaee7e0db1b2764c8485b06ec93989c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CellSpawnConfugiration: {fileID: 8355324458623418089}
---- !u!114 &8355324458623418089
+  CellsSpawnPrefabs: {fileID: 4647619872316330480}
+  BoundaryCenterMazePrefab: {fileID: 1742853868352982181, guid: 5ca780c619b5b8445ba730e3793395e2, type: 3}
+--- !u!114 &4647619872316330480
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -513,23 +481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4edca8530c38548ab0b534338cfacf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EmptyDecoration:
-    Wall: {fileID: 2100000, guid: 7549dba881ce52c4da16a9b05f86bdab, type: 2}
-    EnableColumn: {fileID: 2100000, guid: 14f4dc55eda5b004db12bbee852ff43e, type: 2}
-    DisableColumn: {fileID: 2100000, guid: 7549dba881ce52c4da16a9b05f86bdab, type: 2}
-    Floor: {fileID: 2100000, guid: 14f4dc55eda5b004db12bbee852ff43e, type: 2}
-  WheatFieldDecoration:
-    Wall: {fileID: 2100000, guid: 14f4dc55eda5b004db12bbee852ff43e, type: 2}
-    EnableColumn: {fileID: 2100000, guid: 7549dba881ce52c4da16a9b05f86bdab, type: 2}
-    DisableColumn: {fileID: 2100000, guid: 14f4dc55eda5b004db12bbee852ff43e, type: 2}
-    Floor: {fileID: 2100000, guid: 771ab1a71ecbb98459b156d2461ee407, type: 2}
-  BirchFieldDecoration:
-    Wall: {fileID: 2100000, guid: 0dcb3a18aa35fa74591c768f3a9c7ec5, type: 2}
-    EnableColumn: {fileID: 2100000, guid: 7549dba881ce52c4da16a9b05f86bdab, type: 2}
-    DisableColumn: {fileID: 2100000, guid: 0dcb3a18aa35fa74591c768f3a9c7ec5, type: 2}
-    Floor: {fileID: 2100000, guid: 14f4dc55eda5b004db12bbee852ff43e, type: 2}
-  RedRoomDecoration:
-    Wall: {fileID: 2100000, guid: 6b592177e65e8f74e9b3eea6a6c1f356, type: 2}
-    EnableColumn: {fileID: 2100000, guid: 14f4dc55eda5b004db12bbee852ff43e, type: 2}
-    DisableColumn: {fileID: 2100000, guid: 6b592177e65e8f74e9b3eea6a6c1f356, type: 2}
-    Floor: {fileID: 2100000, guid: 0dcb3a18aa35fa74591c768f3a9c7ec5, type: 2}
+  EmptyDecorationPrefab: {fileID: 1842833647202691168, guid: ced8e4d97636e5e4c8b98b128a1bd588, type: 3}
+  WheatFieldDecorationPrefab: {fileID: 1842833647202691168, guid: 0ff4ae5f13514354b814ec502666d46c, type: 3}
+  BirchFieldDecorationPrefab: {fileID: 1842833647202691168, guid: 0ff4ae5f13514354b814ec502666d46c, type: 3}
+  RedRoomDecorationPrefab: {fileID: 1842833647202691168, guid: 0ff4ae5f13514354b814ec502666d46c, type: 3}

@@ -10,13 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8173674855557750684}
   - component: {fileID: 6863991453125174657}
-  - component: {fileID: 2708771959384204343}
   m_Layer: 0
   m_Name: Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8173674855557750684
 Transform:
@@ -47,19 +46,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MazeFolder: {fileID: 1275908390930985008}
---- !u!114 &2708771959384204343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1235241647736092163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aaee7e0db1b2764c8485b06ec93989c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CellSpawnConfiguration: {fileID: 0}
 --- !u!1 &1275908390930985008
 GameObject:
   m_ObjectHideFlags: 0
@@ -74,7 +60,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7189007606464818319
 Transform:

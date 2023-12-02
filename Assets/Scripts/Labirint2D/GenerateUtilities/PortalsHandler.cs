@@ -6,11 +6,11 @@ using UnityEngine.UIElements;
 
 public class PortalsHandler
 {
-    public static Portal CreatePortalOut(Area fromArea, int toAreaId, StaticPositionParameter parameter, List<Portal> areaPortals)
+    public static Portal CreatePortalIn(Area fromArea, int toAreaId, StaticPositionParameter parameter, List<Portal> areaPortals)
     {
 
-        Vector2Int portalPosition = FindPortalPosition(fromArea.Width, fromArea.Height, parameter, areaPortals);
-        
+        Vector2Int portalPosition = FindPortalPosition(fromArea.Width, fromArea.Height, parameter, areaPortals, fromArea.MainMaze.StartPosition, fromArea.MainMaze.FinishPosition);
+
         return new Portal()
         {
             FromAreaId = fromArea.Id,
@@ -19,9 +19,11 @@ public class PortalsHandler
         };
     }
 
-    public static Vector2Int FindPortalPosition(int width, int height, StaticPositionParameter parameter, List<Portal> areaPortals) {
+    public static Vector2Int FindPortalPosition(int width, int height, StaticPositionParameter parameter, List<Portal> areaPortals, Vector2Int startPosition, Vector2Int finishPosition)
+    {
         Vector2Int position = AreaStructureHandler.GetPositionByStaticParameter(parameter, width, height);
-        while (!CheckUniquePortalPosition(position, areaPortals))
+        while ((position.x != startPosition.x && position.y != startPosition.y) && (position.x != finishPosition.x && position.y != finishPosition.y)
+            && !CheckUniquePortalPosition(position, areaPortals))
         {
             position = AreaStructureHandler.GetPositionByStaticParameter(parameter, width, height);
         }
