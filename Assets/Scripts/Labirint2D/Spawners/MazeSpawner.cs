@@ -25,7 +25,7 @@ public class MazeSpawner : MonoBehaviour
         MazesFolder = mazeFolder;
         Cell = cellTemplate;
 
-        CellPrefab = CellSpawner.GetResizedCellPrefab(cellTemplate.CellPrefab, cellTemplate.Width, cellTemplate.Height, cellTemplate.Length, MazesFolder);
+        CellPrefab = CellSpawner.GetResizedCellPrefab(Cell.CellPrefab, Cell.Width, Cell.Height, Cell.Length, MazesFolder);
 
         SpawnMaze(mainMaze);
 
@@ -46,6 +46,8 @@ public class MazeSpawner : MonoBehaviour
             mazePosition = Vector2.zero;
         else
             mazePosition = MazeGenerateUtilities.GetBoundaryMazePositionInsideArea(MainMazeWidth, MainMazeHeight, maze.Side);
+
+        mazePosition = new Vector2(mazePosition.x * Cell.Width, mazePosition.y * Cell.Length);
 
         // Ставим каркас Maze
         GameObject mazeObject = Instantiate(MazePrefab,

@@ -98,23 +98,23 @@ public class LevelConfiguration
     */
 
 
-    private Parameters GenerateMainAreaParams()
-    {
-        return new Parameters()
-        {
-            Type = AreaType.Main,
-            Status = true,
+    //private Parameters GenerateMainAreaParams()
+    //{
+    //    return new Parameters()
+    //    {
+    //        Type = AreaType.Main,
+    //        Status = true,
 
-            GenerateParams = new GenerateParams()
-            {
-                SizeKoeff = 1,
-            },
-            SpawnParams = new SpawnParams()
-            {
-                Decoration = CellDecoration.Empty,
-                CellSize = new Vector3Int(1, 1, 1)
-            }
-        };
-    }
+    //        GenerateParams = new GenerateParams()
+    //        {
+    //            SizeKoeff = 1,
+    //        },
+    //        SpawnParams = new SpawnParams()
+    //        {
+    //            Decoration = CellDecoration.Empty,
+    //            CellSize = new Vector3Int(1, 1, 1)
+    //        }
+    //    };
+    //}
 
 }

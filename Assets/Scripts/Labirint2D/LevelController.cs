@@ -215,23 +215,24 @@ public class LevelController : MonoBehaviour
 
     private Vector3 TranslatePlayer(Vector3 playerPosition)
     {
+        Vector3Int cellSize = AreasController.GetCellSize(CurrentArea.Type);
 
-        if (playerPosition.x > CurrentArea.MainMaze.Width + Random.Range(0, CurrentArea.MainMaze.Width / 4))
+        if (playerPosition.x > (CurrentArea.MainMaze.Width + Random.Range(0, CurrentArea.MainMaze.Width / 4)) * cellSize.x)
         {
-            playerPosition.x = Mathf.Abs(playerPosition.x) - CurrentArea.MainMaze.Width;
+            playerPosition.x = Mathf.Abs(playerPosition.x) - CurrentArea.MainMaze.Width * cellSize.x;
         }
         else if (playerPosition.x < -1)
         {
-            playerPosition.x = CurrentArea.MainMaze.Width - Mathf.Abs(playerPosition.x);
+            playerPosition.x = CurrentArea.MainMaze.Width * cellSize.x - Mathf.Abs(playerPosition.x);
         }
 
-        if (playerPosition.z > CurrentArea.MainMaze.Height + Random.Range(0, CurrentArea.MainMaze.Width / 4))
+        if (playerPosition.z > (CurrentArea.MainMaze.Height + Random.Range(0, CurrentArea.MainMaze.Width / 4)) * cellSize.z)
         {
-            playerPosition.z = Mathf.Abs(playerPosition.z) - CurrentArea.MainMaze.Height;
+            playerPosition.z = Mathf.Abs(playerPosition.z) - CurrentArea.MainMaze.Height * cellSize.z;
         }
         else if (playerPosition.z < -1)
         {
-            playerPosition.z = CurrentArea.MainMaze.Height - Mathf.Abs(playerPosition.z);
+            playerPosition.z = CurrentArea.MainMaze.Height * cellSize.z - Mathf.Abs(playerPosition.z);
         }
 
 

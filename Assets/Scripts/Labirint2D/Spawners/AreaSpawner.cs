@@ -37,48 +37,6 @@ public class AreaSpawner : MonoBehaviour
         }
     }
 
-    private void SpawnBoundaryCenterMaze(Transform areaObjectTransform, Area area)
-    {
-        GameObject emptyObject = new GameObject();
-        GameObject boundaryCenterMazeFolderObject = Instantiate(emptyObject, areaObjectTransform);
-        boundaryCenterMazeFolderObject.name = area.Id + area.GetAreaTypeAsText() + "BoundaryWalls";
-        Destroy(emptyObject);
-
-        // TopBoundary
-        GameObject TopBoundaryCenterMazeObject = Instantiate(BoundaryCenterMazePrefab,
-            areaObjectTransform.TransformPoint(new Vector3(area.Width / 2, area.ZIndex * 10 + 5, area.Height)),
-            Quaternion.identity, boundaryCenterMazeFolderObject.transform);
-        TopBoundaryCenterMazeObject.name = "Top" + "Boundary";
-        TopBoundaryCenterMazeObject.transform.localEulerAngles = new Vector3(0, 0, 0);
-        TopBoundaryCenterMazeObject.transform.localScale = new Vector3(area.Width + 1, 10, 1);
-
-        // RightBoundary
-        GameObject RightBoundaryCenterMazeObject = Instantiate(BoundaryCenterMazePrefab,
-            areaObjectTransform.TransformPoint(new Vector3(area.Width, area.ZIndex * 10 + 5, area.Height / 2)),
-            Quaternion.identity, boundaryCenterMazeFolderObject.transform);
-        RightBoundaryCenterMazeObject.name = "Right" + "Boundary";
-        RightBoundaryCenterMazeObject.transform.localEulerAngles = new Vector3(0, 90, 0);
-        RightBoundaryCenterMazeObject.transform.localScale = new Vector3(area.Height + 1, 10, 1);
-
-        // BottomBoundary
-        GameObject BottomBoundaryCenterMazeObject = Instantiate(BoundaryCenterMazePrefab,
-            areaObjectTransform.TransformPoint(new Vector3(area.Width / 2, area.ZIndex * 10 + 5, 0)),
-            Quaternion.identity, boundaryCenterMazeFolderObject.transform);
-        BottomBoundaryCenterMazeObject.name = "Bottom" + "Boundary";
-        BottomBoundaryCenterMazeObject.transform.localEulerAngles = new Vector3(0, 180, 0);
-        BottomBoundaryCenterMazeObject.transform.localScale = new Vector3(area.Width + 1, 10, 1);
-
-        // LeftBoundary
-        GameObject LeftBoundaryCenterMazeObject = Instantiate(BoundaryCenterMazePrefab,
-            areaObjectTransform.TransformPoint(new Vector3(0, area.ZIndex * 10 + 5, area.Height / 2)),
-            Quaternion.identity, boundaryCenterMazeFolderObject.transform);
-        LeftBoundaryCenterMazeObject.name = "Left" + "Boundary";
-        LeftBoundaryCenterMazeObject.transform.localEulerAngles = new Vector3(0, -90, 0);
-        LeftBoundaryCenterMazeObject.transform.localScale = new Vector3(area.Height + 1, 10, 1);
-
-
-    }
-
     public void SpawnArea(Area area, SpawnParams areaParams)
     {
 
@@ -99,8 +57,51 @@ public class AreaSpawner : MonoBehaviour
 
         if (area.Type == AreaType.Main)
         {
-            SpawnBoundaryCenterMaze(areaObject.transform, area);
+            SpawnBoundaryCenterMaze(areaObject.transform, area, areaParams.CellSize);
         }
+    }
+
+
+    private void SpawnBoundaryCenterMaze(Transform areaObjectTransform, Area area, Vector3Int cellSize)
+    {
+        GameObject emptyObject = new GameObject();
+        GameObject boundaryCenterMazeFolderObject = Instantiate(emptyObject, areaObjectTransform);
+        boundaryCenterMazeFolderObject.name = area.Id + area.GetAreaTypeAsText() + "BoundaryWalls";
+        Destroy(emptyObject);
+
+        // TopBoundary
+        GameObject TopBoundaryCenterMazeObject = Instantiate(BoundaryCenterMazePrefab,
+            areaObjectTransform.TransformPoint(new Vector3(area.Width / 2 * cellSize.x, area.ZIndex * 10 + 5, area.Height * cellSize.z)),
+            Quaternion.identity, boundaryCenterMazeFolderObject.transform);
+        TopBoundaryCenterMazeObject.name = "Top" + "Boundary";
+        TopBoundaryCenterMazeObject.transform.localEulerAngles = new Vector3(0, 0, 0);
+        TopBoundaryCenterMazeObject.transform.localScale = new Vector3((area.Width + 1) * cellSize.x, 10, 1 * cellSize.z);
+
+        // RightBoundary
+        GameObject RightBoundaryCenterMazeObject = Instantiate(BoundaryCenterMazePrefab,
+            areaObjectTransform.TransformPoint(new Vector3(area.Width * cellSize.x, area.ZIndex * 10 + 5, area.Height / 2 * cellSize.z)),
+            Quaternion.identity, boundaryCenterMazeFolderObject.transform);
+        RightBoundaryCenterMazeObject.name = "Right" + "Boundary";
+        RightBoundaryCenterMazeObject.transform.localEulerAngles = new Vector3(0, 90, 0);
+        RightBoundaryCenterMazeObject.transform.localScale = new Vector3((area.Height + 1) * cellSize.x, 10, 1 * cellSize.z);
+
+        // BottomBoundary
+        GameObject BottomBoundaryCenterMazeObject = Instantiate(BoundaryCenterMazePrefab,
+            areaObjectTransform.TransformPoint(new Vector3(area.Width / 2 * cellSize.x, area.ZIndex * 10 + 5, 0)),
+            Quaternion.identity, boundaryCenterMazeFolderObject.transform);
+        BottomBoundaryCenterMazeObject.name = "Bottom" + "Boundary";
+        BottomBoundaryCenterMazeObject.transform.localEulerAngles = new Vector3(0, 180, 0);
+        BottomBoundaryCenterMazeObject.transform.localScale = new Vector3((area.Width + 1) * cellSize.x, 10, 1 * cellSize.z);
+
+        // LeftBoundary
+        GameObject LeftBoundaryCenterMazeObject = Instantiate(BoundaryCenterMazePrefab,
+            areaObjectTransform.TransformPoint(new Vector3(0, area.ZIndex * 10 + 5, area.Height / 2 * cellSize.z)),
+            Quaternion.identity, boundaryCenterMazeFolderObject.transform);
+        LeftBoundaryCenterMazeObject.name = "Left" + "Boundary";
+        LeftBoundaryCenterMazeObject.transform.localEulerAngles = new Vector3(0, -90, 0);
+        LeftBoundaryCenterMazeObject.transform.localScale = new Vector3(area.Height * cellSize.z, 10, 1 * cellSize.z);
+
+
     }
 
 

@@ -615,9 +615,9 @@ MonoBehaviour:
       SizeKoeff: 1
     SpawnParams:
       Decoration: 0
-      CellSize: {x: 1, y: 1, z: 1}
+      CellSize: {x: 2, y: 2, z: 2}
   RoomAreaParams:
-    Status: 0
+    Status: 1
     GenerateParams:
       SizeKoeff: 0.25
     SpawnParams:
@@ -631,7 +631,7 @@ MonoBehaviour:
       Decoration: 1
       CellSize: {x: 1, y: 1, z: 1}
   CorridorAreaParams:
-    Status: 1
+    Status: 0
     GenerateParams:
       SizeKoeff: 0.5
     SpawnParams:
