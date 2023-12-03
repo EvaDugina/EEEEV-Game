@@ -100,10 +100,10 @@ public class LevelGenerator
         // Создаём и добавляем порталы
         if (area.Type != AreaType.Main) {
 
-            List<Portal> portals = AreaGenerator.CreatePortals(Level.MainArea, area.Id);
+            List<Portal> portals = AreaGenerator.CreatePortals(Level.MainArea, area);
             Level.MainArea.AddPortals(portals);
 
-            portals = AreaGenerator.CreatePortals(area, Level.MainArea.Id);
+            portals = AreaGenerator.CreatePortals(area, Level.MainArea);
             area.AddPortals(portals);
         }
 

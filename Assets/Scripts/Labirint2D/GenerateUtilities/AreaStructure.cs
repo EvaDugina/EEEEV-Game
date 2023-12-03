@@ -19,7 +19,7 @@ public class AreaStructure
     public DynamicPositionParameter FinishParameter;
 
     public List<StaticPositionParameter> PortalOutParameters;
-    public DynamicPositionParameter PortalInParameter;
+    public DynamicPositionParameter PortalBackParameter;
 
 }
 
@@ -60,6 +60,11 @@ public class AreaStructureHandler
         }
     }
 
+    public static int GetCountPortalsOutByAreaStructure(AreaStructure areaStructure)
+    {
+        return areaStructure.PortalOutParameters.Count;
+    }
+
     public static List<Vector2Int> GetPositionByParameters(List<StaticPositionParameter> parameters, int width, int height)
     {
         List<Vector2Int> positions = new List<Vector2Int>();
@@ -88,7 +93,7 @@ public class AreaStructureHandler
         {
             StartParameters = StaticPositionParameter.Center,
             FinishParameter = DynamicPositionParameter.ByDistance,
-            PortalInParameter = DynamicPositionParameter.ByPlayerPosition,
+            PortalBackParameter = DynamicPositionParameter.ByPlayerPosition,
             PortalOutParameters = new List<StaticPositionParameter>() {
                 StaticPositionParameter.Random
             },
@@ -101,7 +106,7 @@ public class AreaStructureHandler
         {
             StartParameters = StaticPositionParameter.Left,
             FinishParameter = DynamicPositionParameter.None,
-            PortalInParameter = DynamicPositionParameter.None,
+            PortalBackParameter = DynamicPositionParameter.None,
             PortalOutParameters = new List<StaticPositionParameter>() {
                 StaticPositionParameter.Top,
                 StaticPositionParameter.Bottom,
@@ -116,7 +121,7 @@ public class AreaStructureHandler
         {
             StartParameters = StaticPositionParameter.Center,
             FinishParameter = DynamicPositionParameter.None,
-            PortalInParameter = DynamicPositionParameter.None,
+            PortalBackParameter = DynamicPositionParameter.None,
             PortalOutParameters = new List<StaticPositionParameter>() {
                 StaticPositionParameter.Top,
                 StaticPositionParameter.Bottom,
@@ -132,7 +137,7 @@ public class AreaStructureHandler
         {
             StartParameters = StaticPositionParameter.Left,
             FinishParameter = DynamicPositionParameter.None,
-            PortalInParameter = DynamicPositionParameter.None,
+            PortalBackParameter = DynamicPositionParameter.None,
             PortalOutParameters = new List<StaticPositionParameter>() {
                 StaticPositionParameter.Right
             },

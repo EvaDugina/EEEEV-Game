@@ -31,6 +31,11 @@ public struct MazeCellColumnsStatus
     public bool BottomRight;
 }
 
+public enum MazeCellWallSide
+{
+    Left, Top, Right, Bottom
+}
+
 public class MazeCell : ICloneable
 {
 

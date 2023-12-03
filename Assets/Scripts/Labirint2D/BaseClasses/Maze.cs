@@ -48,9 +48,9 @@ public class Maze
 */
 
 
-    public void SetSide(MazeSide orientation)
+    public void SetSide(MazeSide side)
     {
-        Side = orientation;
+        Side = side;
         if (Side == MazeSide.Center) Type = MazeType.Main;
         else Type = MazeType.Boundary;
     }
@@ -67,7 +67,8 @@ public class Maze
         Cells[finish.x][finish.y].SetType(MazeCellType.Finish);
     }
 
-    public void SetCells(MazeCell[][] cells) { 
+    public void SetCells(MazeCell[][] cells)
+    {
         Cells = cells;
     }
 
@@ -77,6 +78,53 @@ public class Maze
 |   GETTERS
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────── 
 */
+
+    public bool IsBoundaryCell(Vector2Int cellPosition)
+    {
+        return cellPosition.x == 0 || cellPosition.y == 0 || cellPosition.x == Width - 1 || cellPosition.y == Height - 1;
+    }
+    public bool HasWayBetweenCells(Vector2Int cellPosition1, Vector2Int cellPosition2)
+    {
+        if (cellPosition1.x == cellPosition2.x)
+        {
+            if (cellPosition1.y > cellPosition2.y)
+            {
+                return !HasWallBySide(cellPosition1, MazeCellWallSide.Bottom) && !HasWallBySide(cellPosition1, MazeCellWallSide.Top);
+            }
+            else
+            {
+                return !HasWallBySide(cellPosition1, MazeCellWallSide.Top) && !HasWallBySide(cellPosition1, MazeCellWallSide.Bottom);
+            }
+        }
+        else if (cellPosition1.y == cellPosition2.y)
+        {
+            if (cellPosition1.x > cellPosition2.x)
+            {
+                return !HasWallBySide(cellPosition1, MazeCellWallSide.Left) && !HasWallBySide(cellPosition1, MazeCellWallSide.Right);
+            }
+            else
+            {
+                return !HasWallBySide(cellPosition1, MazeCellWallSide.Right) && !HasWallBySide(cellPosition1, MazeCellWallSide.Left);
+            }
+        }
+
+        return false;
+    }
+
+    public bool HasWallBySide(Vector2Int cellPosition, MazeCellWallSide wallSide)
+    {
+        if (wallSide == MazeCellWallSide.Left)
+            return Cells[cellPosition.x][cellPosition.y].WallsStatus.LeftWall;
+        if (wallSide == MazeCellWallSide.Top)
+            return Cells[cellPosition.x][cellPosition.y].WallsStatus.TopWall;
+        if (wallSide == MazeCellWallSide.Right)
+            return Cells[cellPosition.x][cellPosition.y].WallsStatus.RightWall;
+        if (wallSide == MazeCellWallSide.Bottom)
+            return Cells[cellPosition.x][cellPosition.y].WallsStatus.BottomWall;
+
+
+        return false;
+    }
 
 
     /* 
