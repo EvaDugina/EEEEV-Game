@@ -337,27 +337,8 @@ public class MazeGenerator
     public void CreateBoundaryPasseges()
     {
         int xMax = Width - 1;
-        //bool flagSymmetric = false;
-        //int startIndex = 0;
         for (int y = 0; y < Height; y++)
         {
-            //Более крутое удаление стен, для которого необходима отдельная и осторожная генерация крайних клеток, чтобы гарантировать 
-            //    наличие симметричной последовательности, с двух сторон ограниченной левыми стенами
-            //if (Cells[0][y].BottomWall != Cells[xMax][y].BottomWall)
-            //{
-            //    if (flagSymmetric)
-            //    {
-            //        for (int i = startIndex; i < y-1; i++)
-            //        {
-            //            Cells[0][i].LeftWall = false;
-            //            Cells[xMax + 1][i].LeftWall = false;
-            //        }
-            //    }
-            //    flagSymmetric = false;
-            //    startIndex = -1;
-            //}
-
-            //Debug.Log(Width + "(" + Cells.Length + ")" + " " + Height + "(" + Cells[0].Length + ")" + ": (" + xMax + ", " + y + ")");
             if (Cells[0][y].WallsStatus.BottomWall == Cells[xMax][y].WallsStatus.BottomWall
                 && Cells[0][y].WallsStatus.TopWall == Cells[xMax][y].WallsStatus.TopWall
                 && y % 2 == 1)
@@ -373,25 +354,8 @@ public class MazeGenerator
         }
 
         int yMax = Height - 1;
-        //flagSymmetric = false;
-        //startIndex = 0;
         for (int x = 0; x < Width; x++)
         {
-            //Более крутое удаление стен, для которого необходима отдельная и осторожная генерация крайних клеток, чтобы гарантировать 
-            //    наличие симметричной последовательности, с двух сторон ограниченной левыми стенами
-            //if (Cells[x][0].LeftWall != Cells[x][yMax].LeftWall)
-            //{
-            //    if (flagSymmetric)
-            //    {
-            //        for (int i = startIndex; i < x-1; i++)
-            //        {
-            //            Cells[i][0].BottomWall = false;
-            //            Cells[i][yMax + 1].BottomWall = false;
-            //        }
-            //    }
-            //    flagSymmetric = false;
-            //    startIndex = -1;
-            //}
             if (Cells[x][0].WallsStatus.LeftWall == Cells[x][yMax].WallsStatus.LeftWall
                 && Cells[x][0].WallsStatus.RightWall == Cells[x][yMax].WallsStatus.RightWall
                 && x % 2 == 1)

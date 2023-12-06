@@ -4,13 +4,13 @@ using UnityEngine;
 
 public enum StaticPositionParameter
 {
-    None, Random,
+    None, Random, Order,
     Left, Center, Right, Top, Bottom
 }
 
 public enum DynamicPositionParameter
 {
-    None, ByDistance, ByPlayerPosition
+    None, ByDistance, ByMovingSide
 }
 
 public class AreaStructure
@@ -60,6 +60,47 @@ public class AreaStructureHandler
         }
     }
 
+    public static Vector2Int GeneratePortalOrderedPosition(Area area, int distanceBetweenPortals, int countSecondaryAreas)
+    {
+        int order = area.Portals.Count;
+        if (order == 0)
+        {
+            return GoAheadReverseThroughTheMazeByDistance(area.MainMaze, area.MainMaze.FinishPosition, distanceBetweenPortals);
+        }
+        else
+        {
+            Vector2Int lastPortalPosition = area.Portals[order - 1].Position;
+            return GoAheadReverseThroughTheMazeByDistance(area.MainMaze, lastPortalPosition, distanceBetweenPortals);
+        }
+    }
+
+    public static Vector2Int GoAheadReverseThroughTheMazeByDistance(Maze maze, Vector2Int endPosition, int distance)
+    {
+        MazeCell currentMazeCell = maze.Cells[endPosition.x][endPosition.y];
+        int currentDistanceFromStart = currentMazeCell.DistanceFromStart;
+        for (int i = 0; i < distance; i++)
+        {
+            if (currentMazeCell.X < maze.Width - 1 && maze.Cells[currentMazeCell.X + 1][currentMazeCell.Y].DistanceFromStart == currentDistanceFromStart - 1) {
+                currentMazeCell = maze.Cells[currentMazeCell.X + 1][currentMazeCell.Y];
+                currentDistanceFromStart = currentMazeCell.DistanceFromStart;
+            } else if (currentMazeCell.X > 0 && maze.Cells[currentMazeCell.X - 1][currentMazeCell.Y].DistanceFromStart == currentDistanceFromStart - 1)
+            {
+                currentMazeCell = maze.Cells[currentMazeCell.X - 1][currentMazeCell.Y];
+                currentDistanceFromStart = currentMazeCell.DistanceFromStart;
+            } else if (currentMazeCell.Y < maze.Height - 1 && maze.Cells[currentMazeCell.X][currentMazeCell.Y + 1].DistanceFromStart == currentDistanceFromStart - 1)
+            {
+                currentMazeCell = maze.Cells[currentMazeCell.X][currentMazeCell.Y + 1];
+                currentDistanceFromStart = currentMazeCell.DistanceFromStart;
+            } else if (currentMazeCell.Y > 0 && maze.Cells[currentMazeCell.X][currentMazeCell.Y - 1].DistanceFromStart == currentDistanceFromStart - 1)
+            {
+                currentMazeCell = maze.Cells[currentMazeCell.X][currentMazeCell.Y - 1];
+                currentDistanceFromStart = currentMazeCell.DistanceFromStart;
+            }
+        }
+
+        return new Vector2Int(currentMazeCell.X, currentMazeCell.Y);
+    }
+
     public static int GetCountPortalsOutByAreaStructure(AreaStructure areaStructure)
     {
         return areaStructure.PortalOutParameters.Count;
@@ -93,9 +134,9 @@ public class AreaStructureHandler
         {
             StartParameters = StaticPositionParameter.Center,
             FinishParameter = DynamicPositionParameter.ByDistance,
-            PortalBackParameter = DynamicPositionParameter.ByPlayerPosition,
+            PortalBackParameter = DynamicPositionParameter.ByMovingSide,
             PortalOutParameters = new List<StaticPositionParameter>() {
-                StaticPositionParameter.Random
+                StaticPositionParameter.Order
             },
         };
     }

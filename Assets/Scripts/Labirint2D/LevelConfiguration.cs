@@ -8,6 +8,7 @@ public struct Parameters
 {
     [NonSerialized] public AreaType Type;
     public bool Status;
+    public int Order;
 
     public GenerateParams GenerateParams;
     public SpawnParams SpawnParams;

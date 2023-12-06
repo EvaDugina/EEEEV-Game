@@ -1,5 +1,6 @@
 ﻿
 using System;
+using TMPro;
 using UnityEngine;
 
 public class CellSpawner : MonoBehaviour
@@ -73,7 +74,7 @@ public class CellSpawner : MonoBehaviour
 
 
 
-        //cell.TextDistance.GetComponent<TextMeshPro>().text = maze.Cells[x][y].DistanceFromStart.ToString();
+        cell.TextDistance.GetComponent<TextMeshPro>().text = mazeCell.DistanceFromStart.ToString();
     }
 
 

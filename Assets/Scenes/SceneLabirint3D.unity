@@ -611,6 +611,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainAreaParams:
     Status: 1
+    Order: 0
     GenerateParams:
       SizeKoeff: 1
     SpawnParams:
@@ -618,20 +619,23 @@ MonoBehaviour:
       CellSize: {x: 2, y: 2, z: 2}
   RoomAreaParams:
     Status: 1
+    Order: 2
     GenerateParams:
       SizeKoeff: 0.25
     SpawnParams:
       Decoration: 3
       CellSize: {x: 2, y: 2, z: 2}
   FieldAreaParams:
-    Status: 0
+    Status: 1
+    Order: 1
     GenerateParams:
       SizeKoeff: 0.5
     SpawnParams:
       Decoration: 1
       CellSize: {x: 1, y: 1, z: 1}
   CorridorAreaParams:
-    Status: 0
+    Status: 1
+    Order: 3
     GenerateParams:
       SizeKoeff: 0.5
     SpawnParams:

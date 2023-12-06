@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
@@ -16,7 +17,13 @@ public class LevelGenerator
     {
         Width = width;
         Height = height;
-        LevelParameters = levelParams;
+        LevelParameters = SortLevelParametersByOrder(levelParams);
+    }
+
+    private List<Parameters> SortLevelParametersByOrder(List<Parameters> levelParams)
+    {
+        levelParams.Sort((p1, p2) => p1.Order.CompareTo(p2.Order));
+        return levelParams;
     }
 
 
@@ -39,7 +46,6 @@ public class LevelGenerator
         //Level.SetReflectedArea(CreateReflectedArea(id, area));
         //id++;
 
-
         foreach (Parameters parameters in LevelParameters)
         {
             if (parameters.Type != AreaType.Main && parameters.Status)
@@ -55,10 +61,28 @@ public class LevelGenerator
             }
         }
 
+        // Создаём и добавляем порталы
+        AddPortals(Level);
+
         return Level;
 
     }
 
+    private void AddPortals(Level level)
+    {
+        Vector2Int finishPosition = Level.MainArea.MainMaze.FinishPosition;
+        PortalsHandler portalsHandler = new PortalsHandler(level.SecondaryAreas.Count, Level.MainArea.MainMaze.Cells[finishPosition.x][finishPosition.y].DistanceFromStart / (level.SecondaryAreas.Count + 1));
+
+
+        for (int i = level.SecondaryAreas.Count-1; i >= 0; i--)
+        {
+            List<Portal> portals = CreatePortals(portalsHandler, Level.MainArea, level.SecondaryAreas[i]);
+            Level.MainArea.AddPortals(portals);
+
+            portals = CreatePortals(portalsHandler, level.SecondaryAreas[i], Level.MainArea);
+            level.SecondaryAreas[i].AddPortals(portals);
+        }
+    }
 
     private Area CreateArea(int id, AreaType type, float koeff)
     {
@@ -82,36 +106,32 @@ public class LevelGenerator
             height = Height;
         }
 
-        //// Создаём ячейку, для хранения всех порталов текущего Area
-        //AreasConfig info = new()
-        //{
-        //    Id = id,
-        //    Width = width,
-        //    Height = height,
-        //    Portals = new List<Portal>()
-        //};
-        //AreasConfigList.Add(info);
-
         AreaGenerator areaGenerator = new AreaGenerator(id, type, width, height);
 
         // Генерируем Area
         Area area = areaGenerator.GenerateArea();
 
-        // Создаём и добавляем порталы
-        if (area.Type != AreaType.Main) {
-
-            List<Portal> portals = AreaGenerator.CreatePortals(Level.MainArea, area);
-            Level.MainArea.AddPortals(portals);
-
-            portals = AreaGenerator.CreatePortals(area, Level.MainArea);
-            area.AddPortals(portals);
-        }
-
         return area;
     }
 
-    public Area CreateReflectedArea(int id, Area prototypeArea) {
+    public Area CreateReflectedArea(int id, Area prototypeArea)
+    {
         return AreaGenerator.GenerateReflectedToroidalArea(id, prototypeArea);
+    }
+
+
+    public List<Portal> CreatePortals(PortalsHandler portalHandler, Area fromArea, Area toArea)
+    {
+        AreaStructure fromAreaStructure = AreaStructureHandler.GetAreaStructureByAreaType(fromArea.Type);
+        AreaStructure toAreaStructure = AreaStructureHandler.GetAreaStructureByAreaType(toArea.Type);
+
+        List<Portal> portals = new List<Portal>();
+        foreach (StaticPositionParameter parameter in fromAreaStructure.PortalOutParameters)
+        {
+            Portal portalOut = portalHandler.CreatePortalIn(fromArea, toArea.Id, parameter, toAreaStructure, fromArea.Portals);
+            portals.Add(portalOut);
+        }
+        return portals;
     }
 
 }

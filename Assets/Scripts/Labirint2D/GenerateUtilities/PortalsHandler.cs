@@ -6,10 +6,24 @@ using UnityEngine.UIElements;
 
 public class PortalsHandler
 {
-    public static Portal CreatePortalIn(Area fromArea, int toAreaId, StaticPositionParameter fromAreaParameter, AreaStructure toAreaStructure, List<Portal> areaPortals)
+    int CountSecondaryAreas;
+    int DistanceBetweenOrederedPortals;
+
+    public PortalsHandler(int countSecondaryAreas, int distanceBetweenOrederedPortals) {
+        CountSecondaryAreas = countSecondaryAreas;
+        DistanceBetweenOrederedPortals = distanceBetweenOrederedPortals;
+    }
+
+    public Portal CreatePortalIn(Area fromArea, int toAreaId, StaticPositionParameter fromAreaParameter, AreaStructure toAreaStructure, List<Portal> areaPortals)
     {
 
-        Vector2Int portalPosition = FindPortalPosition(fromArea, fromAreaParameter, toAreaStructure, areaPortals, fromArea.MainMaze.StartPosition, fromArea.MainMaze.FinishPosition);
+        Vector2Int portalPosition;
+        if (fromAreaParameter == StaticPositionParameter.Order)
+        {
+            portalPosition = FindPortalPositionByOrder(fromArea, toAreaStructure);
+        } 
+        else
+            portalPosition = FindPortalPosition(fromArea, fromAreaParameter, toAreaStructure, areaPortals, fromArea.MainMaze.StartPosition, fromArea.MainMaze.FinishPosition);
 
         return new Portal()
         {
@@ -17,6 +31,11 @@ public class PortalsHandler
             ToAreaId = toAreaId,
             Position = new Vector2Int(portalPosition.x, portalPosition.y)
         };
+    }
+
+    public Vector2Int FindPortalPositionByOrder(Area fromArea, AreaStructure toAreaStructure)
+    {
+        return AreaStructureHandler.GeneratePortalOrderedPosition(fromArea, DistanceBetweenOrederedPortals, CountSecondaryAreas);
     }
 
     public static Vector2Int FindPortalPosition(Area fromArea, StaticPositionParameter fromAreaParameter, AreaStructure toAreaStructure, List<Portal> areaPortals, Vector2Int startPosition, Vector2Int finishPosition)

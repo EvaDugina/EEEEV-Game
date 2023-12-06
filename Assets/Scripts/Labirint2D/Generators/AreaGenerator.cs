@@ -73,19 +73,6 @@ public class AreaGenerator
         return area;
     }
 
-    public static List<Portal> CreatePortals(Area fromArea, Area toArea)
-    {
-        AreaStructure fromAreaStructure = AreaStructureHandler.GetAreaStructureByAreaType(fromArea.Type);
-        AreaStructure toAreaStructure = AreaStructureHandler.GetAreaStructureByAreaType(toArea.Type);
-
-        List<Portal> portals = new List<Portal>();
-        foreach (StaticPositionParameter parameter in fromAreaStructure.PortalOutParameters) {
-            Portal portalOut = PortalsHandler.CreatePortalIn(fromArea, toArea.Id, parameter, toAreaStructure, fromArea.Portals);
-            portals.Add(portalOut);
-        }
-        return portals;
-    }
-
 
 
 }

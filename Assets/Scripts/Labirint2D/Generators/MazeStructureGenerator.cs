@@ -120,26 +120,27 @@ public class MazeStructureGenerator
             else
             {
                 current = stackVisited.Pop();
-                x = current.X;
-                y = current.Y;
-
+                
                 // Заплетаем лаибринт, кроме гранчных клеток, у них - фиксированная ширина = 1
-                int indexRandomNeighbor = Random.Range(0, 4);
-                MazeCell randomNeighbor = null;
+                //x = current.X;
+                //y = current.Y;
 
-                if (x > 2 && indexRandomNeighbor == 0 && Cells[x - 1][y].Status != MazeCellStatus.Disable)
-                    randomNeighbor = Cells[x - 1][y];
-                else if (x < Width - 2 && indexRandomNeighbor == 1 && Cells[x + 1][y].Status != MazeCellStatus.Disable)
-                    randomNeighbor = Cells[x + 1][y];
-                else if (y > 2 && indexRandomNeighbor == 2 && Cells[x][y - 1].Status != MazeCellStatus.Disable)
-                    randomNeighbor = Cells[x][y - 1];
-                else if (y < Height - 2 && indexRandomNeighbor == 3 && Cells[x][y + 1].Status != MazeCellStatus.Disable)
-                    randomNeighbor = Cells[x][y + 1];
+                //int indexRandomNeighbor = Random.Range(0, 4);
+                //MazeCell randomNeighbor = null;
 
-                if (randomNeighbor != null)
-                {
-                    RemoveBetweenWalls(current, randomNeighbor);
-                }
+                //if (x > 2 && indexRandomNeighbor == 0 && Cells[x - 1][y].Status != MazeCellStatus.Disable)
+                //    randomNeighbor = Cells[x - 1][y];
+                //else if (x < Width - 2 && indexRandomNeighbor == 1 && Cells[x + 1][y].Status != MazeCellStatus.Disable)
+                //    randomNeighbor = Cells[x + 1][y];
+                //else if (y > 2 && indexRandomNeighbor == 2 && Cells[x][y - 1].Status != MazeCellStatus.Disable)
+                //    randomNeighbor = Cells[x][y - 1];
+                //else if (y < Height - 2 && indexRandomNeighbor == 3 && Cells[x][y + 1].Status != MazeCellStatus.Disable)
+                //    randomNeighbor = Cells[x][y + 1];
+
+                //if (randomNeighbor != null)
+                //{
+                //    RemoveBetweenWalls(current, randomNeighbor);
+                //}
             }
 
         } while (stackVisited.Count > 0);
