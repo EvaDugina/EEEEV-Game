@@ -465,6 +465,10 @@ PrefabInstance:
       propertyPath: BoundaryCenterMazePrefab
       value: 
       objectReference: {fileID: 1742853868352982181, guid: 5ca780c619b5b8445ba730e3793395e2, type: 3}
+    - target: {fileID: 4647619872316330480, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: RedRoomDecorationPrefab
+      value: 
+      objectReference: {fileID: 1842833647202691168, guid: 76bc7633e946661418aef5a05676dcfc, type: 3}
     - target: {fileID: 4710519834860055386, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: m_Name
       value: Level
@@ -626,7 +630,7 @@ MonoBehaviour:
       Decoration: 3
       CellSize: {x: 2, y: 2, z: 2}
   FieldAreaParams:
-    Status: 1
+    Status: 0
     Order: 1
     GenerateParams:
       SizeKoeff: 0.5
@@ -634,7 +638,7 @@ MonoBehaviour:
       Decoration: 1
       CellSize: {x: 1, y: 1, z: 1}
   CorridorAreaParams:
-    Status: 1
+    Status: 0
     Order: 3
     GenerateParams:
       SizeKoeff: 0.5
