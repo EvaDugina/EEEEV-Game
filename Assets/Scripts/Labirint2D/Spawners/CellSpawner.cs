@@ -9,6 +9,7 @@ public class CellSpawner : MonoBehaviour
     [SerializeField] private Material StartMaterial;
     [SerializeField] private Material FinishMaterial;
     [SerializeField] private Material PortalMaterial;
+    [SerializeField] private GameObject PortalLine;
 
     private Transform CellsFolder;
     private GameObject CellPrefab;
@@ -58,7 +59,12 @@ public class CellSpawner : MonoBehaviour
             else if (mazeCell.Type == MazeCellType.Finish)
                 cell.Floor.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = FinishMaterial;
             else
+            {
+                Vector3 cellCenterPosition = cellObject.transform.position + cellObject.transform.localScale / 2;
+                cellCenterPosition.y = cellObject.transform.position.y;
+                Instantiate(PortalLine, cellCenterPosition, Quaternion.identity, CellsFolder);
                 cell.Floor.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = PortalMaterial;
+            }
         }
         cell.Floor.SetActive(true);
 

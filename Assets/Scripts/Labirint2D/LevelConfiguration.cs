@@ -30,7 +30,7 @@ public struct SpawnParams
 
 public enum CellDecoration
 {
-    Empty, WheatField, BirchField, RedRoom
+    Empty, WheatField, BirchField, RedRoom, GulagCorridor
 }
 
 

@@ -174,48 +174,36 @@ public class MazeGenerator
         return reflectedMainMaze;
     }
 
-    public static List<Maze> GenerateBoundaryMazesForReflectedMaze(List<Maze> boundaryMazes)
-    {
+    //public static List<Maze> GenerateBoundaryMazesForReflectedMaze(List<Maze> boundaryMazes)
+    //{
 
-        // Меняем местами topMaze и bottomMaze
-        List<Maze> newBoundaryMazes = new List<Maze>();
-        foreach (Maze maze in boundaryMazes)
-        {
-            // Меняем местами верхний и нижний, левый и правый и тд
-            if (maze.Side == MazeSide.Top)
-            {
-                Maze changedMaze = MazeGenerateUtilities.GenerateCloneMaze(maze);
-                changedMaze.SetSide(MazeSide.Bottom);
-                newBoundaryMazes.Add(changedMaze);
-            }
-            else if (maze.Side == MazeSide.Bottom)
-            {
-                Maze changedMaze = MazeGenerateUtilities.GenerateCloneMaze(maze);
-                changedMaze.SetSide(MazeSide.Top);
-                newBoundaryMazes.Add(changedMaze);
-            }
-            else if (maze.Side == MazeSide.Right)
-            {
-                Maze changedMaze = MazeGenerateUtilities.GenerateCloneMaze(maze);
-                changedMaze.SetSide(MazeSide.Left);
-                newBoundaryMazes.Add(changedMaze);
-            }
-            else if (maze.Side == MazeSide.Left)
-            {
-                Maze changedMaze = MazeGenerateUtilities.GenerateCloneMaze(maze);
-                changedMaze.SetSide(MazeSide.Right);
-                newBoundaryMazes.Add(changedMaze);
-            }
+    //    // Меняем местами topMaze и bottomMaze
+    //    List<Maze> newBoundaryMazes = new List<Maze>();
+    //    foreach (Maze maze in boundaryMazes)
+    //    {
+    //        // Меняем местами верхний и нижний, левый и правый и тд
+    //        if (maze.Side == MazeSide.Top)
+    //        {
+    //            Maze changedMaze = MazeGenerateUtilities.GenerateCloneMaze(maze);
+    //            changedMaze.SetSide(MazeSide.Bottom);
+    //            newBoundaryMazes.Add(changedMaze);
+    //        }
+    //        else if (maze.Side == MazeSide.Bottom)
+    //        {
+    //            Maze changedMaze = MazeGenerateUtilities.GenerateCloneMaze(maze);
+    //            changedMaze.SetSide(MazeSide.Top);
+    //            newBoundaryMazes.Add(changedMaze);
+    //        }
 
-            else
-            {
-                newBoundaryMazes.Add(maze);
-            }
-        }
+    //        else
+    //        {
+    //            newBoundaryMazes.Add(maze);
+    //        }
+    //    }
 
-        return newBoundaryMazes;
+    //    return newBoundaryMazes;
 
-    }
+    //}
 
 
     private static Maze GenerateBoundaryMaze(MazeSide side, MazeCell[][] cells)

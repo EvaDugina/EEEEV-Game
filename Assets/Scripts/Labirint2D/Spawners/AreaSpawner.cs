@@ -55,10 +55,11 @@ public class AreaSpawner : MonoBehaviour
 
         MazeSpawner.Spawn(area2D.MazeFolder.transform, cellTemplate, area.MainMaze, area.BoundaryMazes);
 
-        if (area.Type == AreaType.Main)
+        if (area.Topology == AreaTopology.Toroid)
         {
             SpawnBoundaryCenterMaze(areaObject.transform, area, areaParams.CellSize);
         }
+
     }
 
 

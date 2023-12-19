@@ -9,6 +9,7 @@ public class CellsSpawnPrefabs : MonoBehaviour
     public GameObject WheatFieldDecorationPrefab;
     public GameObject BirchFieldDecorationPrefab;
     public GameObject RedRoomDecorationPrefab;
+    public GameObject GulagDecorationPrefab;
 
     public GameObject GetCellDecorationByDecoration(CellDecoration decoration)
     {
@@ -18,6 +19,8 @@ public class CellsSpawnPrefabs : MonoBehaviour
             return BirchFieldDecorationPrefab;
         else if (decoration == CellDecoration.RedRoom)
             return RedRoomDecorationPrefab;
+        else if (decoration == CellDecoration.GulagCorridor)
+            return GulagDecorationPrefab;
         else
             return EmptyDecorationPrefab;
     }

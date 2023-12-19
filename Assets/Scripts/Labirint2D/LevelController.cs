@@ -26,8 +26,8 @@ public class LevelController : MonoBehaviour
     private MazeCell CurrentMazeCell;
 
     // Для перемещения раз в определённое время на ReflectedArea
-    //private float PeriodTeleportToReflectedArea = 10.0f;
-    //private float NextActionTime = 5.0f;
+    private float PeriodTeleportToReflectedArea = 10.0f;
+    private float NextActionTime = 5.0f;
 
     private StaticPositionParameter PlayerMovingSideInMainMaze;
 
@@ -91,28 +91,24 @@ public class LevelController : MonoBehaviour
         }
 
         // пермещаем Player на ReflectedArea
-        //else if (Time.time > NextActionTime && Level.ReflectedArea != null)
-        //{
-        //    Debug.Log(Time.time + " ? " + NextActionTime + " + " + PeriodTeleportToReflectedArea + " = " + (NextActionTime + PeriodTeleportToReflectedArea));
-        //    NextActionTime += PeriodTeleportToReflectedArea;
+        else if (Level.ReflectedArea != null && (CurrentArea.Type == AreaType.Main || CurrentArea.Type == AreaType.ReflectedMain))
+        {
+            if (Time.time > NextActionTime)
+            {
+                Debug.Log(Time.time + " ? " + NextActionTime + " + " + PeriodTeleportToReflectedArea + " = " + (NextActionTime + PeriodTeleportToReflectedArea));
+                NextActionTime += PeriodTeleportToReflectedArea;
+                TeleportPlayerToBetweenMainAndReflectedAreas();
+            }
 
-        //    if (CurrentArea.Type == AreaType.Main || CurrentArea.Type == AreaType.ReflectedMain)
-        //    {
+            // Перемещаем принудительно, если игрок находится на границе ReflectedMainMaze
+            else if (CurrentArea.Type == AreaType.ReflectedMain && (CurrentMazeCell.X > CurrentArea.Width - 5 || CurrentMazeCell.Y > CurrentArea.Height - 5))
+            {
+                Debug.Log("Принудительное перемещение с ReflectedArea на MainArea");
+                NextActionTime += PeriodTeleportToReflectedArea;
+                TeleportPlayerToBetweenMainAndReflectedAreas();
+            }
 
-        //        Area destinationArea;
-        //        if (CurrentArea.Type == AreaType.Main)
-        //            destinationArea = Level.ReflectedArea;
-        //        else
-        //        {
-        //            destinationArea = Level.MainArea;
-        //        }
-
-        //        // Поворачиваем Destination Area, если оно - не Main и не ReflectedMain
-        //        GameObject areaObject = RotateArea(destinationArea);
-
-        //        TeleportPlayer(areaObject, destinationArea, StaticPositionParameter.None, true);
-        //    }
-        //}
+        }
 
         Vector3 newPlayerPosition = playerPosition;
         if (CurrentArea.Topology == AreaTopology.Toroid)
@@ -122,7 +118,7 @@ public class LevelController : MonoBehaviour
                 Player.transform.position = newPlayerPosition;
         }
 
-        MoveCamera(newPlayerPosition);
+        MoveMiniMapCamera(newPlayerPosition);
     }
 
     public StaticPositionParameter ChooseSideAfterReturningFromPortal(StaticPositionParameter portalSide)
@@ -184,7 +180,7 @@ public class LevelController : MonoBehaviour
         MiniMapCamera.transform.position = cameraPosition;
     }
 
-    public void MoveCamera(Vector3 targetPosition)
+    public void MoveMiniMapCamera(Vector3 targetPosition)
     {
         Vector3 cameraPosition = MiniMapCamera.transform.position;
         cameraPosition.x = targetPosition.x;
@@ -339,6 +335,24 @@ public class LevelController : MonoBehaviour
         RotatePlayerToSecondaryArea(eulerAnglesZ);
     }
 
+    private void TeleportPlayerToBetweenMainAndReflectedAreas()
+    {
+        Area destinationArea;
+        if (CurrentArea.Type == AreaType.Main) destinationArea = Level.ReflectedArea;
+        else destinationArea = Level.MainArea;
+
+        // Не телепортируем на ReflectedArea, если игрок находится на граничной клетке
+        if (CurrentArea.Type == AreaType.Main && (CurrentMazeCell.X > CurrentArea.Width - 10 || CurrentMazeCell.Y > CurrentArea.Height - 10))
+        {
+        }
+        else
+        {
+            // Поворачиваем Destination Area, если оно - не Main и не ReflectedMain
+            GameObject areaObject = RotateArea(destinationArea);
+            TeleportPlayer(areaObject, destinationArea, StaticPositionParameter.None, true);
+        }
+    }
+
     public void SetPlayerToCell(MazeCell mazeCell, Vector3 cellSize, bool reflectedTeleport)
     {
         Vector3 playerPosition = Player.transform.position;
@@ -348,6 +362,14 @@ public class LevelController : MonoBehaviour
         {
             positionXInCell = (playerPosition.x - ((int)playerPosition.x)) % cellSize.x;
             positionZInCell = (playerPosition.z - ((int)playerPosition.z)) % cellSize.z;
+
+            Vector3 rotation = Player.transform.localEulerAngles;
+            rotation.x = 180 - rotation.x;
+            rotation.y = 180 - rotation.y;
+            rotation.z = 180 - rotation.z;
+
+            Player.transform.localEulerAngles = rotation;
+
         }
         else
         {

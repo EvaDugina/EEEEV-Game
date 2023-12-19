@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 28e17eb1f6b3149da9f03426b8603486, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.566502, g: 0.6324883, b: 0.6230036, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -398,6 +398,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1842833647202691168, guid: 0ff4ae5f13514354b814ec502666d46c, type: 3}
     - target: {fileID: 1730764021364460184, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: PortalLine
+      value: 
+      objectReference: {fileID: 4199840408698952370, guid: 21ef61af09d60464e9560b3494b76680, type: 3}
+    - target: {fileID: 1730764021364460184, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: StartMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 58e4cd58bcbec1a44b6554cc0eca9d0b, type: 2}
@@ -469,6 +473,10 @@ PrefabInstance:
       propertyPath: RedRoomDecorationPrefab
       value: 
       objectReference: {fileID: 1842833647202691168, guid: 76bc7633e946661418aef5a05676dcfc, type: 3}
+    - target: {fileID: 4647619872316330480, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: WheatFieldDecorationPrefab
+      value: 
+      objectReference: {fileID: 1842833647202691168, guid: 3252082ab9367994e8efb8513a43497e, type: 3}
     - target: {fileID: 4710519834860055386, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: m_Name
       value: Level
@@ -630,7 +638,7 @@ MonoBehaviour:
       Decoration: 3
       CellSize: {x: 2, y: 2, z: 2}
   FieldAreaParams:
-    Status: 0
+    Status: 1
     Order: 1
     GenerateParams:
       SizeKoeff: 0.5
@@ -638,7 +646,7 @@ MonoBehaviour:
       Decoration: 1
       CellSize: {x: 1, y: 1, z: 1}
   CorridorAreaParams:
-    Status: 0
+    Status: 1
     Order: 3
     GenerateParams:
       SizeKoeff: 0.5

@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 2918554686364898350}
   - component: {fileID: 5300937108923055925}
   m_Layer: 6
-  m_Name: RoomDecoration
+  m_Name: RedRoomDecoration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -527,7 +527,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cf84a845da69a4f4b83ae2e19dd9ea4d, type: 2}
+  - {fileID: 2100000, guid: c5ca6b792a25d4561a541a05ed4baf1a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -664,7 +664,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cf84a845da69a4f4b83ae2e19dd9ea4d, type: 2}
+  - {fileID: 2100000, guid: c5ca6b792a25d4561a541a05ed4baf1a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1150,7 +1150,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cf84a845da69a4f4b83ae2e19dd9ea4d, type: 2}
+  - {fileID: 2100000, guid: c5ca6b792a25d4561a541a05ed4baf1a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1288,7 +1288,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d9118644cf18d114abae307878884709, type: 2}
+  - {fileID: 2100000, guid: 58dd5467311904cf7bff99b15ee8520e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1524,7 +1524,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cf84a845da69a4f4b83ae2e19dd9ea4d, type: 2}
+  - {fileID: 2100000, guid: c5ca6b792a25d4561a541a05ed4baf1a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
