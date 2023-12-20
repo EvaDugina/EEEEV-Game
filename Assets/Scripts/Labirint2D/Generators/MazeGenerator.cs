@@ -10,6 +10,7 @@ public struct CellInfo
 
 public class MazeGenerator
 {
+    private int Id;
 
     private int Width;
     private int Height;
@@ -21,9 +22,12 @@ public class MazeGenerator
 
     private MazeStructureGenerator MazeStructureGenerator;
 
+    private int AreaId;
+
 
     public MazeGenerator(int width, int height, MazeStructure structure)
     {
+        Id = 0;
         Width = width;
         Height = height;
 
@@ -44,8 +48,12 @@ public class MazeGenerator
     /// </summary>
     /// 
 
-    public Maze GenerateMainMaze(StaticPositionParameter start, DynamicPositionParameter finish)
+    public Maze GenerateMainMaze(int area_id, StaticPositionParameter start, DynamicPositionParameter finish)
     {
+        AreaId = area_id;
+        int maze_id = GenerateMazeId(area_id, MazeSide.Center);
+        Id++;
+
         MazeSide mazeSide = MazeSide.Center;
 
         int width = Width;
@@ -63,7 +71,7 @@ public class MazeGenerator
         // Показываем / отключаем колонны
         SetColumnTypes();
 
-        Maze maze = new Maze(width, height, mazeSide);
+        Maze maze = new Maze(maze_id, width, height, mazeSide);
         maze.SetCells(Cells);
 
         if (maze.Type != MazeType.Boundary)
@@ -92,28 +100,29 @@ public class MazeGenerator
 
         List<Maze> boundaryMazes = new List<Maze>
         {
-            GenerateBoundaryMaze(MazeSide.Left, Cells),
-            GenerateBoundaryMaze(MazeSide.Right, Cells),
-            GenerateBoundaryMaze(MazeSide.Top, Cells),
-            GenerateBoundaryMaze(MazeSide.Bottom, Cells),
+            GenerateBoundaryMaze(AreaId, MazeSide.Left, Cells),
+            GenerateBoundaryMaze(AreaId, MazeSide.Right, Cells),
+            GenerateBoundaryMaze(AreaId, MazeSide.Top, Cells),
+            GenerateBoundaryMaze(AreaId, MazeSide.Bottom, Cells),
 
-            GenerateBoundaryMaze(MazeSide.TopLeft, Cells),
-            GenerateBoundaryMaze(MazeSide.TopRight, Cells),
-            GenerateBoundaryMaze(MazeSide.BottomRight, Cells),
-            GenerateBoundaryMaze(MazeSide.BottomLeft, Cells)
+            GenerateBoundaryMaze(AreaId, MazeSide.TopLeft, Cells),
+            GenerateBoundaryMaze(AreaId, MazeSide.TopRight, Cells),
+            GenerateBoundaryMaze(AreaId, MazeSide.BottomRight, Cells),
+            GenerateBoundaryMaze(AreaId, MazeSide.BottomLeft, Cells)
         };
 
         return boundaryMazes;
     }
 
 
-    public static Maze GenerateReflectedMainMaze(Maze maze)
+    public static Maze GenerateReflectedMainMaze(int area_id, Maze maze)
     {
+        int maze_id = GenerateMazeId(area_id, maze.Side);
 
-        Maze bottomPartMaze = GenerateBoundaryMaze(MazeSide.Top, maze.Cells);
-        Maze topPartMaze = GenerateBoundaryMaze(MazeSide.Bottom, maze.Cells);
+        Maze bottomPartMaze = GenerateBoundaryMaze(area_id, MazeSide.Top, maze.Cells);
+        Maze topPartMaze = GenerateBoundaryMaze(area_id,MazeSide.Bottom, maze.Cells);
 
-        Maze reflectedMainMaze = new Maze(maze.Width, maze.Height, MazeSide.Center);
+        Maze reflectedMainMaze = new Maze(maze_id, maze.Width, maze.Height, MazeSide.Center);
         MazeCell[][] reflectedMazeCells = new MazeCell[maze.Width][];
 
         int yMiddle = maze.Height / 2;
@@ -206,8 +215,19 @@ public class MazeGenerator
     //}
 
 
-    private static Maze GenerateBoundaryMaze(MazeSide side, MazeCell[][] cells)
+
+
+
+
+    private static int GenerateMazeId(int area_id, MazeSide side) {
+        return area_id * 20 + (int)side;
+    }
+
+
+    private static Maze GenerateBoundaryMaze(int area_id, MazeSide side, MazeCell[][] cells)
     {
+        int maze_id = GenerateMazeId(area_id, side);
+
         // Убираем точки старта и финиша с основного Maze, чтобы сгенерировать boundary Maze без них
         //cells[startPosition.x][startPosition.y].SetType(MazeCellType.Default);
         //if (finishPosition != -Vector2Int.one)
@@ -221,7 +241,7 @@ public class MazeGenerator
         //    cells[finishPosition.x][finishPosition.y].SetType(MazeCellType.Finish);
 
         //Vector2 mazePosition = GetBoundaryMazePosition(side, cells.Length, cells[0].Length);
-        Maze boundaryMaze = new(newCells.Length, newCells[0].Length, side);
+        Maze boundaryMaze = new(maze_id, newCells.Length, newCells[0].Length, side);
         boundaryMaze.SetCells(newCells);
 
         return boundaryMaze;

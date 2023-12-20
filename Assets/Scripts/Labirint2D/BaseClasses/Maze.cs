@@ -15,7 +15,7 @@ public enum MazeSide
 
 public class Maze
 {
-
+    public int Id { get; private set; }
     public int Width { get; private set; }
     public int Height { get; private set; }
 
@@ -28,8 +28,9 @@ public class Maze
     public MazeCell[][] Cells { get; private set; }
 
 
-    public Maze(int width, int height, MazeSide side)
+    public Maze(int id, int width, int height, MazeSide side)
     {
+        Id = id;
 
         Width = width;
         Height = height;

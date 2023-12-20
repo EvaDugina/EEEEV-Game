@@ -121,7 +121,7 @@ public class MazeGenerateUtilities
 
     public static Maze GenerateCloneMaze(Maze prototypeMaze) {
 
-        Maze maze = new Maze(prototypeMaze.Width, prototypeMaze.Height, prototypeMaze.Side);
+        Maze maze = new Maze(prototypeMaze.Id * 100, prototypeMaze.Width, prototypeMaze.Height, prototypeMaze.Side);
         maze.SetCells(GenerateCloneMazeCells(prototypeMaze.Cells));
         return maze;
     }

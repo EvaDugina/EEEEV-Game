@@ -53,7 +53,7 @@ public class LevelController : MonoBehaviour
         //    Debug.Log(portal.Position);
 
         // Отрисовываем уровень
-        LevelSpawner.SpawnLevel(transform.GetComponent<Level2D>(), Level, AreasController.GetLevelConfiguration());
+        LevelSpawner.SpawnLevelWithOptimization(transform.GetComponent<Level2D>(), Level, AreasController.GetLevelConfiguration(), Level.MainArea, Level.MainArea.MainMaze.StartPosition);
 
         // Помещаем игрока в начальную клетку
         GameObject areaObject = RotateArea(Level.MainArea);
@@ -65,6 +65,7 @@ public class LevelController : MonoBehaviour
     {
 
         Vector3 playerPosition = Player.transform.position;
+
         RefreshCurrentMazeCell(playerPosition);
         //Debug.Log(currentCellPosition);
 
@@ -257,6 +258,9 @@ public class LevelController : MonoBehaviour
                     PlayerMovingSideInMainMaze = StaticPositionParameter.Left;
             }
         }
+
+        if (previousMazeCell.X != CurrentMazeCell.X || previousMazeCell.Y != CurrentMazeCell.Y)
+            LevelSpawner.SpawnLevelWithOptimization(transform.GetComponent<Level2D>(), Level, AreasController.GetLevelConfiguration(), CurrentArea, new Vector2Int(CurrentMazeCell.X, CurrentMazeCell.Y));
 
         Debug.Log(PlayerMovingSideInMainMaze + ": (" + CurrentMazeCell.X + ", " + CurrentMazeCell.Y + ")");
 

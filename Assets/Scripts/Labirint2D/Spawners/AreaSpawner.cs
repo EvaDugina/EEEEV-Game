@@ -14,7 +14,7 @@ public class AreaSpawner : MonoBehaviour
 
     private Transform AreasFolder;
 
-
+    Dictionary<int, GameObject> _spawnedMazeObjects = new Dictionary<int, GameObject>();
 
     /* 
 ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -107,12 +107,59 @@ public class AreaSpawner : MonoBehaviour
 
 
 
+    public GameObject SpawnAreaWithOptimization(Transform areasFolder, Area area, SpawnParams areaParams, Vector2Int playerCellPosition, GameObject areaObject)
+    {
+
+        //Cell cellTemplate = CellHandler.CreateCellByDecoration(areaParams.Decoration);
+        GameObject cellDecorationPrefab = CellsSpawnPrefabs.GetCellDecorationByDecoration(areaParams.Decoration);
+        Cell cellTemplate = new Cell(cellDecorationPrefab, areaParams.CellSize);
+
+        if (areaObject == null)
+        {
+            // Ставим каркас Area
+            areaObject = Instantiate(AreaPrefab,
+                areasFolder.TransformPoint(new Vector3(0, area.ZIndex * 10, 0)),
+                Quaternion.identity, areasFolder);
+            areaObject.name = area.Id + area.GetAreaTypeAsText() + "Area";
+            areaObject.SetActive(false);
+        }
+        Area2D area2D = areaObject.GetComponent<Area2D>();
+
+
+        if (!IsSpawnedMazeObjectByMaze(area.MainMaze))
+        {
+            GameObject newMazeObject = MazeSpawner.SpawnWithOptimization(area2D.MazeFolder.transform, cellTemplate, area.MainMaze, area.BoundaryMazes, playerCellPosition, null);
+            foreach (var spawnedItem in _spawnedMazeObjects)
+                Destroy(spawnedItem.Value);
+            _spawnedMazeObjects.Clear();
+
+            _spawnedMazeObjects.Add(area.Id, newMazeObject);
+            Debug.Log("NEW MAZE!");
+        }
+        else
+        {
+            MazeSpawner.SpawnWithOptimization(area2D.MazeFolder.transform, cellTemplate, area.MainMaze, area.BoundaryMazes, playerCellPosition, _spawnedMazeObjects[area.MainMaze.Id]);
+        }
+
+        return areaObject;
+
+    }
+
+
+
     /* 
 ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
 |   Private Methods
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────── 
 */
 
+    private bool IsSpawnedMazeObjectByMaze(Maze maze)
+    {
+        foreach (KeyValuePair<int, GameObject> entry in _spawnedMazeObjects)
+            if (entry.Key == maze.Id)
+                return true;
+        return false;
+    }
 
     //private void SetCellSize(Vector2Int cellSize)
     //{

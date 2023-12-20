@@ -353,6 +353,10 @@ PrefabInstance:
       propertyPath: CellPrefab
       value: 
       objectReference: {fileID: 1842833647202691168, guid: 2f97916b129bee849a3b98165d3a6067, type: 3}
+    - target: {fileID: 1047970426568757374, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
+      propertyPath: SpawnBlockRadius
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1678810746168365325, guid: 96d18859f21b9aa40b468554b91a592b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
